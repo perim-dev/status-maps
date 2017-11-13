@@ -1,0 +1,41 @@
+#layout-barra-titulo {
+  min-height: 100px; 
+  height: 15%;
+
+}
+
+.barra-de-titulo {
+  height: 100%; 
+  width: 100%;
+  line-height: 100%;
+  text-align: center;
+}
+
+.barra-de-titulo .panel-body{
+  height: 100%;
+}
+
+/* Logo */
+.logo {
+  float: left;
+  height: 100%;
+}
+
+.logo .globo{
+  float: left;
+  position: relative;
+}
+
+.logo .engrenagem {
+  animation: engrenagens infinite 10s linear;
+  position: absolute;
+  top: 15px;
+  left: 55px;
+  color: #818182;
+}
+
+@keyframes engrenagens {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+/*Fim de logo*/

@@ -1,0 +1,25 @@
+.arvore-acervo-item {
+  padding-bottom: 10px;
+}
+.arvore-acervo-item .texto{
+  font-weight: bold;
+  display: inline-block;
+  margin-top: 0px;
+  padding-top:5px;
+  padding-left:10px;
+}
+
+.arvore-acervo-item input {
+    padding: 0;
+    margin:0;
+    vertical-align: top;
+    position: relative;
+    top: 5px;
+    overflow: hidden;
+}
+
+.arvore-categoria-item {
+  font-weight: 400;
+  padding-left: 25px;
+  margin-top: 5px;
+}

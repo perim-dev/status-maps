@@ -1,0 +1,75 @@
+html, body, .container-fluid{
+   height:100%;
+}
+
+body {
+  background-color:  rgba(17, 17, 17, 0.94);
+  color: rgba(255,255,255,0.8);
+  margin:0px 15px;
+  padding: 0px;
+}
+
+.root{
+  min-height: 100%;
+  height: 100%;
+}
+
+.content-fluid{
+  padding: 5px;
+}
+
+.modulo {
+  padding: 5px;
+  margin: 0px;
+  height: 100%;
+}
+
+#layout-corpo {
+  height: 80%;
+}
+
+.lista-lateral {
+  height: 100%;
+}
+
+.mapa-lateral {
+  border: solid 0px yellow;
+  height: auto;
+  padding: 5px;
+}
+
+.mapa-lateral .altura {
+    min-height: 75%;
+    height: 75%;
+}
+
+.nopadding {
+   padding: 0 !important;
+   margin: 0 !important;
+}
+
+.bg-grafite {
+  background-color: rgba(51,51,51,0.8) ;
+  border-color: #404040;
+}
+
+.bg-grafite .panel-heading {
+  color: #fff;
+  background-color: #404040;
+  border-color: #404040;
+  background-image: none;
+}
+
+.rodape {
+  position: relative;
+  width: 100%;
+  float: right;
+  height: 25px;
+}
+
+.rodape .panel, .panel-body{
+  height: 25px;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin: 0;
+}

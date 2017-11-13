@@ -1,0 +1,60 @@
+#linha-marquee {
+  height: 100%;
+}
+
+.linha-marquee {
+  font-size: 3.7vh;
+  font-weight: 600;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 33%;
+  text-transform: uppercase;
+}
+
+.linha-marquee span{
+  padding: 0px;
+  margin: 0px;
+  line-height: 100%;
+  vertical-align: center;
+}
+
+.linha-marquee .vermelho {
+  color: #CC0404;
+}
+
+.linha-marquee .azul {
+  color: rgb(116, 255, 52);
+}
+
+.linha-marquee .amarelo {
+  color: #FFE922;
+}
+
+/* Efeito de movimento */
+
+.marquee {
+  width: 100%;
+  margin: 0 auto;
+  white-space: nowrap;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.marquee span {
+  display: inline-block;
+  padding-left: 100%;  /* show the marquee just outside the paragraph */
+  animation: marquee 30s linear infinite;
+}
+
+.marquee span:hover {
+  animation-play-state: paused
+}
+
+/* Make it move */
+@keyframes marquee {
+  0%   { transform: translate(0, 0); }
+  100% { transform: translate(-100%, 0); }
+}
+
+/* fim de efeito*/
