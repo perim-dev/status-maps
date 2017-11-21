@@ -5,8 +5,7 @@ const INITIAL_STATE = { lista: [{id:2, descricao:"CETRio",categorias:[{id:3,desc
 export default (state = INITIAL_STATE, action) => {
     switch(action.type){
         case 'ACERVO_LOAD':
-            // return { ...state, lista:action.payload.data}
-            return {...state}
+            return { ...state, lista:action.payload.data}
         default:
             return state
     }

@@ -1,7 +1,9 @@
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import {load} from './actions';
+import {carregarPontosDaCategoria} from '../mapa/actions';
 import { bindActionCreators } from 'redux';
+import ItemCategoria from './item-categoria';
 import '../../css/arvore-acervo.css';
 
 class ArvoreAcervo extends Component {
@@ -29,11 +31,8 @@ class ArvoreAcervo extends Component {
     }
 
     itensCategoria(acervo){
-        console.log(acervo.categorias);
         return acervo.categorias.map( categoria => (
-            <div className="arvore-categoria-item" key={"categoriaid_"+categoria.id}>
-                <input type="checkbox" name={"categoria_input"+categoria.id} id={"categoria_input_"+categoria.id}/> {categoria.descricao}
-            </div>
+            <ItemCategoria categoria={categoria} key={'item-categora'+categoria.id}/>
         ));
     }
 
@@ -47,6 +46,6 @@ class ArvoreAcervo extends Component {
 }
 
 const mapStateToProps = state => ({lista: state.acervos.lista});
-const mapDispatchToProps = dispatch => bindActionCreators({load}, dispatch); 
+const mapDispatchToProps = dispatch => bindActionCreators({load, carregarPontosDaCategoria}, dispatch); 
 export default connect(mapStateToProps, mapDispatchToProps)(ArvoreAcervo) ;
 
