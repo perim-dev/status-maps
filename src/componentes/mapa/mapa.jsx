@@ -24,7 +24,7 @@ class Mapa extends Component {
     return (
       <div className="col-xs-12 col-sm-9 col-md-9 col-lg-9 mapa-lateral h-100">
         <div className="panel lista-lateral bg-grafite modulo">
-            <Map center={position} zoom={this.props.mapa.zoom} onclick={this.adicionarPontosDaCategoria}>
+            <Map center={position} zoom={this.props.mapa.zoom}>
               <TileLayer
                 attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
                 url="https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw"
@@ -34,7 +34,7 @@ class Mapa extends Component {
               
               {this.props.mapa.groupLayers.map((groupLayer) => 
                 groupLayer.map(function (ponto, idx) {
-                    let icon = Leaflet.icon({ iconUrl: 'http://icons.iconarchive.com/icons/aha-soft/desktop-halloween/32/Mask-icon.png', iconAnchor:   [16, 16]});
+                    let icon = Leaflet.icon({ iconUrl: 'http://icons.iconarchive.com/icons/custom-icon-design/flatastic-10/32/Bear-icon.png', iconAnchor:   [16, 16]});
                     return (
                     <Marker key={`marker-${idx}`} position={[ponto.geometry.coordinates[1],ponto.geometry.coordinates[0]]} icon={icon} > 
                       <Popup>
@@ -43,7 +43,6 @@ class Mapa extends Component {
                     </Marker>
                     );
                 }
-                
               ))}
 
             </Map>

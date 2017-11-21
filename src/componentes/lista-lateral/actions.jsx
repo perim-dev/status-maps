@@ -1,10 +1,10 @@
 import axios from 'axios';
-
-const URL = 'http://localhost:8080/status/api/v1/acervos';
+import config from '../../config.js';
 
 export const load = async() => {
-    const config = {'Authorization':'Basic MjYyMjYyNTU6MTIzNDU='}
-    const request = await axios.get(`${URL}?fields=categorias`,{headers: config});
+    const auth = {'Authorization':'Basic MjYyMjYyNTU6MTIzNDU='}
+    const resource = config.url + config.resources.acervo;
+    const request = await axios.get(`${resource}?fields=categorias`,{headers: auth});
     return {
         type: 'ACERVO_LOAD',
         payload: request
