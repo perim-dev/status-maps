@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
+import Leaflet from 'leaflet';
 import {connect} from 'react-redux';
 import {load, carregarCategoria} from './actions';
 import { bindActionCreators } from 'redux';
-import MarkerClusterGroup from 'react-leaflet-markercluster';
+
 
 import '../../css/leaflet.css';
 
@@ -32,14 +33,17 @@ class Mapa extends Component {
               />
               
               {this.props.mapa.groupLayers.map((groupLayer) => 
-                groupLayer.map((ponto, idx) => 
-                  <MarkerClusterGroup>
-                    <Marker key={`marker-${idx}`} position={[ponto.geometry.coordinates[1],ponto.geometry.coordinates[0]]} > 
+                groupLayer.map(function (ponto, idx) {
+                    let icon = Leaflet.icon({ iconUrl: 'http://icons.iconarchive.com/icons/aha-soft/desktop-halloween/32/Mask-icon.png', iconAnchor:   [16, 16]});
+                    return (
+                    <Marker key={`marker-${idx}`} position={[ponto.geometry.coordinates[1],ponto.geometry.coordinates[0]]} icon={icon} > 
                       <Popup>
                         <span>{ponto.descricao}</span>
                       </Popup>
                     </Marker>
-                  </MarkerClusterGroup>
+                    );
+                }
+                
               ))}
 
             </Map>

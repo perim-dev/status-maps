@@ -31,6 +31,9 @@ class ArvoreAcervo extends Component {
     }
 
     itensCategoria(acervo){
+        if(acervo.categorias === undefined) {
+            return ;
+        }
         return acervo.categorias.map( categoria => (
             <ItemCategoria categoria={categoria} key={'item-categora'+categoria.id}/>
         ));
