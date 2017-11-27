@@ -6,6 +6,7 @@ const auth = {'Authorization':'Basic MjYyMjYyNTU6MTIzNDU='}
 export const carregarPontosDaCategoria = async (id) => {
     var resource = config.url + config.resources.categoria +'/'+ id + "/pontosDeInteresse";
     const request = await axios.get(`${resource}`,{headers: auth});
+ 
     return {
         type: 'CARREGAR_PONTOS_CATEGORIA_MAPA',
         payload: request,

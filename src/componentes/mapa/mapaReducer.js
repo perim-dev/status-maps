@@ -7,7 +7,6 @@ export default (state = INITIAL_STATE, action) => {
     var novoEstado;
     switch(action.type){
         case 'MAP_LOAD':
-            // return { ...state, lista:action.payload.data}
             return {...state}
         case 'CARREGAR_PONTOS_CATEGORIA_MAPA':{
             novoEstado = {...state};
@@ -26,7 +25,7 @@ export default (state = INITIAL_STATE, action) => {
 
         case 'REMOVER_PONTOS_CATEGORIA_MAPA':{
             novoEstado = {...state};
-            novoEstado.groupLayers[action.idCategoria] = [];
+            delete novoEstado.groupLayers[action.idCategoria];
             return {...state,mapa:novoEstado};
         }
         default:

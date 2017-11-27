@@ -24,10 +24,6 @@ class ItemCategoria extends Component {
     selecionar(id,event){
         if(event.target.checked){
             this.props.carregarPontosDaCategoria(id);
-            setInterval(function(){
-                console.log('interval');
-                this.props.carregarPontosDaCategoria(id);
-            }.bind(this),5000);
         } else {
             this.props.removerPontosDaCategoria(id);
         }

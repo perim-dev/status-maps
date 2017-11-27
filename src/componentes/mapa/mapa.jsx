@@ -1,22 +1,26 @@
 import React, { Component } from 'react'
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
-import Leaflet from 'leaflet';
 import {connect} from 'react-redux';
-import {load, carregarCategoria} from './actions';
+import {load, carregarPontosDaCategoria} from './actions';
 import { bindActionCreators } from 'redux';
-
+import MarkerClusterGroup from 'react-leaflet-markercluster';
+import Websocket from 'react-websocket';
+import config from '../../config';
 
 import '../../css/leaflet.css';
 
 class Mapa extends Component {
 
+  handleData(data) {
+    let retorno = JSON.parse(data);
 
-  /* handleUpPanClick() {
-    const leafletMap = this.leafletMap.leafletElement;
-    leafletMap.panBy([0, -100]);
-    window.console.log('Panning up');
-
-  }*/
+    retorno.categorias.map((id) =>{
+        if(typeof this.props.mapa.groupLayers[id] === 'undefined'){
+          return {};
+        }
+        return this.props.carregarPontosDaCategoria(id);
+    });
+  }
 
   render() {
 
@@ -24,6 +28,9 @@ class Mapa extends Component {
     return (
       <div className="col-xs-12 col-sm-9 col-md-9 col-lg-9 mapa-lateral h-100">
         <div className="panel lista-lateral bg-grafite modulo">
+            
+            <Websocket url={config.websockets.atualizacaoPontosPorCategoria} onMessage={this.handleData.bind(this)}/>
+
             <Map center={position} zoom={this.props.mapa.zoom}>
               <TileLayer
                 attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
@@ -33,16 +40,14 @@ class Mapa extends Component {
               />
               
               {this.props.mapa.groupLayers.map((groupLayer) => 
-                groupLayer.map(function (ponto, idx) {
-                    let icon = Leaflet.icon({ iconUrl: 'http://icons.iconarchive.com/icons/custom-icon-design/flatastic-10/32/Bear-icon.png', iconAnchor:   [16, 16]});
-                    return (
-                    <Marker key={`marker-${idx}`} position={[ponto.geometry.coordinates[1],ponto.geometry.coordinates[0]]} icon={icon} > 
+                groupLayer.map((ponto, idx) => 
+                  <MarkerClusterGroup>
+                    <Marker key={`marker-${idx}`} position={[ponto.geometry.coordinates[1],ponto.geometry.coordinates[0]]} > 
                       <Popup>
                         <span>{ponto.descricao}</span>
                       </Popup>
                     </Marker>
-                    );
-                }
+                  </MarkerClusterGroup>
               ))}
 
             </Map>
@@ -54,5 +59,5 @@ class Mapa extends Component {
 }
 
 const mapStateToProps = state => ({mapa: state.mapa});
-const mapDispatchToProps = dispatch => bindActionCreators({load ,carregarCategoria}, dispatch); 
+const mapDispatchToProps = dispatch => bindActionCreators({load ,carregarPontosDaCategoria}, dispatch); 
 export default connect(mapStateToProps, mapDispatchToProps)(Mapa) ;
