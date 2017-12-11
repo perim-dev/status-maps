@@ -3,14 +3,14 @@ import config from '../../config';
 
 const auth = {'Authorization':'Basic MjYyMjYyNTU6MTIzNDU='}
 
-export const carregarPontosDaCategoria = async (id) => {
-    var resource = config.url + config.resources.categoria +'/'+ id + "/pontosDeInteresse";
+export const carregarPontosDaCategoria = async (categoria) => {
+    var resource = config.url + config.resources.categoria +'/'+ categoria.id + "/pontosDeInteresse";
     const request = await axios.get(`${resource}`,{headers: auth});
  
     return {
         type: 'CARREGAR_PONTOS_CATEGORIA_MAPA',
         payload: request,
-        idCategoria:  id
+        categoria:  categoria
     };
 }
 
@@ -20,5 +20,6 @@ export const removerPontosDaCategoria = async (id) => {
         type: 'REMOVER_PONTOS_CATEGORIA_MAPA',
         payload: {},
         idCategoria:  id
+
     };
 }

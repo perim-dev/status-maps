@@ -11,15 +11,17 @@ export default (state = INITIAL_STATE, action) => {
         case 'CARREGAR_PONTOS_CATEGORIA_MAPA':{
             novoEstado = {...state};
             var pontos = action.payload.data.slice();
-
-            novoEstado.groupLayers[action.idCategoria] = [];
+            var icone = 'data:image;base64, '+ action.categoria.icone.replace('data:image;base64, ','');
+            novoEstado.groupLayers[action.categoria.id] = {icone:icone,pontos:[]};
 
             pontos.map((ponto) => {
                 ponto.geometry = JSON.parse(ponto.geometry)
-                novoEstado.groupLayers[action.idCategoria].push(ponto);
+                ponto.icone = action.categoria.icone;
+                novoEstado.groupLayers[action.categoria.id].pontos.push(ponto);
 
                 return novoEstado;
             });
+            console.log(novoEstado.groupLayers);
             return {...state,mapa:novoEstado};
         }
 

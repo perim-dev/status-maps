@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
+import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
 import {connect} from 'react-redux';
+import L from 'leaflet';
 import {load, carregarPontosDaCategoria} from './actions';
 import { bindActionCreators } from 'redux';
 import MarkerClusterGroup from 'react-leaflet-markercluster';
@@ -13,13 +14,28 @@ class Mapa extends Component {
 
   handleData(data) {
     let retorno = JSON.parse(data);
-
+    console.log("websocket news",data);
     retorno.categorias.map((id) =>{
         if(typeof this.props.mapa.groupLayers[id] === 'undefined'){
           return {};
         }
-        return this.props.carregarPontosDaCategoria(id);
+        let categoria = {id:id,icone:this.props.mapa.groupLayers[id].icone};
+        console.log("websocket load",categoria);
+        return this.props.carregarPontosDaCategoria(categoria);
     });
+  }
+
+  iconeCategoria(icone){
+
+      return L.icon({
+        iconUrl: icone,
+        /*iconSize:     [38, 95], // size of the icon
+        shadowSize:   [50, 64], // size of the shadow */
+        iconAnchor:   [16, 16], // point of the icon which will correspond to marker's location
+        /*shadowAnchor: [4, 62],  // the same for the shadow
+        popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor */
+      });
+
   }
 
   render() {
@@ -40,11 +56,11 @@ class Mapa extends Component {
               />
               
               {this.props.mapa.groupLayers.map((groupLayer) => 
-                groupLayer.map((ponto, idx) => 
+                groupLayer.pontos.map((ponto, idx) => 
                   <MarkerClusterGroup>
-                    <Marker key={`marker-${idx}`} position={[ponto.geometry.coordinates[1],ponto.geometry.coordinates[0]]} > 
+                    <Marker key={`marker-${idx}`} position={[ponto.geometry.coordinates[1],ponto.geometry.coordinates[0]]} icon={this.iconeCategoria(groupLayer.icone)} > 
                       <Popup>
-                        <span>{ponto.descricao}</span>
+                        <span>{ponto.descricao} </span>
                       </Popup>
                     </Marker>
                   </MarkerClusterGroup>

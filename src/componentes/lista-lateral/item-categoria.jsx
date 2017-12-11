@@ -16,16 +16,21 @@ class ItemCategoria extends Component {
         const categoria = this.props.categoria || {}
         return (
             <div className="arvore-categoria-item" key={"categoriaid_"+categoria.id}>
-                <input type="checkbox" onClick={(e) =>this.selecionar(categoria.id,e)} name={"categoria_input"+categoria.id} id={"categoria_input_"+categoria.id}/> {categoria.descricao}
+                <input type="checkbox" onClick={(e) =>this.selecionar(categoria,e)} name={"categoria_input"+categoria.id} id={"categoria_input_"+categoria.id}/> {categoria.descricao}
             </div>
         );
     }
 
-    selecionar(id,event){
+    selecionar(categoria,event){
         if(event.target.checked){
-            this.props.carregarPontosDaCategoria(id);
+            this.props.carregarPontosDaCategoria(categoria);
+            /*
+            setInterval(function(){
+                console.log('interval');
+                this.props.carregarPontosDaCategoria(id);
+            }.bind(this),5000); */
         } else {
-            this.props.removerPontosDaCategoria(id);
+            this.props.removerPontosDaCategoria(categoria.id);
         }
 
         
