@@ -10,18 +10,36 @@ export default (state = INITIAL_STATE, action) => {
             return {...state}
         case 'CARREGAR_PONTOS_CATEGORIA_MAPA':{
             novoEstado = {...state};
-            var pontos = action.payload.data.slice();
-            var icone = 'data:image;base64, '+ action.categoria.icone.replace('data:image;base64, ','');
+            let pontos = action.payload.data.slice();
+            let icone = 'data:image;base64, '+ action.categoria.icone.replace('data:image;base64, ','');
             novoEstado.groupLayers[action.categoria.id] = {icone:icone,pontos:[]};
 
             pontos.map((ponto) => {
+                ponto.pontosRelacionados = [];
                 ponto.geometry = JSON.parse(ponto.geometry)
-                ponto.icone = action.categoria.icone;
                 novoEstado.groupLayers[action.categoria.id].pontos.push(ponto);
 
                 return novoEstado;
             });
             console.log(novoEstado.groupLayers);
+            return {...state,mapa:novoEstado};
+        }
+
+        case 'CARREGAR_PONTOS_RELACIONADOS_MAPA':{
+            
+            novoEstado = {...state};
+
+            let pontos = action.payload.data.slice();
+
+            pontos.map((ponto)=>{
+                let icone = 'data:image;base64, '+ ponto.icone.replace('data:image;base64, ','');
+                ponto.icone = icone;
+                return "";
+            });
+            let ponto = action.ponto;
+            let i = novoEstado.groupLayers[ponto.categoriaId].pontos.findIndex(x => x.id === ponto.id);
+            novoEstado.groupLayers[ponto.categoriaId].pontos[i].pontosRelacionados = pontos.slice();
+
             return {...state,mapa:novoEstado};
         }
 

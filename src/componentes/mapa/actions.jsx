@@ -14,6 +14,17 @@ export const carregarPontosDaCategoria = async (categoria) => {
     };
 }
 
+export const carregarPontosRelacionados = async (ponto) => {
+    var resource = config.url + config.resources.pontoDeInteresse +'/'+ ponto.id + "/pontosRelacionados";
+    const request = await axios.get(`${resource}`,{headers: auth});
+ 
+    return {
+        type: 'CARREGAR_PONTOS_RELACIONADOS_MAPA',
+        payload: request,
+        ponto: ponto
+    };
+}
+
 export const removerPontosDaCategoria = async (id) => {
     /* Limpa os pontos da categoria */
     return {
