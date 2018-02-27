@@ -1,5 +1,5 @@
 import React from 'react';
-import  { Button, Modal, Nav, NavItem, Col} from 'react-bootstrap';
+import  { Button, Modal, Col} from 'react-bootstrap';
 import ArvoreAcervo from './arvore-acervos';
 
 import '../../css/sidebar.css';
@@ -15,7 +15,6 @@ class Sidebar extends React.Component {
         </Modal.Header>
       	<Modal.Body>
           <ArvoreAcervo />
-      		{this.props.children}
         </Modal.Body>
       </Modal>
     );
@@ -32,19 +31,18 @@ export class SidebarDemo extends React.Component {
   }
   
   updateModal(isVisible) {
-    // this.state.isVisible = isVisible;
+    //this.state.isVisible = isVisible;
     this.setState ( {...this.state, 'isVisible':isVisible});
     this.forceUpdate();
   }
   
 	render() {
   	return (
-    	<Col xs={3} smHidden={true} mdHidden={true} lgHidden={true} className='Sidebar-demo'>
+    	<Col xs={12} smHidden={true} mdHidden={true} lgHidden={true} className='Sidebar-demo '>
+    
       	<Button onClick={ () => this.updateModal(true) }><i className="fa fa-bars"></i></Button>
         <Sidebar side='left' isVisible={ this.state.isVisible } onHide={ () => this.updateModal(false) }>
-        	<Nav>
-          	<NavItem href='#'>Item 1</NavItem>
-          </Nav>
+        	
         </Sidebar>
       </Col>
     );

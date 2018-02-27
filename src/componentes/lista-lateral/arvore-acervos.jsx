@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
-import {load} from './actions';
-import {carregarPontosDaCategoria} from '../mapa/actions';
+import {load, acervoChangeCheck, expandirComprimirCategorias} from './actions';
+import {carregarPontosDaCategoria, removerPontosDaCategoria} from '../mapa/actions';
 import { bindActionCreators } from 'redux';
 import ItemCategoria from './item-categoria';
 import '../../css/arvore-acervo.css';
@@ -10,11 +10,10 @@ class ArvoreAcervo extends Component {
     
     constructor(props) {
         super(props);
-        console.log('iniciou');
+        console.log('iniciou ArvoreAcervo');
     }
 
     componentWillMount() {
-        
         this.props.load();
         console.log('componentWillMount',this.props.lista);
     }
@@ -23,9 +22,21 @@ class ArvoreAcervo extends Component {
         const lista = this.props.lista || []
         return lista.map(acervo => (
             <div className="arvore-acervo-item" key={"acervo_"+acervo.id}> 
-                <input type="checkbox" name="acervo_{acervo.id}" id="{acervo.id}"/> 
+                
+                <div className="expandir-comprimir" 
+                     onClick={(e)=>this.props.expandirComprimirCategorias(acervo)}>
+                        {acervo.aberto ? <i className="fa fa-minus"/> : <i className="fa fa-plus"/> }
+
+                </div>
+                
+                <input  type="checkbox" 
+                        checked={acervo.selecionado} 
+                        onChange={(e) =>this.props.acervoChangeCheck(e,acervo)}
+                        onClick={(e) =>this.selecionar(acervo,e)} 
+                        name="acervo_{acervo.id}" 
+                        id="{acervo.id}"/> 
                 <div className="texto">{acervo.descricao} </div>
-                {this.itensCategoria(acervo)}
+                {acervo.aberto && this.itensCategoria(acervo)}
             </div>
         ));
     }
@@ -35,7 +46,7 @@ class ArvoreAcervo extends Component {
             return ;
         }
         return acervo.categorias.map( categoria => (
-            <ItemCategoria categoria={categoria} key={'item-categora'+categoria.id}/>
+            <ItemCategoria acervo={acervo} categoria={categoria} key={'item-categora'+categoria.id}/>
         ));
     }
 
@@ -46,9 +57,23 @@ class ArvoreAcervo extends Component {
             </div>
         );
     }
+
+    selecionar(acervo,event){
+        if(event.target.checked){
+            acervo.categorias.map((categoria)=>{
+                this.props.carregarPontosDaCategoria(categoria); 
+                return categoria;
+            });
+        } else {
+            acervo.categorias.map((categoria)=>{
+                this.props.removerPontosDaCategoria(categoria.id);
+                return categoria;
+            });
+        }
+    }
 }
 
 const mapStateToProps = state => ({lista: state.acervos.lista});
-const mapDispatchToProps = dispatch => bindActionCreators({load, carregarPontosDaCategoria}, dispatch); 
+const mapDispatchToProps = dispatch => bindActionCreators({load, carregarPontosDaCategoria, removerPontosDaCategoria, acervoChangeCheck, expandirComprimirCategorias}, dispatch); 
 export default connect(mapStateToProps, mapDispatchToProps)(ArvoreAcervo) ;
 

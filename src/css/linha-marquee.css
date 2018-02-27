@@ -3,12 +3,11 @@
 }
 
 .linha-marquee {
-  font-size: 3.7vh;
-  font-weight: 600;
   padding: 0;
   margin: 0;
   width: 100%;
   height: 33%;
+  line-height: 33%; 
   text-transform: uppercase;
 }
 
@@ -16,6 +15,8 @@
   padding: 0px;
   margin: 0px;
   line-height: 100%;
+  font-weight: 600;
+  font-size: 160%;
   vertical-align: center;
 }
 
@@ -23,7 +24,7 @@
   color: #CC0404;
 }
 
-.linha-marquee .azul {
+.linha-marquee .verde {
   color: rgb(116, 255, 52);
 }
 

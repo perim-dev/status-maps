@@ -4,14 +4,18 @@ import BarraDeTitulo from './componentes/barra-de-titulo/barra-de-titulo';
 import ListaLateral from './componentes/lista-lateral/lista-lateral';
 import Mapa from './componentes/mapa/mapa';
 import Rodape from './componentes/rodape/rodape';
-
+import {SidebarDemo} from './componentes/lista-lateral/sidebar';
 
 import {Row} from 'react-bootstrap';
 
 import '../node_modules/font-awesome/css/font-awesome.min.css';
 
+import '../node_modules/bootstrap/dist/css/bootstrap.css';
+import '../node_modules/bootstrap/dist/css/bootstrap-theme.css';
+
 import './css/tema.css';
 import './css/utils.css';
+
 
 class App extends Component {
 
@@ -22,10 +26,11 @@ class App extends Component {
   render() {
     return (
       <div className="content-fluid h-100">
-        <Row id="layout-barra-titulo">
+        <Row id="layout-barra-titulo" className="d-none d-md-block">
           <BarraDeTitulo />
         </Row>
-        <Row id="layout-corpo">
+        <Row id="layout-corpo" className="safari-fix">
+            <SidebarDemo/>
             <ListaLateral />
             <Mapa />
         </Row>

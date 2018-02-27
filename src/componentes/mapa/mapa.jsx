@@ -6,7 +6,7 @@ import {load, carregarPontosDaCategoria, carregarPontosRelacionados} from './act
 import { bindActionCreators } from 'redux';
 // import MarkerClusterGroup from 'react-leaflet-markercluster';
 import Websocket from 'react-websocket';
-import {Col} from 'react-bootstrap';
+import {Row,Col} from 'react-bootstrap';
 import config from '../../config';
 //import pontosRelacionados from './pontos-relacionados';
 
@@ -74,7 +74,7 @@ class Mapa extends Component {
 
     const position = [this.state.lat, this.state.lng];
     return (
-      <div className="col-xs-12 col-sm-9 col-md-9 col-lg-9 mapa-lateral h-100">
+      <div className="col-xs-12 col-sm-12 col-md-9 col-lg-9 mapa-lateral h-100">
         <div className="panel lista-lateral bg-grafite modulo">
             
             <Websocket url={config.websockets.atualizacaoPontosPorCategoria} onMessage={this.handleData.bind(this)}/>
@@ -101,16 +101,18 @@ class Mapa extends Component {
                             <div id="pontosRelacionados" className="itens">
                               {ponto.pontosRelacionados.map((pontoRelacionado,idx)=>
                                 <div key={`ponto-relacionado-${pontoRelacionado.id}`} className="linha">
+                                <Row>
                                   <Col xs={1} sm={1} md={1} lg={1} className="coluna">
                                     <img src={`${pontoRelacionado.icone}`} alt="" onClick={(e)=>this.centralizar(pontoRelacionado)}/>
                                   </Col>
                                   <Col xs={7} sm={7} md={7} lg={7} className="coluna">
                                     {pontoRelacionado.descricao}
                                   </Col>
-                                  <Col xs={4} sm={4} md={4} lg={4} className="coluna">
+                                  <Col xs={3} sm={4} md={4} lg={4} className="coluna">
                                     {pontoRelacionado.distancia} (mts)
                                   </Col>
                                   <div className="row" ></div>
+                                </Row>  
                                 </div>
 
                               )}

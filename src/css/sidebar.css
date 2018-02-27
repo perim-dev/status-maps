@@ -1,5 +1,22 @@
+.sidebar-button button{
+  right: 15px;
+  float: right;
+}
+
 .Sidebar-demo {
   padding: 15px;
+}
+
+.Sidebar-demo {
+  position: absolute !important;
+  text-align: right;
+  top: 10px;
+  right: 15px;
+  z-index: 1000;
+}
+
+.modal-body {
+  padding-left:10px !important;
 }
 
 .Sidebar.modal.fade .modal-dialog {

@@ -12,7 +12,20 @@ export const load = async() => {
     }
 }
 
-export const changeCheck = (event) => ({
+export const acervoChangeCheck = (event, acervo) => ({
     type: 'ACERVO_CHANGE_CHECK',
-    payload: event.target.value 
+    payload: event.target.checked,
+    acervo_id: acervo.id
+})
+
+export const categoriaChangeCheck = (event,acervo,categoria) => ({
+    type: 'CATEGORIA_CHANGE_CHECK',
+    payload: event.target.checked,
+    acervo_id: acervo.id,
+    categoria_id: categoria.id 
+})
+
+export const expandirComprimirCategorias = (acervo) => ({
+    type: 'EXPANDIR_COMPRIMIR_CATEGORIAS',
+    acervo_id: acervo.id,
 })

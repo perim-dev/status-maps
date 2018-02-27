@@ -24,18 +24,36 @@ body {
   height: 100%;
 }
 
-#layout-corpo {
-  height: 80%;
+@media (max-width:767px){
+  #layout-corpo {
+    height: 95%;
+  }
+}
+
+@media(min-width:992px),(min-width:768px),(min-width:1200px){
+  #layout-corpo {
+    height: 80%;
+  }
+
 }
 
 .lista-lateral {
   height: 100%;
 }
 
+.lista-lateral .panel-body{
+  overflow: auto;
+  height: -moz-calc(100% - (20px + 30px));
+  height: -webkit-calc(100% - (20px + 30px));
+  height: calc(100% - (20px + 30px));
+}
+
 .mapa-lateral {
   border: solid 0px yellow;
   height: auto;
   padding: 5px;
+  margin: 0 !important;
+  width: 200px !important;
 }
 
 .mapa-lateral .altura {
@@ -67,7 +85,7 @@ body {
   height: 25px;
 }
 
-.rodape .panel, .panel-body{
+.rodape .panel, .rodape .panel-body{
   height: 25px;
   padding-top: 0;
   padding-bottom: 0;
