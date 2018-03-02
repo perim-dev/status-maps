@@ -53,7 +53,7 @@ body {
   height: auto;
   padding: 5px;
   margin: 0 !important;
-  width: 200px !important;
+  /* width: 200px !important; */
 }
 
 .mapa-lateral .altura {
