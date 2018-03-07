@@ -19,7 +19,7 @@ class ItemCategoria extends Component {
                         onClick={(e) =>this.selecionar(categoria,e)} 
                         name={"categoria_input"+categoria.id} 
                         onChange={(e) =>this.props.categoriaChangeCheck(e,acervo,categoria)}
-                        id={"categoria_input_"+categoria.id}/> {categoria.descricao}
+                        id={"categoria_input_"+categoria.id}/> {categoria.descricao} {this.props.mapa.groupLayers[categoria.id] !== undefined ? "("+this.props.mapa.groupLayers[categoria.id].pontos.length+")":''}
             </div>
         );
     }
@@ -34,7 +34,7 @@ class ItemCategoria extends Component {
 
 }
 
-const mapStateToProps = state => ({lista: state.acervos.lista});
+const mapStateToProps = state => ({lista: state.acervos.lista, mapa: state.mapa});
 const mapDispatchToProps = dispatch => bindActionCreators({carregarPontosDaCategoria, removerPontosDaCategoria, categoriaChangeCheck}, dispatch); 
 export default connect(mapStateToProps,mapDispatchToProps)(ItemCategoria) ;
 

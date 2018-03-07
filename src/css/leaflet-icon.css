@@ -1,0 +1,4 @@
+.inativo {
+    opacity: 0.80;
+    filter: grayscale(100%);
+}

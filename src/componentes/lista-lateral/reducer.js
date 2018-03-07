@@ -12,10 +12,9 @@ export default (state = INITIAL_STATE, action) => {
             */
             
             if(state === INITIAL_STATE){
-                console.log("obtendo nova lista de acervos;")
                 lista.map((acervo)=> {
                     acervo.selecionado = false;
-                    acervo.aberto = true;
+                    acervo.aberto = false;
                     acervo.categorias.map((categoria)=>{
                         categoria.selecionado = false;
                         return categoria;
@@ -67,11 +66,8 @@ export default (state = INITIAL_STATE, action) => {
             acervo_id = action.acervo_id;
             novaListaAcervo = state.lista.slice();
             novaListaAcervo.map((acervo)=>{
-                console.log(acervo.id,acervo_id);
                 if(acervo.id === acervo_id){
-                    console.log(acervo.aberto);
                     acervo.aberto = !acervo.aberto;
-                    
                 }
                 return acervo;
             });

@@ -21,7 +21,6 @@ export default (state = INITIAL_STATE, action) => {
 
                 return novoEstado;
             });
-            console.log('mapaReducer state:',state);
             return {...state,mapa:novoEstado};
         }
 

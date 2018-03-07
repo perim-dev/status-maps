@@ -12,12 +12,13 @@ import config from '../../config';
 
 import '../../css/leaflet.css';
 import '../../css/leaflet-popup.css';
+import '../../css/leaflet-icon.css';
 
 class Mapa extends Component {
 
   constructor(props) {
     super(props);
-    console.log(this.props);
+
     this.state = {
       lat: this.props.mapa.lat, 
       lng: this.props.mapa.lng,
@@ -33,12 +34,11 @@ class Mapa extends Component {
           return {};
         }
         let categoria = {id:id,icone:this.props.mapa.groupLayers[id].icone};
-        console.log("websocket load",categoria);
         return this.props.carregarPontosDaCategoria(categoria);
     });
   }
 
-  iconeCategoria(icone){
+  iconeCategoria(icone,classe){
 
       return L.icon({
         iconUrl: icone,
@@ -47,6 +47,7 @@ class Mapa extends Component {
         iconAnchor:   [16, 16], // point of the icon which will correspond to marker's location
         /*shadowAnchor: [4, 62],  // the same for the shadow
         popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor */
+        className:classe
       });
 
   }
@@ -77,7 +78,8 @@ class Mapa extends Component {
       <div className="col-xs-12 col-sm-12 col-md-9 col-lg-9 mapa-lateral h-100">
         <div className="panel lista-lateral bg-grafite modulo">
             
-            <Websocket url={config.websockets.atualizacaoPontosPorCategoria} onMessage={this.handleData.bind(this)}/>
+            <Websocket url={config.websockets.atualizacaoPontosPorCategoria} 
+                       onMessage={this.handleData.bind(this)}/>
 
             <Map center={position} zoom={this.state.zoom} onViewportChanged={(viewport) => this.atualizarPosicao(viewport)}>
               <TileLayer
@@ -89,7 +91,9 @@ class Mapa extends Component {
               
               {this.props.mapa.groupLayers.map((groupLayer) => 
                 groupLayer.pontos.map((ponto, idx) => 
-                    <Marker key={`marker-${idx}`} position={[ponto.geometry.coordinates[1],ponto.geometry.coordinates[0]]} icon={this.iconeCategoria(groupLayer.icone)} > 
+                    <Marker key={`marker-${idx}`} 
+                            position={[ponto.geometry.coordinates[1],ponto.geometry.coordinates[0]]} 
+                            icon={this.iconeCategoria(groupLayer.icone,((ponto.id%2)===0)?'inativo':'ativo')} > 
                       <Popup className="status-popup">
                         <div>
                           <span className="descricao">{ponto.descricao} </span>
