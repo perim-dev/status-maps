@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
+
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
+
 import {connect} from 'react-redux';
 import L from 'leaflet';
 import {load, carregarPontosDaCategoria, carregarPontosRelacionados} from './actions';
@@ -13,6 +15,9 @@ import config from '../../config';
 import '../../css/leaflet.css';
 import '../../css/leaflet-popup.css';
 import '../../css/leaflet-icon.css';
+import '../../../node_modules/leaflet-draw/dist/leaflet.draw.css';
+
+import BuscaGeo from '../buscageo';
 
 class Mapa extends Component {
 
@@ -127,7 +132,7 @@ class Mapa extends Component {
                       </Popup>
                     </Marker>
               ))}
-
+              <BuscaGeo />
             </Map>
 
         </div>
