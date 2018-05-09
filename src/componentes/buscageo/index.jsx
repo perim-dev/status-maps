@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import {FeatureGroup} from 'react-leaflet';
 import { EditControl } from "react-leaflet-draw"
+import { bindActionCreators } from 'redux';
+
+import {buscarPontos} from './actions';
 
 class BuscaGeo extends Component {
     render(){
@@ -60,6 +63,6 @@ class BuscaGeo extends Component {
 
 }
 
-
-
-export default BuscaGeo;
+const mapStateToProps = state => ({buscaGeo: state.buscaGeo});
+const mapDispatchToProps = dispatch => bindActionCreators({buscarPontos}, dispatch); 
+export default connect(mapStateToProps, mapDispatchToProps)(BuscaGeo) ;
