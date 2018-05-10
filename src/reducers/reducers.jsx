@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import arvoreDeAcervoReducer from '../componentes/lista-lateral/reducer';
 import mapaReducer from '../componentes/mapa/reducer';
-import buscaGeoReducer from '../componentes/buscaGeo/reducer';
+import buscaGeoReducer from '../componentes/buscageo/reducer';
 
 const rootReducer = combineReducers({
     acervos: arvoreDeAcervoReducer,

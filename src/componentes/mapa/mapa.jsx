@@ -23,7 +23,16 @@ class Mapa extends Component {
 
   constructor(props) {
     super(props);
-
+    this.iconPerson = new L.Icon({
+        iconUrl: 'https://leafletjs.com/examples/custom-icons/leaf-orange.png',
+        iconAnchor: null,
+        popupAnchor: null,
+        shadowUrl: null,
+        shadowSize: null,
+        shadowAnchor: null,
+        iconSize: new L.Point(60, 75),
+        className: 'leaflet-div-icon'
+    });
     this.state = {
       lat: this.props.mapa.lat, 
       lng: this.props.mapa.lng,
@@ -82,10 +91,8 @@ class Mapa extends Component {
     return (
       <div className="col-xs-12 col-sm-12 col-md-9 col-lg-9 mapa-lateral h-100">
         <div className="panel lista-lateral bg-grafite modulo">
-            
             <Websocket url={config.websockets.atualizacaoPontosPorCategoria} 
                        onMessage={this.handleData.bind(this)}/>
-
             <Map center={position} zoom={this.state.zoom} onViewportChanged={(viewport) => this.atualizarPosicao(viewport)}>
               <TileLayer
                 attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
@@ -98,7 +105,7 @@ class Mapa extends Component {
                 groupLayer.pontos.map((ponto, idx) => 
                     <Marker key={`marker-${idx}`} 
                             position={[ponto.geometry.coordinates[1],ponto.geometry.coordinates[0]]} 
-                            icon={this.iconeCategoria(groupLayer.icone,((ponto.id%2)===0)?'inativo':'ativo')} > 
+                            icon={this.iconeCategoria(groupLayer.icone,'ativo')} > 
                       <Popup className="status-popup">
                         <div>
                           <span className="descricao">{ponto.descricao} </span>
@@ -132,15 +139,42 @@ class Mapa extends Component {
                       </Popup>
                     </Marker>
               ))}
+              
+              { /* Marcadores da buscaGeo */
+                this.props.buscaGeo.pontos.map((ponto,idx)=>
+                <Marker key={`marker-buscageo-${idx}`} 
+                              position={[ponto.geometry.coordinates[1],ponto.geometry.coordinates[0]]} 
+                              icon={this.iconeCategoria(ponto.icone,'buscaGeo')} > 
+
+                      <Popup className="status-popup">
+                        <div>
+                          <span className="descricao">{ponto.descricao} </span>
+                        </div>
+                        
+                      </Popup>
+                </Marker>
+              )}
+
               <BuscaGeo />
             </Map>
-
+            <div className={this.props.buscaGeo.pontos.length>0?'resultado-buscageo ativo':'resultado-buscageo inativo'} >
+                    {this.props.buscaGeo.pontos.map((p,idx)=>
+                         <Col xs={12} sm={12} md={4} lg={4} className="ponto" key={`buscageo-` +idx}>
+                            <img src={p.icone} alt={p.descricao} onClick={(e)=>this.centralizar(p)}/>
+                            <span className="texto"> 
+                              {p.descricao}
+                            </span>
+                        </Col>
+                    )}
+                </div>
         </div>
+        
       </div>
     )
   }
+  
 }
 
-const mapStateToProps = state => ({mapa: state.mapa});
+const mapStateToProps = state => ({mapa: state.mapa, buscaGeo:state.buscaGeo});
 const mapDispatchToProps = dispatch => bindActionCreators({load ,carregarPontosDaCategoria, carregarPontosRelacionados}, dispatch); 
 export default connect(mapStateToProps, mapDispatchToProps)(Mapa) ;

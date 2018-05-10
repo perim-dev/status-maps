@@ -1,0 +1,40 @@
+.resultado-buscageo.inativo{
+    display: none;
+}
+
+.resultado-buscageo.ativo{
+    display: unset;
+}
+
+.resultado-buscageo {
+    
+    margin-left: 11px;
+    margin-right: 11px;
+    margin-bottom: 11px;
+    z-index: 10000;
+    background-color: rgba(0,0,0,0.5);
+    height: 100px;
+    bottom:0;
+    left:0;
+    right:0;
+    position: absolute;
+    border-radius: 1px;
+    border-top: solid 2px #555;
+    overflow-y: scroll;
+    padding-left: 5px;
+    padding-top:2px;
+    font-size: 0.9em;
+}
+
+.resultado-buscageo .ponto{
+    padding: 5px;
+}
+
+.resultado-buscageo .ponto img{
+    height: 20px;
+    cursor: pointer;
+}
+
+.resultado-buscageo .ponto .texto{
+    margin-left: 5px;
+}

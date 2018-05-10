@@ -2,43 +2,69 @@ import React, { Component } from 'react';
 import {FeatureGroup} from 'react-leaflet';
 import { EditControl } from "react-leaflet-draw"
 import { bindActionCreators } from 'redux';
+import {connect} from 'react-redux';
 
-import {buscarPontos} from './actions';
+import {buscarPontos, limparPontos} from './actions';
+
+import '../../css/buscageo.css';
 
 class BuscaGeo extends Component {
+
+    constructor(props) {
+        super(props);
+        this._editableFG = null;
+    }
+
     render(){
         return (
-            <FeatureGroup>
-                <EditControl
-                    position='topright'
-                    onCreated={this.onCreated}
-                    onEdited={this.onEdited}
-                    onDeleted={this.onDeleted}
-                    onMounted={this.onMounted}
-                    onEditStart={this.onEditStart}
-                    onEditStop={this.onEditStop}
-                    onDeleteStart={this.onDeleteStart}
-                    onDeleteStop={this.onDeleteStop}
-                    draw={{
-                        polyline: false,
-                        marker: false,
-                        circlemarker: false
-                    }}
-                />
-            </FeatureGroup>
+            <div>
+                <FeatureGroup ref={ (reactFGref) => {this._onFeatureGroupReady(reactFGref);} }>
+                    <EditControl
+                        position='topright'
+                        onCreated={(e)=>this.onCreated(e)}
+                        onEdited={(e) =>this.onEdited(e)}
+                        onDeleted={(e) => this.onDeleted(e)}
+                        onMounted={this.onMounted}
+                        onEditStart={this.onEditStart}
+                        onEditStop={this.onEditStop}
+                        onDeleteStart={this.onDeleteStart}
+                        onDeleteStop={this.onDeleteStop}
+                        draw={{
+                            polyline: false,
+                            marker: false,
+                            circlemarker: false,
+                            circle: false
+                        }}
+                    />
+                </FeatureGroup>
+                
+            </div>
         );
     }
 
+    _onFeatureGroupReady = (reactFGref) => {
+        this._editableFG = reactFGref;
+    }
+
+    atualizarBuscar(){
+        this._editableFG.leafletElement.toGeoJSON().features.map((feature)=>{
+            this.props.buscarPontos(feature.geometry);
+            return feature;
+        });
+    }
+
     onEdited(e){
-        console.log("edited",e);
+        this.props.limparPontos();
+        this.atualizarBuscar();
     }
 
     onCreated(e) {
-        console.log("created",e);
+        this.atualizarBuscar();
     }
 
     onDeleted(e) {
-        console.log("deleted",e);
+        this.props.limparPontos();
+        this.atualizarBuscar();
     }
 
     onMounted(e) {
@@ -64,5 +90,5 @@ class BuscaGeo extends Component {
 }
 
 const mapStateToProps = state => ({buscaGeo: state.buscaGeo});
-const mapDispatchToProps = dispatch => bindActionCreators({buscarPontos}, dispatch); 
+const mapDispatchToProps = dispatch => bindActionCreators({buscarPontos, limparPontos}, dispatch); 
 export default connect(mapStateToProps, mapDispatchToProps)(BuscaGeo) ;

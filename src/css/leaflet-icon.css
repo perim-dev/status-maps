@@ -2,3 +2,8 @@
     opacity: 0.80;
     filter: grayscale(100%);
 }
+
+.buscaGeo {
+    opacity: 0.80;
+    filter:  hue-rotate(200deg);
+}

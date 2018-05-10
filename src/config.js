@@ -1,4 +1,4 @@
-const url_base = "10.5.225.180/status";
+const url_base = "192.168.10.108/status";
 const config = {
     url:'http://'+url_base+'/api/v1',
     resources:{
