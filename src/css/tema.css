@@ -32,13 +32,13 @@ body {
 
 @media(min-width:992px),(min-width:768px),(min-width:1200px){
   #layout-corpo {
-    height: 80%;
+    height: 95%;
   }
 
 }
 
 .lista-lateral {
-  height: 100%;
+  height: 85%;
 }
 
 .lista-lateral .panel-body{
@@ -50,7 +50,7 @@ body {
 
 .mapa-lateral {
   border: solid 0px yellow;
-  height: auto;
+  height: 100%;
   padding: 5px;
   margin: 0 !important;
   /* width: 200px !important; */
@@ -90,4 +90,45 @@ body {
   padding-top: 0;
   padding-bottom: 0;
   margin: 0;
+}
+
+.area-titulo {
+  height: 15%;
+  border-radius: 5px;
+  padding-bottom: 10px;
+}
+
+.area-titulo .box {
+  border: solid 1px #444;
+  height: 100%;
+  padding: 3px ;
+  background-color:#404040;
+  vertical-align: middle;  
+}
+
+.area-titulo img{
+  height: 100%;
+  border-radius: 5px;
+  float:left;
+}
+
+.area-titulo .texto {
+  margin-left:10px;
+  float:left;
+  font-size: 3.5em;
+  text-shadow: #555 1px 2px ;
+  height: 100%;
+  line-height: 100%;
+  color:rgba(0, 0, 0,0.7);
+}
+/* login*/
+
+.login {
+  margin-top: 20%;
+  text-align: center;
+  width: 100%;
+}
+
+.login .panel {
+  width: 40%;
 }

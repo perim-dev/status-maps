@@ -16,20 +16,31 @@ import '../node_modules/bootstrap/dist/css/bootstrap-theme.css';
 import './css/tema.css';
 import './css/utils.css';
 
-import Rotas from './routes.js';
 
-class App extends Component {
+class Main extends Component {
 
   componentDidMount(){
-    console.log("App","montou o objeto");
+
   }
+
+  constructor(props){
+    super(props);
+  }
+
   render() {
     return (
-      <div className="content-fluid h-100">
-        <Rotas />
+      <div className="h-100">
+        <Row id="layout-corpo" className="safari-fix">
+            <SidebarDemo/>
+            <ListaLateral />
+            <Mapa />            
+        </Row>
+        <Row id="layout-rodape">
+          <Rodape />
+        </Row>
       </div>
     );
   }
 }
 
-export default App;
+export default Main;

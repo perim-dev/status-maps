@@ -68,7 +68,7 @@ class Mapa extends Component {
 
   centralizar(ponto){
     let geojson = JSON.parse(ponto.geometryAsGeoJSON);
-
+    
     this.setState( {...this.state,
       lat: geojson.coordinates[1],//-22.123456, 
       lng: geojson.coordinates[0],
@@ -90,7 +90,7 @@ class Mapa extends Component {
     const position = [this.state.lat, this.state.lng];
     return (
       <div className="col-xs-12 col-sm-12 col-md-9 col-lg-9 mapa-lateral h-100">
-        <div className="panel lista-lateral bg-grafite modulo">
+        <div className="panel bg-grafite modulo">
             <Websocket url={config.websockets.atualizacaoPontosPorCategoria} 
                        onMessage={this.handleData.bind(this)}/>
             <Map center={position} zoom={this.state.zoom} onViewportChanged={(viewport) => this.atualizarPosicao(viewport)}>
@@ -106,7 +106,7 @@ class Mapa extends Component {
                     <Marker key={`marker-${idx}`} 
                             position={[ponto.geometry.coordinates[1],ponto.geometry.coordinates[0]]} 
                             icon={this.iconeCategoria(groupLayer.icone,'ativo')} > 
-                      <Popup className="status-popup">
+                      <Popup className="status-popup"  >
                         <div>
                           <span className="descricao">{ponto.descricao} </span>
                           <hr/>

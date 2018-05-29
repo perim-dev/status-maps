@@ -59,6 +59,7 @@ class BuscaGeo extends Component {
     }
 
     onCreated(e) {
+        this.props.limparPontos();
         this.atualizarBuscar();
     }
 
