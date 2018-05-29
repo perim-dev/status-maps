@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import {reduxForm, Field} from 'redux-form';
 import {login} from './actions';
 import { bindActionCreators } from 'redux';
-import { Redirect } from 'react-router';
 
 import {Row,Col} from 'react-bootstrap';
 
@@ -11,34 +10,37 @@ class Auth extends Component {
     
     constructor(props){
         super(props); 
-        this.state = {fireRedirect: false};
         this.username = "";
         this.password = ""; 
     }
 
     onSubmit(values){
-        this.props.login(values);
-        this.setState({ fireRedirect: true })
+        let retorno = this.props.login(values);
+        console.log("retorno",retorno);
     }
 
     render(){
+        console.log("form error",this.props.error)
         const {handleSubmit} = this.props;
-        // const { from } = this.props.location.state || '/';
-        const { fireRedirect } = this.state;
-        console.log(handleSubmit);
         return (
             <div className="container login">
-                <div className="panel panel-default center-block">
+                <div className="panel panel-default center-block bg-grafite">
                     <div className="panel-body">
+                        <img src={require('../img/aguia.png')} alt="logo" className="logo"/>
                         <form onSubmit={handleSubmit(v =>this.onSubmit(v))} className="form" role="form">
-                            <Row>
-                                <Col md={12}>
+                            <Row className="form-group">
+                                <Col mdOffset={2} md={8} xs={12} sm={12}>
                                     <Field className="form-control" name="username" component="input" type="text" placeholder="Usuário"/>
                                 </Col>
                             </Row>
-                            <Row>
-                                <Col md={12}>
+                            <Row className="form-group">
+                                <Col mdOffset={2} md={8} xs={12} sm={12}>
                                     <Field className="form-control"name="password" component="input" type="password" placeholder="Senha"/>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col mdOffset={2} md={8} xs={12} sm={12}>
+                                    <div className="error">{this.props.auth.messageError}</div>
                                 </Col>
                             </Row>
                             <button className="btn btn-primary" type="submit" >Autenticar</button>
@@ -51,5 +53,6 @@ class Auth extends Component {
 }
 
 Auth = reduxForm({form:'authForm'})(Auth)
+const mapStateToProps = state => ({auth: state.auth});
 const mapDispatchToProps = dispatch => bindActionCreators({login}, dispatch); 
-export default connect(null, mapDispatchToProps)(Auth) ;
+export default connect(mapStateToProps, mapDispatchToProps)(Auth) ;

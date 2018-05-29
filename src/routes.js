@@ -1,8 +1,7 @@
 import React,{ Component } from 'react';
-import {BrowserRouter as Router, Route, Redirect, hashHistory} from 'react-router-dom';
+import {BrowserRouter as Router, Route} from 'react-router-dom';
 
 import AuthOrApp from './AuthOrApp';
-import Main from './Main';
 
 class Rotas extends Component {
     render(){

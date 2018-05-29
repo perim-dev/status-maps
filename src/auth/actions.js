@@ -8,12 +8,20 @@ export const login = async (credenciais) => {
     console.log("auth action",credenciais);
     console.log(auth);
     let resource = config.url + config.resources.credenciais;
-    const request = await axios.get(`${resource}`,{headers: auth});
+    let request;
+    try{
+        request = await axios.get(`${resource}`,{headers: auth});
+        console.log("request",request);
+        return {
+            type: 'AUTH_LOGIN',
+            payload: request,
+        };
+    } catch(error){
+        console.log("error",error);
+    }
 
-    return {
-        type: 'AUTH_LOGIN',
-        payload: request,
-    };
+    return {type:'LOGIN_FAIL'}
+    
 }
 
 export const logout = async (credenciais) => {

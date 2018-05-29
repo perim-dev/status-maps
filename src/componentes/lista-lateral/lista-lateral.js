@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import {Col, Panel} from 'react-bootstrap';
 import ArvoreAcervo from './arvore-acervos';
-import BarraDeTitulo from '../barra-de-titulo/barra-de-titulo';
-import config from '../../config';
 
 class ListaLateral extends Component {
   render() {

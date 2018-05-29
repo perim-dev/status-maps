@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 
-import BarraDeTitulo from './componentes/barra-de-titulo/barra-de-titulo';
 import ListaLateral from './componentes/lista-lateral/lista-lateral';
 import Mapa from './componentes/mapa/mapa';
 import Rodape from './componentes/rodape/rodape';
@@ -18,14 +17,6 @@ import './css/utils.css';
 
 
 class Main extends Component {
-
-  componentDidMount(){
-
-  }
-
-  constructor(props){
-    super(props);
-  }
 
   render() {
     return (
