@@ -8,38 +8,31 @@ import {Row,Col} from 'react-bootstrap';
 
 class Auth extends Component {
     
-    constructor(props){
-        super(props); 
-        this.username = "";
-        this.password = ""; 
-    }
-
     onSubmit(values){
-        let retorno = this.props.login(values);
-        console.log("retorno",retorno);
+        this.props.login(values);
     }
 
     render(){
-        console.log("form error",this.props.error)
+        
         const {handleSubmit} = this.props;
         return (
-            <div className="container login">
-                <div className="panel panel-default center-block bg-grafite">
+            <div className="container login col-sm-offset-3 col-sm-6 col-md-offset-4 col-md-4">
+                <div className="panel panel-default center-block bg-grafite ">
                     <div className="panel-body">
                         <img src={require('../img/aguia.png')} alt="logo" className="logo"/>
                         <form onSubmit={handleSubmit(v =>this.onSubmit(v))} className="form" role="form">
                             <Row className="form-group">
-                                <Col mdOffset={2} md={8} xs={12} sm={12}>
+                                <Col xs={12} sm={12} md={12} lg={12} >
                                     <Field className="form-control" name="username" component="input" type="text" placeholder="Usuário"/>
                                 </Col>
                             </Row>
                             <Row className="form-group">
-                                <Col mdOffset={2} md={8} xs={12} sm={12}>
+                                <Col xs={12} sm={12} md={12} lg={12} >
                                     <Field className="form-control"name="password" component="input" type="password" placeholder="Senha"/>
                                 </Col>
                             </Row>
                             <Row>
-                                <Col mdOffset={2} md={8} xs={12} sm={12}>
+                                <Col xs={12} sm={12} md={12} lg={12} >
                                     <div className="error">{this.props.auth.messageError}</div>
                                 </Col>
                             </Row>

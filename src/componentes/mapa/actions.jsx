@@ -1,11 +1,9 @@
 import axios from 'axios';
 import config from '../../config';
 
-const auth = {'Authorization':'Basic MjYyMjYyNTU6MTIzNDU='}
-
 export const carregarPontosDaCategoria = async (categoria) => {
     var resource = config.url + config.resources.categoria +'/'+ categoria.id + "/pontosDeInteresse";
-    const request = await axios.get(`${resource}`,{headers: auth});
+    const request = await axios.get(`${resource}`);
  
     return {
         type: 'CARREGAR_PONTOS_CATEGORIA_MAPA',
@@ -16,7 +14,7 @@ export const carregarPontosDaCategoria = async (categoria) => {
 
 export const carregarPontosRelacionados = async (ponto) => {
     var resource = config.url + config.resources.pontoDeInteresse +'/'+ ponto.id + "/pontosRelacionados";
-    const request = await axios.get(`${resource}`,{headers: auth});
+    const request = await axios.get(`${resource}`);
  
     return {
         type: 'CARREGAR_PONTOS_RELACIONADOS_MAPA',

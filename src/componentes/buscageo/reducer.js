@@ -33,11 +33,9 @@ export default (state = INITIAL_STATE, action) => {
                 index === self.findIndex((a) => (
                     a.acervo === acervo.acervo
                 ))
-            )
-
-            novoEstado.pontos.sort((a, b) => a.descricao.localeCompare(b.descricao));
+            );
             
-
+            novoEstado.pontos.sort((a, b) => a.descricao.localeCompare(b.descricao));
             return {...state,pontos:novoEstado.pontos, acervos:novoEstado.acervos};
         }
         

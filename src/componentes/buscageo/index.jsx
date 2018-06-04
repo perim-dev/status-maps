@@ -69,23 +69,23 @@ class BuscaGeo extends Component {
     }
 
     onMounted(e) {
-        console.log("mounted",e);
+        
     }
     
     onEditStart(e) {
-        console.log("edit Start",e);
+        
     }
     
     onEditStop(e) {
-        console.log("edit Stop",e);
+        
     }
     
     onDeleteStart(e) {
-        console.log("delete Start",e);
+        
     }
     
     onDeleteStop(e) {
-        console.log("delete Stop",e);
+        
     }
 
 }

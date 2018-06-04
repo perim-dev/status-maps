@@ -1,6 +1,7 @@
 
 import React, { Component } from 'react'
 import {connect} from 'react-redux';
+import axios from 'axios';
 
 import Main from './Main';
 import Auth from './auth/auth';
@@ -8,9 +9,8 @@ import Auth from './auth/auth';
 class AuthOrApp extends Component {
     
     render(){
-        if(this.props.auth.validToken){
-            // Ver como usar
-            //axios.defaults.headers.common['authorization'] = {}
+        if(this.props.auth.validToken && this.props.auth.token){
+            axios.defaults.headers.common['Authorization'] = this.props.auth.token;
             return <Main>{this.props.children}</Main>
         } else {
             return <Auth/>

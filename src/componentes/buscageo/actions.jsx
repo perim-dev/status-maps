@@ -1,12 +1,12 @@
 import axios from 'axios';
 import config from '../../config';
 
-const auth = {'Authorization':'Basic MjYyMjYyNTU6MTIzNDU=','Content-Type': 'application/json'}
+const headers = {'Content-Type': 'application/json'}
 
 export const buscarPontos = async (geojson) => {
     
     var resource = config.url + config.resources.pontoDeInteresse +'/pontosDaArea';
-    const request = await axios.put(`${resource}`,JSON.stringify(geojson),{headers: auth});
+    const request = await axios.put(`${resource}`,JSON.stringify(geojson),{headers: headers});
 
     return {
         type: 'BUSCAR_PONTOS',
