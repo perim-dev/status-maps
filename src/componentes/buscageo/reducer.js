@@ -1,21 +1,20 @@
 
-const INITIAL_STATE = {pontos:[],acervos:[]};
+const INITIAL_STATE = {acervos:[]};
 
 export default (state = INITIAL_STATE, action) => {
     var novoEstado;
     switch(action.type){
         case 'BUSCAR_PONTOS':{
-            novoEstado = {...state};
+            novoEstado = {pontos:[]};
 
             let pontos = action.payload.data.slice();
-
+            console.log("reducer buscaGeo",action.payload.data);
             pontos.map((ponto) => {
                 ponto.pontosRelacionados = [];
                 ponto.geometry = JSON.parse(ponto.geometryAsGeoJSON);
                 let icone = 'data:image;base64, '+ ponto.icone.replace('data:image;base64, ','');
                 ponto.icone = icone;
                 novoEstado.pontos.push(ponto);
-                novoEstado.acervos.push({acervo:ponto.descricaoAcervo,visivel:true});
                 return ponto;
             });
 
@@ -27,20 +26,28 @@ export default (state = INITIAL_STATE, action) => {
                 ))
             );
 
-            let acervos = novoEstado.acervos.slice();
-
-            novoEstado.acervos = acervos.filter((acervo, index, self) =>
-                index === self.findIndex((a) => (
-                    a.acervo === acervo.acervo
-                ))
-            );
-            
             novoEstado.pontos.sort((a, b) => a.descricao.localeCompare(b.descricao));
-            return {...state,pontos:novoEstado.pontos, acervos:novoEstado.acervos};
+
+            let group = novoEstado.pontos.reduce(function(r,p){
+                r[p.acervoId] = r[p.acervoId] || {pontos:[],acervo:p.descricaoAcervo,visivel:true, id:p.acervoId};
+                r[p.acervoId].pontos.push(p);
+                return r;
+            },[]);
+
+            console.log("group", group);
+
+            return {...state,acervos: group};
+        }
+
+        case 'MARCAR_DESMARCAR_FILTRO': {
+            let newState = {...state};
+            console.log("reducer marcandoDesmarcando",newState.acervos[action.payload.acervoId]);
+            newState.acervos[action.payload.acervoId].visivel = action.payload.marcado;
+            return {...state, acervos:newState.acervos};
         }
         
         case 'LIMPAR_PONTOS':{
-            return {...state,pontos:[],acervos:[]};
+            return {...state,acervos:[]};
         }
 
         default : {

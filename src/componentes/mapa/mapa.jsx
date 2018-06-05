@@ -18,6 +18,7 @@ import '../../css/leaflet-icon.css';
 import '../../../node_modules/leaflet-draw/dist/leaflet.draw.css';
 
 import BuscaGeo from '../buscageo';
+import Listagem from '../buscageo/listagem';
 
 class Mapa extends Component {
 
@@ -68,7 +69,6 @@ class Mapa extends Component {
 
   centralizar(ponto){
     let geojson = JSON.parse(ponto.geometryAsGeoJSON);
-    
     this.setState( {...this.state,
       lat: geojson.coordinates[1],//-22.123456, 
       lng: geojson.coordinates[0],
@@ -141,32 +141,26 @@ class Mapa extends Component {
               ))}
               
               { /* Marcadores da buscaGeo */
-                this.props.buscaGeo.pontos.map((ponto,idx)=>
-                <Marker key={`marker-buscageo-${idx}`} 
-                              position={[ponto.geometry.coordinates[1],ponto.geometry.coordinates[0]]} 
-                              icon={this.iconeCategoria(ponto.icone,'buscaGeo')} > 
-
-                      <Popup className="status-popup">
-                        <div>
-                          <span className="descricao">{ponto.descricao} </span>
-                        </div>
-                        
-                      </Popup>
-                </Marker>
+                this.props.buscaGeo.acervos.map((acervo,idAcervo)=> 
+                  acervo.pontos.map((ponto,idx) =>
+                    acervo.visivel && 
+                    <Marker key={`marker-buscageo-${idx}`} 
+                                  position={[ponto.geometry.coordinates[1],ponto.geometry.coordinates[0]]} 
+                                  icon={this.iconeCategoria(ponto.icone,'buscaGeo')} > 
+                          <Popup className="status-popup">
+                            <div>
+                              <span className="descricao">{ponto.descricao} </span>
+                            </div>
+                          </Popup>
+                    </Marker>
+                )
               )}
 
               <BuscaGeo />
             </Map>
-            <div className={this.props.buscaGeo.pontos.length>0?'resultado-buscageo ativo':'resultado-buscageo inativo'} >
-                    {this.props.buscaGeo.pontos.map((p,idx)=>
-                         <Col xs={12} sm={12} md={4} lg={4} className="ponto" key={`buscageo-` +idx}>
-                            <img src={p.icone} alt={p.descricao} onClick={(e)=>this.centralizar(p)}/>
-                            <span className="texto"> 
-                              {p.descricao}
-                            </span>
-                        </Col>
-                    )}
-                </div>
+
+            <Listagem centralizar={this.centralizar.bind(this)}/>
+            
         </div>
         
       </div>

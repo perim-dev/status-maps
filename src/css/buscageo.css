@@ -13,7 +13,7 @@
     margin-bottom: 11px;
     z-index: 10000;
     background-color: rgba(0,0,0,0.5);
-    height: 100px;
+    height: 150px;
     bottom:0;
     left:0;
     right:0;
@@ -37,4 +37,10 @@
 
 .resultado-buscageo .ponto .texto{
     margin-left: 5px;
+}
+
+.buscageo-filtro {
+    font-weight: bolder;
+    color: white;
+    font-size: 1.1em;
 }

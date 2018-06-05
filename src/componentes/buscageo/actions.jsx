@@ -14,6 +14,14 @@ export const buscarPontos = async (geojson) => {
     };
 }
 
+export const marcarDesmarcarFiltro = (acervoId, marcado) => {
+    
+    return {
+        type: 'MARCAR_DESMARCAR_FILTRO',
+        payload: {acervoId:acervoId, marcado:marcado}
+    }
+}
+
 export const limparPontos = () => {
     
     return {
