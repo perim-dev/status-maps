@@ -19,8 +19,7 @@
     right:0;
     position: absolute;
     border-radius: 1px;
-    border-top: solid 2px #555;
-    overflow-y: scroll;
+    border-top: solid 1px #ccc; /* solid 2px #555; */
     padding-left: 5px;
     padding-top:2px;
     font-size: 0.9em;
@@ -38,9 +37,31 @@
 .resultado-buscageo .ponto .texto{
     margin-left: 5px;
 }
+.resultado-buscageo .lista-pontos{
+    overflow-y: scroll;  
+    height: 100px;
+}
 
 .buscageo-filtro {
+    margin-left: -5px;
+    margin-right: 0px;
+    padding-top:8px;
+    padding-bottom:5px;
+    margin-top: -2px;
     font-weight: bolder;
     color: white;
-    font-size: 1.1em;
+    font-size: 1em;
+    background-color: rgba(200, 200, 200, 0.5);
+    border-bottom: 1px solid #ccc;
+    max-height: 50px;
+    overflow-y: scroll;  
+}
+.buscageo-filtro-texto {
+    display: inline;
+    padding-left: 5px;
+}
+.buscageo-filtro input[type=checkbox] {
+    vertical-align: middle;
+    position: relative;
+    bottom: 1px;
 }

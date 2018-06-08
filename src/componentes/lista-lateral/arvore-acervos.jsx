@@ -7,15 +7,9 @@ import ItemCategoria from './item-categoria';
 import '../../css/arvore-acervo.css';
 
 class ArvoreAcervo extends Component {
-    
-    constructor(props) {
-        super(props);
-        console.log('iniciou ArvoreAcervo');
-    }
 
     componentWillMount() {
         this.props.load();
-        console.log('componentWillMount',this.props.lista);
     }
 
     renderRows() {

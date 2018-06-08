@@ -5,10 +5,10 @@ export default (state = INITIAL_STATE, action) => {
     var novoEstado;
     switch(action.type){
         case 'BUSCAR_PONTOS':{
-            novoEstado = {pontos:[]};
+            novoEstado = {...state,pontos:[]};
 
             let pontos = action.payload.data.slice();
-            console.log("reducer buscaGeo",action.payload.data);
+
             pontos.map((ponto) => {
                 ponto.pontosRelacionados = [];
                 ponto.geometry = JSON.parse(ponto.geometryAsGeoJSON);
@@ -16,6 +16,12 @@ export default (state = INITIAL_STATE, action) => {
                 ponto.icone = icone;
                 novoEstado.pontos.push(ponto);
                 return ponto;
+            });
+
+            novoEstado.acervos.map((acervo) => {
+               return acervo.pontos.map((p)=>{
+                    return novoEstado.pontos.push(p);
+                });
             });
 
             pontos = novoEstado.pontos.slice();
@@ -33,16 +39,26 @@ export default (state = INITIAL_STATE, action) => {
                 r[p.acervoId].pontos.push(p);
                 return r;
             },[]);
-
-            console.log("group", group);
+            /* Removendo lixo deixado pela função anterior */
+            group = group.filter((a)=> a !== undefined);
+            group.sort((a,b)=> a.acervo.localeCompare(b.acervo));
 
             return {...state,acervos: group};
         }
 
         case 'MARCAR_DESMARCAR_FILTRO': {
             let newState = {...state};
-            console.log("reducer marcandoDesmarcando",newState.acervos[action.payload.acervoId]);
-            newState.acervos[action.payload.acervoId].visivel = action.payload.marcado;
+            console.log("reducer marcandoDesmarcando",newState.acervos);
+            newState.acervos.find(a =>{ 
+                console.log(a)
+                if(a){
+                    return a.id === action.payload.acervoId
+                } 
+                return false;
+            }).visivel = action.payload.marcado;
+            
+//            [action.payload.acervoId].visivel
+            // newState.acervos[action.payload.acervoId].visivel = action.payload.marcado;
             return {...state, acervos:newState.acervos};
         }
         

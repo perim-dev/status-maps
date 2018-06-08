@@ -20,7 +20,7 @@ class BuscaGeo extends Component {
             <div>
                 <FeatureGroup ref={ (reactFGref) => {this._onFeatureGroupReady(reactFGref);} }>
                     <EditControl
-                        position='topright'
+                        position='topleft'
                         onCreated={(e)=>this.onCreated(e)}
                         onEdited={(e) =>this.onEdited(e)}
                         onDeleted={(e) => this.onDeleted(e)}

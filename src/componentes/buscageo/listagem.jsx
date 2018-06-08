@@ -9,33 +9,27 @@ import {Col} from 'react-bootstrap';
 
 class Listagem extends Component {
 
-    constructor(props){
-        super(props);
-        console.log(props);
-        //this.centralizar = props.centralizar.bind(this);
-    }
-
     render(){
         return (
             <div className={this.props.buscaGeo.acervos.length>0?'resultado-buscageo ativo':'resultado-buscageo inativo'} >
                 <div className="row buscageo-filtro">
                 {this.props.buscaGeo.acervos.map((acervo,idAcervo)=> 
-                  <Col md={2} key={`buscageo-filtro-acervo` +idAcervo}>
+                  <Col xs={6} sm={6} md={2} key={`buscageo-filtro-acervo` +idAcervo}>
                     <input  type="checkbox" 
                         checked={acervo.visivel} 
                         onChange={(e)=>this.props.marcarDesmarcarFiltro(acervo.id,e.target.checked)}
                         name={"buscageo_acervo_input"+acervo.id} 
-                        id={"buscageo_acervo_input_"+acervo.id}/> {acervo.acervo}
+                        id={"buscageo_acervo_input_"+acervo.id}/><div className="buscageo-filtro-texto">{acervo.acervo} </div>
                   </Col>
                 )}
                 </div>
 
                 <div className="row" />
-
+                <div className="lista-pontos">
                 {this.props.buscaGeo.acervos.map((acervo,idAcervo)=> {
                   return acervo.visivel && (
                   acervo.pontos.map((p,idx) =>
-                    <Col xs={12} sm={12} md={4} lg={4} className="ponto" key={`buscageo-pontos` +idx}>
+                    <Col xs={6} sm={6} md={4} lg={4} className="ponto" key={`buscageo-pontos` +idx}>
                       <img src={p.icone} alt={p.descricao} onClick={(e)=>this.props.centralizar(p)}/>
                       <span className="texto"> 
                         {p.descricao}
@@ -43,6 +37,7 @@ class Listagem extends Component {
                     </Col> )
                   )}
                 )}
+                </div>
             </div>
         );
     }
