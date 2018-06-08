@@ -19,6 +19,7 @@ import '../../../node_modules/leaflet-draw/dist/leaflet.draw.css';
 
 import BuscaGeo from '../buscageo';
 import Listagem from '../buscageo/listagem';
+import Heatmap from '../heatmap';
 
 class Mapa extends Component {
 
@@ -38,6 +39,7 @@ class Mapa extends Component {
       lat: this.props.mapa.lat, 
       lng: this.props.mapa.lng,
       zoom: this.props.mapa.zoom,
+      exibirHeatmap: false,
     };
   }
 
@@ -84,6 +86,10 @@ class Mapa extends Component {
       })
   }
 
+  alternarHeatmapPontos(){
+    this.setState({...this.state,exibirHeatmap:!this.state.exibirHeatmap});
+  }
+
 
   render() {
 
@@ -91,9 +97,12 @@ class Mapa extends Component {
     return (
       <div className="col-xs-12 col-sm-12 col-md-9 col-lg-9 mapa-lateral h-100">
         <div className="panel bg-grafite modulo">
-            <Websocket url={config.websockets.atualizacaoPontosPorCategoria} 
-                       onMessage={this.handleData.bind(this)}/>
+            <Websocket url={config.websockets.atualizacaoPontosPorCategoria} onMessage={this.handleData.bind(this)}/>
+            <div className="heatmap-button" onClick={(e)=>this.alternarHeatmapPontos()}>HM</div>              
             <Map center={position} zoom={this.state.zoom} onViewportChanged={(viewport) => this.atualizarPosicao(viewport)}>
+
+              {this.state.exibirHeatmap && <Heatmap pontos={this.props.mapa.groupLayers} />}
+
               <TileLayer
                 attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
                 url="https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw"
@@ -101,7 +110,7 @@ class Mapa extends Component {
                 id='mapbox.streets'
               />
               
-              {this.props.mapa.groupLayers.map((groupLayer) => 
+              {!this.state.exibirHeatmap && this.props.mapa.groupLayers.map((groupLayer) => 
                 groupLayer.pontos.map((ponto, idx) => 
                     <Marker key={`marker-${idx}`} 
                             position={[ponto.geometry.coordinates[1],ponto.geometry.coordinates[0]]} 
