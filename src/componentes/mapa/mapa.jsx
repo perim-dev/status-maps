@@ -90,7 +90,6 @@ class Mapa extends Component {
     this.setState({...this.state,exibirHeatmap:!this.state.exibirHeatmap});
   }
 
-
   render() {
 
     const position = [this.state.lat, this.state.lng];
@@ -98,7 +97,10 @@ class Mapa extends Component {
       <div className="col-xs-12 col-sm-12 col-md-9 col-lg-9 mapa-lateral h-100">
         <div className="panel bg-grafite modulo">
             <Websocket url={config.websockets.atualizacaoPontosPorCategoria} onMessage={this.handleData.bind(this)}/>
-            <div className="heatmap-button" onClick={(e)=>this.alternarHeatmapPontos()}>HM</div>              
+            <div className="heatmap-button">
+              <div className={`heatmap-button-conteudo `+ (this.state.exibirHeatmap?'ativo':'')} onClick={(e)=>this.alternarHeatmapPontos()}>HM</div>              
+            </div>
+
             <Map center={position} zoom={this.state.zoom} onViewportChanged={(viewport) => this.atualizarPosicao(viewport)}>
 
               {this.state.exibirHeatmap && <Heatmap pontos={this.props.mapa.groupLayers} />}
