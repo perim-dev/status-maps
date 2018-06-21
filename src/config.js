@@ -6,6 +6,7 @@ const config = {
         acervo:'/acervos',
         categoria:'/categorias',
         pontoDeInteresse:'/pontosDeInteresse',
+        alarme:'/alarmes',
         credenciais: '/credenciais'
     },
     websockets:{

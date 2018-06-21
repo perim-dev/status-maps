@@ -17,9 +17,16 @@ import '../../css/leaflet-popup.css';
 import '../../css/leaflet-icon.css';
 import '../../../node_modules/leaflet-draw/dist/leaflet.draw.css';
 
+/* BuscaGeo */
 import BuscaGeo from '../buscageo';
 import Listagem from '../buscageo/listagem';
+
+/* Heatmap */
 import Heatmap from '../heatmap';
+
+/* Alarme */
+import { buscarAlarmesDisparados, limparAlarmes } from '../alarme/actions';
+import Alarme from '../alarme';
 
 class Mapa extends Component {
 
@@ -40,12 +47,21 @@ class Mapa extends Component {
       lng: this.props.mapa.lng,
       zoom: this.props.mapa.zoom,
       exibirHeatmap: false,
+      exibirAlertas: true,
     };
+    this.props.buscarAlarmesDisparados();
   }
 
   handleData(data) {
     let retorno = JSON.parse(data);
-    console.log("websocket news",data);
+    
+//    console.log("websocket news",data);
+
+    if(retorno.atualizarAlarmes){
+      this.props.limparAlarmes();
+      this.props.buscarAlarmesDisparados();
+    }
+
     retorno.categorias.map((id) =>{
         if(typeof this.props.mapa.groupLayers[id] === 'undefined'){
           return {};
@@ -53,6 +69,7 @@ class Mapa extends Component {
         let categoria = {id:id,icone:this.props.mapa.groupLayers[id].icone};
         return this.props.carregarPontosDaCategoria(categoria);
     });
+    
   }
 
   iconeCategoria(icone,classe){
@@ -90,28 +107,44 @@ class Mapa extends Component {
     this.setState({...this.state,exibirHeatmap:!this.state.exibirHeatmap});
   }
 
+  alternarAlertas(){
+    this.setState({...this.state,exibirAlertas:!this.state.exibirAlertas});
+    if(this.state.exibirAlertas){
+      this.props.buscarAlarmesDisparados();
+    }
+  }
+
   render() {
 
     const position = [this.state.lat, this.state.lng];
     return (
       <div className="col-xs-12 col-sm-12 col-md-9 col-lg-9 mapa-lateral h-100">
         <div className="panel bg-grafite modulo">
-            <Websocket url={config.websockets.atualizacaoPontosPorCategoria} onMessage={this.handleData.bind(this)}/>
+            
             <div className="heatmap-button">
               <div className={`heatmap-button-conteudo `+ (this.state.exibirHeatmap?'ativo':'')} onClick={(e)=>this.alternarHeatmapPontos()}>HM</div>              
             </div>
 
+            <div className="alertas-button">
+              <div className={`alertas-button-conteudo `+ (this.state.exibirAlertas?'ativo':'')} onClick={(e)=>this.alternarAlertas()} title="Alarmes"><i className="fa fa-bullhorn"></i></div>
+            </div>
+            <Websocket url={config.websockets.atualizacaoPontosPorCategoria} onMessage={this.handleData.bind(this)}/>
+
             <Map center={position} zoom={this.state.zoom} onViewportChanged={(viewport) => this.atualizarPosicao(viewport)}>
-
-              {this.state.exibirHeatmap && <Heatmap pontos={this.props.mapa.groupLayers} />}
-
               <TileLayer
                 attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
                 url="https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw"
                 url_old="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
                 id='mapbox.streets'
               />
-              
+              {this.state.exibirHeatmap && <Heatmap pontos={this.props.mapa.groupLayers} />}
+
+              {this.state.exibirAlertas && 
+               this.props.alarme.geoJSON.features && 
+               this.props.alarme.geoJSON.features.map((f,idx)=>{
+                  return <Alarme key={`alarme-${f.properties.id}`} feature={f} />
+               })}
+
               {!this.state.exibirHeatmap && this.props.mapa.groupLayers.map((groupLayer) => 
                 groupLayer.pontos.map((ponto, idx) => 
                     <Marker key={`marker-${idx}`} 
@@ -180,6 +213,6 @@ class Mapa extends Component {
   
 }
 
-const mapStateToProps = state => ({mapa: state.mapa, buscaGeo:state.buscaGeo});
-const mapDispatchToProps = dispatch => bindActionCreators({load ,carregarPontosDaCategoria, carregarPontosRelacionados}, dispatch); 
+const mapStateToProps = state => ({mapa: state.mapa, buscaGeo:state.buscaGeo, alarme:state.alarmes});
+const mapDispatchToProps = dispatch => bindActionCreators({load ,carregarPontosDaCategoria, carregarPontosRelacionados, buscarAlarmesDisparados, limparAlarmes}, dispatch); 
 export default connect(mapStateToProps, mapDispatchToProps)(Mapa) ;

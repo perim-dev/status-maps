@@ -14,16 +14,8 @@ class Heatmap extends React.Component {
         console.log("render");
         var pontos = [];       
         this.props.pontos.map((categoria) => categoria.pontos.map((p)=>pontos.push(p)));
-      /*
-      console.log(this.props.pontos.reduce((r,p) => {
-          return r.push(p)
-        },pontos));
-      */
- 
-        
-        //this.setState({...this.state,pontos:pontos});
         this.pontos = pontos;
-        console.log(pontos);
+
         return (
             <HeatmapLayer 
                 points={this.pontos}
