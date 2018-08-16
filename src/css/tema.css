@@ -109,7 +109,12 @@ body {
 .area-titulo img{
   height: 100%;
   border-radius: 5px;
-  float:left;
+  float:left; 
+  
+}
+.area-titulo-logo{
+  text-align: center;
+  
 }
 
 .area-titulo .texto {
@@ -145,7 +150,7 @@ body {
 }
 
 .login .logo {
-  border-radius: 5px;
+  border-radius: 0px;
   margin-bottom: 20px;
   width:120px;
 }

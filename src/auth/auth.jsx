@@ -19,7 +19,7 @@ class Auth extends Component {
             <div className="container login col-sm-offset-3 col-sm-6 col-md-offset-4 col-md-4">
                 <div className="panel panel-default center-block bg-grafite ">
                     <div className="panel-body">
-                        <img src={require('../img/aguia.png')} alt="logo" className="logo"/>
+                        <img src={require('../img/logo-IPLANRIO1.png')} alt="logo-Iplanrio" className="logo"/>
                         <form onSubmit={handleSubmit(v =>this.onSubmit(v))} className="form" role="form">
                             <Row className="form-group">
                                 <Col xs={12} sm={12} md={12} lg={12} >

@@ -11,8 +11,8 @@ class ListaLateral extends Component {
     return (
         <Col xsHidden={true} sm={3} md={3} lg={3} className="modulo h-100">
           <div className="area-titulo">
-            <div className="area-titulo box">
-              <img src={require('../../img/logo.png')} alt="logo"/>
+            <div className="area-titulo box area-titulo-logo">
+              <img src={require('../../img/logo-IPLANRIO1.png')} alt="logo"/>
             </div>
             <div onClick={(e)=>this.props.logout()} className="logout"> 
               <i className="fa fa-sign-out" title="Sair"></i> 
