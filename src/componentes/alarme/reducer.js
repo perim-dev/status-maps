@@ -8,9 +8,12 @@ export default (state = INITIAL_STATE, action) => {
             let alarmes = action.payload.data.slice();
             var alarmesGeojson = {"type": "FeatureCollection","features":[]};
             alarmes.map((alarme) => {
+                
                 alarme.geometry = JSON.parse(alarme.geometry);
-                let geojson = {"type": "Feature","geometry":alarme.geometry,"properties": {"descricao":alarme.descricao,"motivo":alarme.motivo,"id":alarme.id}};
-                alarmesGeojson.features.push(geojson);
+                if(alarme.geometry && alarme.geometry.coordinates ) {
+                    let geojson = {"type": "Feature","geometry":alarme.geometry,"properties": {"descricao":alarme.descricao,"motivo":alarme.motivo,"id":alarme.id}};
+                    alarmesGeojson.features.push(geojson);
+                }
                 return alarme;
             });
             

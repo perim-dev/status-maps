@@ -1,4 +1,4 @@
-const url_base = window.location.href.split('/')[2]+"/status";
+const url_base = process.env.REACT_APP_API_URL||window.location.href.split('/')[2]+"/status";
 
 const config = {
     url:'http://'+url_base+'/api/v1',

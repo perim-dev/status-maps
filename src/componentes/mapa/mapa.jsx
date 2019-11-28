@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
+import { Map, TileLayer, Marker, Popup, Polygon } from 'react-leaflet';
 
 import {connect} from 'react-redux';
 import L from 'leaflet';
@@ -146,7 +146,9 @@ class Mapa extends Component {
                })}
 
               {!this.state.exibirHeatmap && this.props.mapa.groupLayers.map((groupLayer) => 
-                groupLayer.pontos.map((ponto, idx) => 
+                groupLayer.pontos.map((ponto, idx) => {
+                  // exibir os pontos
+                  return (ponto.geometry.type ==='Point' &&  
                     <Marker key={`marker-${idx}`} 
                             position={[ponto.geometry.coordinates[1],ponto.geometry.coordinates[0]]} 
                             icon={this.iconeCategoria(groupLayer.icone,'ativo')} > 
@@ -181,13 +183,25 @@ class Mapa extends Component {
                         </div>
                         
                       </Popup>
-                    </Marker>
+                    </Marker>)
+                    // Exibir polígonos
+                    ||  ((ponto.geometry.type ==='MultiPolygon'|| ponto.geometry.type ==='Polygon') &&  
+                    <Polygon positions={ponto.geometry.coordinates[0]} color={ponto.cor} >
+                      <Popup className="status-popup">
+                          <div>
+                              <span className="descricao">{ponto.descricao }</span>
+                              <hr/>
+                              
+                          </div>
+                      </Popup>
+                    </Polygon>) 
+                }
               ))}
               
               { /* Marcadores da buscaGeo */
                 this.props.buscaGeo.acervos.map((acervo,idAcervo)=> 
                   acervo.pontos.map((ponto,idx) =>
-                    acervo.visivel && 
+                    acervo.visivel && ponto.geometry.type === 'Point' &&
                     <Marker key={`marker-buscageo-${idx}`} 
                                   position={[ponto.geometry.coordinates[1],ponto.geometry.coordinates[0]]} 
                                   icon={this.iconeCategoria(ponto.icone,'buscaGeo')} > 

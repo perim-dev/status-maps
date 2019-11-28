@@ -9,6 +9,7 @@ export default (state = INITIAL_STATE, action) => {
         case 'MAP_LOAD':
             return {...state}
         case 'CARREGAR_PONTOS_CATEGORIA_MAPA':{
+            let coresBairro = ['blue','yellow','green','orange','navy','purple'];
             novoEstado = {...state};
             let pontos = action.payload.data.slice();
             let icone = 'data:image;base64, '+ action.categoria.icone.replace('data:image;base64, ','');
@@ -17,6 +18,12 @@ export default (state = INITIAL_STATE, action) => {
             pontos.map((ponto) => {
                 ponto.pontosRelacionados = [];
                 ponto.geometry = JSON.parse(ponto.geometry)
+
+                if(ponto.geometry.type === 'Polygon' || ponto.geometry.type === 'MultiPolygon') {
+                    ponto.geometry.coordinates[0] = ponto.geometry.coordinates[0].map((e) => [e[1],e[0]])
+                    ponto.cor = coresBairro[Math.floor(Math.random() * coresBairro.length)];
+                }
+                
                 novoEstado.groupLayers[action.categoria.id].pontos.push(ponto);
 
                 return novoEstado;
