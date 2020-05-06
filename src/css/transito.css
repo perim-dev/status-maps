@@ -1,0 +1,143 @@
+.transito {
+  position: absolute;
+  z-index: 100000;
+  background-color: rgba(0,0,0,0.8);
+  right:0;
+}
+
+.grafico {
+  height: 80%;
+}
+
+.normal {
+  margin-right: 11px;
+  border: solid 1px #ddd;
+  border-radius: 5px;
+  width: 30%;
+  height: 35%;
+  background-color: rgba(0,0,0,0.8);
+  right:0;
+}
+
+.expandido {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.8);
+  right:0;
+  left:0;
+  bottom: 0;
+  top:0;
+  
+}
+
+.botoes {
+  padding: 5px;
+  text-align: center;
+}
+
+@media (max-width: 768px) { 
+  .transito{
+    top: 90px;
+  }
+
+  .expandido{
+    top: 0;
+  }
+
+  .normal {
+    width: 35%;
+  }
+
+  .normal .botoes .somente-expandido {
+    display: none;
+  }
+}
+
+.botoes button {
+  border: solid 1px #ccc;
+  background-color: #ddd;
+  color: #333;
+  border-radius: 5px;
+  margin-left: 3px;
+  margin-right: 3px;
+  font-size: 0.8em;
+}
+
+.botao-expandir {
+  cursor: pointer;
+  position: absolute;
+  float: left;
+  bottom: 0;
+  font-size: 1.2em;
+  padding: 5px 10px;
+}
+
+.expandido .botao-expandir {
+  margin-bottom:15px; 
+  margin-left: 15px;
+}
+
+.transito-menu-button {
+  position: absolute;
+  left: 21px;
+  top: 305px;
+  z-index: 10000;
+  float: left;
+  width: 34px;
+  height: 34px;
+  border: solid 2px rgba(120,120,120,0.5);
+  border-radius: 5px;
+}
+
+.transito-menu-button-conteudo {
+  color: rgba(0,0,0,0.7);;
+  background-color: #fff; 
+  text-align: center;
+  vertical-align: middle;
+  line-height: 30px;
+  cursor: pointer;
+  height: 100%;
+  border-radius: 3px;
+}
+
+.transito-menu-button-conteudo:hover {
+  background-color: #eee;
+}
+
+.transito-menu-button-conteudo.ativo{
+  background-color:  #00da53;
+}
+
+.transito-menu-button-conteudo.ativo:hover{
+  background-color: #07e25b;
+}
+
+.transito-legendas {
+  /* colors: ['#00FFFF', '#DDD', '#ff0000'],  */
+  width: 100%;
+  text-align: center;
+  font-size: 0.8em;
+}
+
+.expandido .transito-legendas {
+  /* colors: ['#00FFFF', '#DDD', '#ff0000'],  */
+  font-size: 1.1em;
+}
+
+.expandido .transito-legendas span{
+  margin-left: 15px;
+  margin-right: 15px;
+}
+.transito-legendas span{
+  margin-left: 5px;
+  margin-right: 5px;
+  font-weight: bold;
+}
+
+.transito-legendas .azul {
+  color: #00FFFF;
+}
+
+.transito-legendas .vermelho {
+  color: #FF0000;
+}

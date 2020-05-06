@@ -28,6 +28,10 @@ import Heatmap from '../heatmap';
 import { buscarAlarmesDisparados, limparAlarmes } from '../alarme/actions';
 import Alarme from '../alarme';
 
+/* Gráfico de trânsito */
+import GraficoTransito from '../grafico-transito';
+import '../../css/transito.css';
+
 class Mapa extends Component {
 
   constructor(props) {
@@ -48,8 +52,15 @@ class Mapa extends Component {
       zoom: this.props.mapa.zoom,
       exibirHeatmap: false,
       exibirAlertas: true,
+      exibirGraficoTransito: true,
+      data : []
     };
+    this.refreshAutomaticoGraficoTransito(true);
     this.props.buscarAlarmesDisparados();
+  }
+
+  componentDidMount() {
+    this.mock(['Hora','Trânsito', 'Histórico', 'Pluviômetro']);
   }
 
   handleData(data) {
@@ -113,6 +124,42 @@ class Mapa extends Component {
       this.props.buscarAlarmesDisparados();
     }
   }
+  
+  alternarGraficoTransito = () => {
+    this.setState({exibirGraficoTransito:!this.state.exibirGraficoTransito});
+    this.refreshAutomaticoGraficoTransito(!this.state.exibirGraficoTransito)
+  }
+
+  refreshAutomaticoGraficoTransito = (atualizar) => {
+    console.log('atualizando grafico de trânsito');
+    this.mock(['Hora','Trânsito', 'Histórico', 'Pluviômetro']);
+    if(atualizar || this.state.exibirGraficoTransito) {
+      setTimeout(()=>{
+        this.refreshAutomaticoGraficoTransito(false);
+      },2000);
+    }
+  }
+
+  mock = (header) => {
+    function formataNumero(num) {
+      let shift = num.toString().length - 1;
+      return ("0"+num).substr(shift, 2 );
+    }
+
+    function aleatorio(min,max) {
+      return Math.floor(Math.random() * (max - min)) + min;
+    }
+
+    var data =[];
+
+    data.push(header);
+    for(var h=0; h<20;h++){
+      for(var m=0; m<60; m+=15){
+        data.push([ new Date(`2020-01-01 ${formataNumero(h)}:${formataNumero(m)}:00`), aleatorio(45,50+m/5), aleatorio(60,60+m/5), aleatorio(10,10+m/5)])
+      }
+    }
+    this.setState({data:data});
+  }
 
   render() {
 
@@ -120,7 +167,7 @@ class Mapa extends Component {
     return (
       <div className="col-xs-12 col-sm-12 col-md-9 col-lg-9 mapa-lateral h-100">
         <div className="panel bg-grafite modulo">
-            
+            {this.state.exibirGraficoTransito && (<GraficoTransito data={this.state.data}/>)}
             <div className="heatmap-button">
               <div className={`heatmap-button-conteudo `+ (this.state.exibirHeatmap?'ativo':'')} onClick={(e)=>this.alternarHeatmapPontos()}>HM</div>              
             </div>
@@ -128,6 +175,11 @@ class Mapa extends Component {
             <div className="alertas-button">
               <div className={`alertas-button-conteudo `+ (this.state.exibirAlertas?'ativo':'')} onClick={(e)=>this.alternarAlertas()} title="Alarmes"><i className="fa fa-bullhorn"></i></div>
             </div>
+
+            <div className="transito-menu-button">
+              <div className={`transito-menu-button-conteudo `+ (this.state.exibirGraficoTransito?'ativo':'')} onClick={(e)=>this.alternarGraficoTransito()} title="Gráfico de trânsito"><i className="fa fa-area-chart"></i></div>
+            </div>
+
             <Websocket url={config.websockets.atualizacaoPontosPorCategoria} onMessage={this.handleData.bind(this)}/>
 
             <Map center={position} zoom={this.state.zoom} onViewportChanged={(viewport) => this.atualizarPosicao(viewport)}>
