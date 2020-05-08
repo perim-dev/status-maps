@@ -1,4 +1,4 @@
-const url_base = process.env.REACT_APP_API_URL|| process.env.NODE_ENV === "development" ? '192.168.10.110:3002/status':window.location.href.split('/')[2]+"/status";
+const url_base = process.env.REACT_APP_API_URL|| process.env.NODE_ENV === "development" ? '192.168.10.110:5001/status':window.location.href.split('/')[2]+"/status";
 console.log(process.env);
 
 const config = {
@@ -8,7 +8,8 @@ const config = {
         categoria:'/categorias',
         pontoDeInteresse:'/pontosDeInteresse',
         alarme:'/alarmes',
-        credenciais: '/credenciais'
+        credenciais: '/credenciais',
+        graficoTransito: '/graficos/transito'
     },
     websockets:{
         atualizacaoPontosPorCategoria:'ws://'+url_base+'/atualizacaoDePontos'

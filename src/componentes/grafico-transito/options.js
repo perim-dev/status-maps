@@ -5,7 +5,7 @@ export const options = {
   legend: 'none',
   curveType: 'function',
   lineWidth: [2, 1, 1],
-  colors: ['#00FFFF', '#DDD', '#ff0000'],
+  colors: ['#FF0000', '#DDD', '#00FFFF'],
   backgroundColor: { fill: 'transparent' },
   legendTextStyle: { color: '#777777' },
   hAxis: {
@@ -74,8 +74,8 @@ export const options = {
     }
   },
   series: {
-    0: { targetAxisIndex: 0 },
+    0: { targetAxisIndex: 1 },
     1: { targetAxisIndex: 1 },
-    2: { targetAxisIndex: 1 }
+    2: { targetAxisIndex: 0 }
   }
 };

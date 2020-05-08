@@ -55,12 +55,7 @@ class Mapa extends Component {
       exibirGraficoTransito: true,
       data : []
     };
-    this.refreshAutomaticoGraficoTransito(true);
     this.props.buscarAlarmesDisparados();
-  }
-
-  componentDidMount() {
-    this.mock(['Hora','Trânsito', 'Histórico', 'Pluviômetro']);
   }
 
   handleData(data) {
@@ -130,44 +125,13 @@ class Mapa extends Component {
     this.refreshAutomaticoGraficoTransito(!this.state.exibirGraficoTransito)
   }
 
-  refreshAutomaticoGraficoTransito = (atualizar) => {
-    console.log('atualizando grafico de trânsito');
-    this.mock(['Hora','Trânsito', 'Histórico', 'Pluviômetro']);
-    if(atualizar || this.state.exibirGraficoTransito) {
-      setTimeout(()=>{
-        this.refreshAutomaticoGraficoTransito(false);
-      },2000);
-    }
-  }
-
-  mock = (header) => {
-    function formataNumero(num) {
-      let shift = num.toString().length - 1;
-      return ("0"+num).substr(shift, 2 );
-    }
-
-    function aleatorio(min,max) {
-      return Math.floor(Math.random() * (max - min)) + min;
-    }
-
-    var data =[];
-
-    data.push(header);
-    for(var h=0; h<20;h++){
-      for(var m=0; m<60; m+=15){
-        data.push([ new Date(`2020-01-01 ${formataNumero(h)}:${formataNumero(m)}:00`), aleatorio(45,50+m/5), aleatorio(60,60+m/5), aleatorio(10,10+m/5)])
-      }
-    }
-    this.setState({data:data});
-  }
-
   render() {
 
     const position = [this.state.lat, this.state.lng];
     return (
       <div className="col-xs-12 col-sm-12 col-md-9 col-lg-9 mapa-lateral h-100">
         <div className="panel bg-grafite modulo">
-            {this.state.exibirGraficoTransito && (<GraficoTransito data={this.state.data}/>)}
+            {this.state.exibirGraficoTransito && (<GraficoTransito/>)}
             <div className="heatmap-button">
               <div className={`heatmap-button-conteudo `+ (this.state.exibirHeatmap?'ativo':'')} onClick={(e)=>this.alternarHeatmapPontos()}>HM</div>              
             </div>
