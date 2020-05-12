@@ -9,7 +9,8 @@ const config = {
         pontoDeInteresse:'/pontosDeInteresse',
         alarme:'/alarmes',
         credenciais: '/credenciais',
-        graficoTransito: '/graficos/transito'
+        graficoTransito: '/graficos/transito',
+        graficoEngarrafamento: '/transito/engarrafamento'
     },
     websockets:{
         atualizacaoPontosPorCategoria:'ws://'+url_base+'/atualizacaoDePontos'

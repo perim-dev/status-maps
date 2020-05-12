@@ -1,0 +1,58 @@
+.via-engarrafada {
+  width: 100%;
+  position: relative;
+}
+
+.expandido .via-engarrafada {
+  padding-left: 10%;
+  padding-right: 10%;
+}
+
+.via-engarrafada-item {
+  width: 100%;
+  color: white;
+  font-size: 0.8em;
+  cursor: default;
+}
+.expandido .via-engarrafada-item {
+  font-size: 1.0em;
+}
+.via-engarrafada-item.titulo{
+  text-align: center;
+  background-color: rgba(50,50,50,0.4);
+  padding: 3px;
+}
+.via-engarrafada-item:hover {
+  background-color: rgba(0,0,0,0.2);
+}
+
+.nome {
+  width: 40%;
+  display: inline-block;
+}
+
+.velocidade {
+  width: 30%;
+  text-align: center;
+  display: inline-block;
+}
+
+.tamanho {
+  width: 30%;
+  text-align: left;
+  display: inline-block;
+}
+
+.tamanho-fonte {
+  font-size: 0.90em;
+}
+
+.expandido .tamanho-fonte {
+  font-size: 1em;
+}
+
+.barra-tamanho {
+  background-color: brown;
+  height: 10px;
+  display: inline-block;
+}

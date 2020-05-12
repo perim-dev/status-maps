@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
 
 import {buscarDadosGraficoTransito} from './actions';
-import { createStore } from 'redux';
-import reducer from './reducer';
 import moment from 'moment'
 
 /* Grafico */
 import { Chart } from 'react-google-charts';
 import '../../css/transito.css';
 
+import ViaEngarrafada from '../via-engarrafada';
+
 import {options} from './options.js';
 
-const store = createStore(reducer);
 const dataReferencia = '2020-01-01'; // Deve estar igual ao do arquivo options.js
 const intervaloDeAtualização = 180000;
 export default class GraficoTransito extends Component {
@@ -43,11 +42,8 @@ export default class GraficoTransito extends Component {
       const dataResponse = response.payload.data;
       let newData = [['Hora','Trânsito', 'Histórico', 'Pluviômetro']];
 
-      //newData.push([new Date(`${dataReferencia} 00:16`),50,100,65])
-      //newData.push([new Date(`${dataReferencia} 01:17`),60,90,90])
       dataResponse.map((dado) => newData.push([new Date(`${dataReferencia} ${dado[0]}`),dado[1], dado[2], dado[3]]));
       this.setState({data: newData});
-      console.log(newData);
 
     } else {
       this.setState({data: []});
@@ -102,13 +98,21 @@ export default class GraficoTransito extends Component {
         </div>
         {!this.hideButtons && (
           <div className="botoes">
-            <div className='botao-expandir' onClick={(e)=>this.alternarTamanhos()} title="Expandir"><i className={`fa fa-${expandido?'compress':'expand'}`}></i></div>
             <button className="somente-expandido" onClick={()=>this.alterarFiltro(7)}> -7D </button>
             <button className="somente-expandido" onClick={()=>this.alterarFiltro(2)}> -2D </button>
             <button className="somente-expandido" onClick={()=>this.alterarFiltro(1)}> -1D </button>
             <button className="somente-expandido" onClick={()=>this.alterarFiltro(0)}> Hoje </button>
           </div>
         )}
+        <div className="via-engarrafada-modulo">
+          <ViaEngarrafada />
+        </div>
+        {!this.hideButtons && (
+          <div className="botoes">
+            <div className='botao-expandir' onClick={(e)=>this.alternarTamanhos()} title="Expandir"><i className={`fa fa-${expandido?'compress':'expand'}`}></i></div>
+          </div>
+        )}
+
       </div>
     );
   }
