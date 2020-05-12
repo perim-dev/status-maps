@@ -122,7 +122,6 @@ class Mapa extends Component {
   
   alternarGraficoTransito = () => {
     this.setState({exibirGraficoTransito:!this.state.exibirGraficoTransito});
-    this.refreshAutomaticoGraficoTransito(!this.state.exibirGraficoTransito)
   }
 
   render() {
