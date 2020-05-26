@@ -15,6 +15,7 @@ import config from '../../config';
 import '../../css/leaflet.css';
 import '../../css/leaflet-popup.css';
 import '../../css/leaflet-icon.css';
+import '../../css/letreiro-botao-menu.css';
 import '../../../node_modules/leaflet-draw/dist/leaflet.draw.css';
 
 /* BuscaGeo */
@@ -31,6 +32,12 @@ import Alarme from '../alarme';
 /* Gráfico de trânsito */
 import GraficoTransito from '../grafico-transito';
 import '../../css/transito.css';
+
+/* Letreiro */
+import Letreiro from '../letreiro';
+
+/* Utils */
+import {notify} from '../../utils';
 
 class Mapa extends Component {
 
@@ -53,29 +60,48 @@ class Mapa extends Component {
       exibirHeatmap: false,
       exibirAlertas: true,
       exibirGraficoTransito: true,
-      data : []
+      exibirLetreiro: true,
+      data : [],
+      letreiroInfo:{}
     };
     this.props.buscarAlarmesDisparados();
   }
 
   handleData(data) {
     let retorno = JSON.parse(data);
-    
+    console.log('websocket',retorno);
 //    console.log("websocket news",data);
 
-    if(retorno.atualizarAlarmes){
+    if( retorno.atualizarAlarmes ){
       this.props.limparAlarmes();
       this.props.buscarAlarmesDisparados();
     }
-
-    retorno.categorias.map((id) =>{
+    if( retorno.categorias ) {
+      retorno.categorias.map((id) =>{
         if(typeof this.props.mapa.groupLayers[id] === 'undefined'){
           return {};
         }
         let categoria = {id:id,icone:this.props.mapa.groupLayers[id].icone};
         return this.props.carregarPontosDaCategoria(categoria);
-    });
+      });
+    }
+
+    if(retorno.aviso) {
+      let intervalo = 0;
+      retorno.aviso.map((a) => {
+        setTimeout(()=>{
+          notify(a.titulo,a.mensagem);
+        },intervalo * 5000);
+        intervalo++;
+        return {};
+      });
+    }
     
+  }
+
+  updateLetreiroInfo = (data) => {
+    this.setState({letreiroInfo:data});
+//    notify("Mudança de Estágio - " + this.state.letreiroInfo.estagio,this.state.letreiroInfo.mensagem);
   }
 
   iconeCategoria(icone,classe){
@@ -109,6 +135,11 @@ class Mapa extends Component {
       })
   }
 
+  alternarTamanhoMapa() {
+    this.atualizarPosicao(this.state.viewport);
+    this.props.alternarTamanhoMapa();
+  }
+
   alternarHeatmapPontos(){
     this.setState({...this.state,exibirHeatmap:!this.state.exibirHeatmap});
   }
@@ -124,13 +155,33 @@ class Mapa extends Component {
     this.setState({exibirGraficoTransito:!this.state.exibirGraficoTransito});
   }
 
+  alternarLetreiro = () => {
+    this.setState({exibirLetreiro:!this.state.exibirLetreiro});
+  }
+
   render() {
 
     const position = [this.state.lat, this.state.lng];
+    const {maximizar = false, alternarTamanhoMapa} = this.props;
+    const {letreiroInfo} = this.state;
+
     return (
-      <div className="col-xs-12 col-sm-12 col-md-9 col-lg-9 mapa-lateral h-100">
+      <div className={`col-xs-12 col-sm-12 ${maximizar?'col-md-12 col-lg-12':'col-md-9 col-lg-9'} mapa-lateral h-100`}>
         <div className="panel bg-grafite modulo">
+          <span className="borda-interativa-mapa" style={{borderColor:letreiroInfo.estagio==='Normalidade'?'rgba(51, 51, 51, 0.8)':letreiroInfo.cor}}>
             {this.state.exibirGraficoTransito && (<GraficoTransito/>)}
+            <div style={{display:this.state.exibirLetreiro?'':'none'}}>
+              <Letreiro updateLetreiroInfo={this.updateLetreiroInfo} />
+            </div>
+
+            <div className="letreiro-button" style={{ borderColor:letreiroInfo.offline?'red':'', borderStyle:letreiroInfo.offline?'Dashed':''}}>
+              <div className={`letreiro-button-conteudo`} 
+                style={{backgroundColor:letreiroInfo.cor, cursor:letreiroInfo.offline?'not-allowed ':'pointer', color:letreiroInfo.offline?'rgba(255,0,0,0,3)':''}} 
+                onClick={(e)=>this.alternarLetreiro()} 
+                title="Estágio"> 
+                  <img width="100%" src={require('../../img/icone-cidade-rj.png')} alt="logo"/> </div>
+            </div>
+
             <div className="heatmap-button">
               <div className={`heatmap-button-conteudo `+ (this.state.exibirHeatmap?'ativo':'')} onClick={(e)=>this.alternarHeatmapPontos()}>HM</div>              
             </div>
@@ -143,9 +194,12 @@ class Mapa extends Component {
               <div className={`transito-menu-button-conteudo `+ (this.state.exibirGraficoTransito?'ativo':'')} onClick={(e)=>this.alternarGraficoTransito()} title="Gráfico de trânsito"><i className="fa fa-area-chart"></i></div>
             </div>
 
-            <Websocket url={config.websockets.atualizacaoPontosPorCategoria} onMessage={this.handleData.bind(this)}/>
+            <Websocket 
+              url={config.websockets.atualizacaoPontosPorCategoria} 
+              onMessage={this.handleData.bind(this)}
+            />
 
-            <Map center={position} zoom={this.state.zoom} onViewportChanged={(viewport) => this.atualizarPosicao(viewport)}>
+            <Map center={position} zoom={this.state.zoom} onViewportChanged={(viewport) => this.atualizarPosicao(viewport)} >
               <TileLayer
                 attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
                 url="https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw"
@@ -231,11 +285,12 @@ class Mapa extends Component {
 
               <BuscaGeo />
             </Map>
-
             <Listagem centralizar={this.centralizar.bind(this)}/>
-            
+            <div className="utilitario-rodape-mapa">
+              <div className='botao-expandir-mapa' onClick={(e)=>alternarTamanhoMapa()} title={`${this.props.maximizar?'Reduzir mapa':'Expandir mapa'}`}><i className={`fa fa-${this.props.maximizar?'chevron-right':'chevron-left'}`}></i></div>
+            </div>            
+          </span>
         </div>
-        
       </div>
     )
   }

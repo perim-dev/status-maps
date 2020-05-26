@@ -1,8 +1,9 @@
 .transito {
+  top: 70px;
   position: absolute;
   z-index: 100000;
   background-color: rgba(0,0,0,0.8);
-  right:0;
+  right:3px;
   min-height: 350px;
   min-width: 250px;
 }
@@ -13,12 +14,13 @@
 
 .normal {
   margin-right: 11px;
-  border: solid 1px #ddd;
+  border: solid 1px #999;
   border-radius: 5px;
   width: 30%;
   height: 55%;
   background-color: rgba(0,0,0,0.8);
-  right:0;
+  right:2px;
+  max-width: 350px;
 }
 
 .expandido {
@@ -29,6 +31,7 @@
   left:0;
   bottom: 0;
   top:0;
+  padding-top:35px;
 }
 
 .expandido .grafico {
@@ -70,8 +73,8 @@
 }
 
 .expandido .botoes button {
-  font-size: 1.2em;
-  padding: 10px 15px;
+  font-size: 1.1em;
+  padding: 5px 12px;
   margin-top: 5px;
 }
 
@@ -88,19 +91,20 @@
   position: absolute;
   float: left;
   bottom: 0;
-  font-size: 1.2em;
-  padding: 5px 10px;
+  font-size: 1.0em;
+  padding: 0px 3px ;
 }
 
 .expandido .botao-expandir {
   margin-bottom:15px; 
   margin-left: 15px;
+  font-size: 1.0em;
 }
 
 .transito-menu-button {
   position: absolute;
-  left: 21px;
-  top: 305px;
+  left: 23px;
+  top: 355px;
   z-index: 10000;
   float: left;
   width: 34px;
@@ -199,6 +203,18 @@
   /* colors: ['#00FFFF', '#DDD', '#ff0000'],  */
   font-size: 1.2em;
   margin-top: 20px;
+}
+
+@media (max-height: 540px) { 
+  .via-engarrafada-modulo {
+    font-size: 0.7em;
+  }
+}
+
+@media (max-height: 400px) { 
+  .via-engarrafada-modulo {
+    display: none;
+  }
 }
 
 .via-engarrafada-modulo {

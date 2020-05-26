@@ -11,8 +11,6 @@ export const buscarDadosGraficoTransito = async (data, token ) => {
         headers.Authorization = `Basic ${token}`
     }
     
-    console.log(config.url + config.resources.graficoTransito +`/${data}`, headers, token);
-
     const request = await axios.get(`${resource}`,{headers: headers});
 
     return {

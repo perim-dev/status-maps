@@ -6,3 +6,7 @@
 .sr-only {
     display: none;
 }
+
+.leaflet-top {
+    top: 50px
+}

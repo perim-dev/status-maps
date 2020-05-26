@@ -8,8 +8,10 @@ import {logout} from '../../auth/actions';
 
 class ListaLateral extends Component {
   render() {
+    const {ocultar} = this.props;
+
     return (
-        <Col xsHidden={true} sm={3} md={3} lg={3} className="modulo h-100">
+        <Col xsHidden={true} sm={3} md={3} lg={3} className="modulo h-100" hidden={ocultar}>
           <div className="area-titulo">
             <div className="area-titulo box area-titulo-logo">
               <img src={require('../../img/logo-IPLANRIO1.png')} alt="logo"/>

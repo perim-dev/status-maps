@@ -17,14 +17,29 @@ import './css/utils.css';
 
 
 class Main extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {mapaExpandido:true};
+    setTimeout(()=>{
+      // Para corrigir o problema de renderização do mapa
+      this.setState({mapaExpandido:false})
+    },500);
+  }
+
+  alternarTamanhoMapa = () => {
+    this.setState({mapaExpandido:!this.state.mapaExpandido});
+  }
+  
 
   render() {
+    const {mapaExpandido} = this.state;
+    
     return (
       <div className="h-100">
         <Row id="layout-corpo" className="safari-fix">
-            <SidebarDemo/>
-            <ListaLateral />
-            <Mapa />            
+            <SidebarDemo exibir={mapaExpandido}/>
+            <ListaLateral ocultar={mapaExpandido} />
+            <Mapa maximizar={mapaExpandido} alternarTamanhoMapa={this.alternarTamanhoMapa} />            
         </Row>
         <Row id="layout-rodape">
           <Rodape />

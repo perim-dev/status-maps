@@ -179,3 +179,34 @@ body {
 	border-color: #404040;
 	background-image: none;
 }
+
+.utilitario-rodape-mapa {
+  position: absolute;
+  bottom: 0;
+  z-index: 1000;
+  margin-bottom: 15px;
+  margin-left: 10px;
+}
+
+.botao-expandir-mapa {
+  padding: 5px 10px;
+  border: solid 1px rgba(170, 170, 170, 0.94);  
+  border-radius: 5px;
+  background-color: rgba(200, 200, 200,0.9);
+  color: rgba(50, 50, 50, 0.94);
+}
+
+@media (max-width: 768px) { 
+  .botao-expandir-mapa {
+    display: none;
+  }
+}
+
+.borda-interativa-mapa {
+  border: solid 3px gray;
+  padding: 0px;
+  height: 100%;
+  width: 100%;
+  display: block;
+  border-radius: 3px;
+}
