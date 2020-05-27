@@ -69,8 +69,6 @@ class Mapa extends Component {
 
   handleData(data) {
     let retorno = JSON.parse(data);
-    console.log('websocket',retorno);
-//    console.log("websocket news",data);
 
     if( retorno.atualizarAlarmes ){
       this.props.limparAlarmes();
