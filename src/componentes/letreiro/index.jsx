@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import '../../css/letreiro.css';
 
 import {buscarDadosEstagioOperacional} from './actions';
-const intervaloDeAtualização = 3000;//5*60000; // 5 minutos
+const intervaloDeAtualização = 3*60000; // 3 minutos
 export default class Letreiro extends Component {
 
   constructor(props) {
