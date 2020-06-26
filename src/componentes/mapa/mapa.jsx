@@ -66,7 +66,6 @@ class Mapa extends Component {
       exibirLetreiro: true,
       data : [],
       letreiroInfo:{},
-      pontos: [],
     };
     this.props.buscarAlarmesDisparados();
     this.mapRef = null;
@@ -141,9 +140,7 @@ class Mapa extends Component {
       lat: viewport.center[0],//-22.123456, 
       lng: viewport.center[1],
       zoom: viewport.zoom
-      })
-      console.log('atualizando posição', viewport, this.mapRef);
-      //this.displayMarkers();
+      });
   }
 
   alternarTamanhoMapa() {
@@ -222,27 +219,6 @@ class Mapa extends Component {
     return map.getBounds().contains(latLngFilter);
   }
 
-  displayMarkers = () => {
-    const map = this.mapRef.leafletElement;
-    // const markers = this.allMarkers.filter(m => map.getBounds().contains(m));
-    const markers = this.props.mapa.groupLayers.map((g)=>{
-      let novoGrupo = {...g};
-      novoGrupo.pontos = g.pontos.filter((p)=>{
-        if( p.geometry.type !=='Point'){
-          return false;
-        }
-        let latLngFilter = new LatLng(p.geometry.coordinates[1],p.geometry.coordinates[0]);
-        
-        return map.getBounds().contains(latLngFilter);
-      });
-      return novoGrupo;
-    });
-
-    this.setState({
-      pontos: markers
-    });
-  }
-
   render() {
 
     const position = [this.state.lat, this.state.lng];
@@ -297,12 +273,11 @@ class Mapa extends Component {
                this.props.alarme.geoJSON.features.map((f,idx)=>{
                   return <Alarme key={`alarme-${f.properties.id}`} feature={f} />
                })}
-              
 
-              {//!this.state.exibirHeatmap && this.state.pontos.length && this.state.pontos.map((groupLayer) => 
-               !this.state.exibirHeatmap && this.props.mapa.groupLayers.map((groupLayer) => 
+              {!this.state.exibirHeatmap && this.props.mapa.groupLayers.map((groupLayer) => 
                 // exibir os pontos
                 (<MarkerClusterGroup removeOutsideVisibleBounds={true}
+                  key={`markerClusterkey-${groupLayer.id}`}
                   iconCreateFunction={
                     function (cluster) {
                         var markers = cluster.getAllChildMarkers();

@@ -13,7 +13,7 @@ export default (state = INITIAL_STATE, action) => {
             novoEstado = {...state};
             let pontos = action.payload.data.slice();
             let icone = action.categoria.icone?'data:image;base64, '+ action.categoria.icone.replace('data:image;base64, ',''):'';
-            novoEstado.groupLayers[action.categoria.id] = {icone:icone,pontos:[]};
+            novoEstado.groupLayers[action.categoria.id] = {id:action.categoria.id, icone:icone,pontos:[]};
 
             pontos.map((ponto) => {
                 ponto.pontosRelacionados = [];

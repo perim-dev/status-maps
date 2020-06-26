@@ -11,9 +11,13 @@ class Heatmap extends React.Component {
 
      
     render() {
-        console.log("render");
         var pontos = [];       
-        this.props.pontos.map((categoria) => categoria.pontos.map((p)=>pontos.push(p)));
+        this.props.pontos.map((categoria) => categoria.pontos.map((p)=>{
+            if(p.geometry.type ==='Point'){
+                pontos.push(p)
+            }
+            return {};
+        }));
         this.pontos = pontos;
 
         return (
