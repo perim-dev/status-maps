@@ -12,7 +12,7 @@ export default (state = INITIAL_STATE, action) => {
             let coresBairro = ['blue','yellow','green','orange','navy','purple'];
             novoEstado = {...state};
             let pontos = action.payload.data.slice();
-            let icone = 'data:image;base64, '+ action.categoria.icone.replace('data:image;base64, ','');
+            let icone = action.categoria.icone?'data:image;base64, '+ action.categoria.icone.replace('data:image;base64, ',''):'';
             novoEstado.groupLayers[action.categoria.id] = {icone:icone,pontos:[]};
 
             pontos.map((ponto) => {

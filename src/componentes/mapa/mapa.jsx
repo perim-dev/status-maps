@@ -3,10 +3,12 @@ import React, { Component } from 'react'
 import { Map, TileLayer, Marker, Popup, Polygon } from 'react-leaflet';
 
 import {connect} from 'react-redux';
-import L from 'leaflet';
+import L, {LatLng} from 'leaflet';
 import {load, carregarPontosDaCategoria, carregarPontosRelacionados} from './actions';
 import { bindActionCreators } from 'redux';
-// import MarkerClusterGroup from 'react-leaflet-markercluster';
+
+import MarkerClusterGroup from "react-leaflet-markercluster";
+
 import Websocket from 'react-websocket';
 import {Row,Col} from 'react-bootstrap';
 import config from '../../config';
@@ -17,6 +19,7 @@ import '../../css/leaflet-popup.css';
 import '../../css/leaflet-icon.css';
 import '../../css/letreiro-botao-menu.css';
 import '../../../node_modules/leaflet-draw/dist/leaflet.draw.css';
+import '../../css/marker-cluster-group.css';
 
 /* BuscaGeo */
 import BuscaGeo from '../buscageo';
@@ -62,9 +65,17 @@ class Mapa extends Component {
       exibirGraficoTransito: true,
       exibirLetreiro: true,
       data : [],
-      letreiroInfo:{}
+      letreiroInfo:{},
+      pontos: [],
     };
     this.props.buscarAlarmesDisparados();
+    this.mapRef = null;
+    
+    // for(let x=0;x<1000;x++){
+    //   let lat = Math.floor(Math.random() * 8999 + 1000);
+    //   let lng = Math.floor(Math.random() * 8999 + 1000);
+    //   console.log(`INSERT INTO public.pontodeinteresse(descricao, geometry, version, categoria_id) VALUES ('carro 05 ${x}', ST_GeomFromText('POINT(-43.${lat} -22.${lng})',4326), 0, 52);`);
+    // }
   }
 
   handleData(data) {
@@ -131,6 +142,8 @@ class Mapa extends Component {
       lng: viewport.center[1],
       zoom: viewport.zoom
       })
+      console.log('atualizando posição', viewport, this.mapRef);
+      //this.displayMarkers();
   }
 
   alternarTamanhoMapa() {
@@ -155,6 +168,79 @@ class Mapa extends Component {
 
   alternarLetreiro = () => {
     this.setState({exibirLetreiro:!this.state.exibirLetreiro});
+  }
+
+  gerarPontoNoMapa = (groupLayer, ponto, idx) => {
+    if(!this.validateMarkers(ponto)){
+      return ;
+    }
+
+    return (<Marker key={`marker-${idx}`} 
+              position={[ponto.geometry.coordinates[1],ponto.geometry.coordinates[0]]} 
+              icon={this.iconeCategoria(groupLayer.icone,'ativo')} > 
+                <Popup className="status-popup"  >
+                <div>
+                  <span className="descricao">{ponto.descricao} </span>
+                  <hr/>
+                  <span className="pontos-relacionados" >
+                    <div className="acao">
+                      <a onClick={(e) =>this.props.carregarPontosRelacionados(ponto)} >Obter pontos relacionados</a>
+                    </div>
+                    <div id="pontosRelacionados" className="itens">
+                      {ponto.pontosRelacionados.map((pontoRelacionado,idx)=>
+                        <div key={`ponto-relacionado-${pontoRelacionado.id}`} className="linha">
+                        <Row>
+                          <Col xs={1} sm={1} md={1} lg={1} className="coluna">
+                            <img src={`${pontoRelacionado.icone}`} alt="" onClick={(e)=>this.centralizar(pontoRelacionado)}/>
+                          </Col>
+                          <Col xs={7} sm={7} md={7} lg={7} className="coluna">
+                            {pontoRelacionado.descricao}
+                          </Col>
+                          <Col xs={3} sm={4} md={4} lg={4} className="coluna">
+                            {pontoRelacionado.distancia} (mts)
+                          </Col>
+                          <div className="row" ></div>
+                        </Row>  
+                        </div>
+                      )}
+                    </div>
+                  </span>
+                </div>
+
+              </Popup>
+            </Marker>)
+  }
+
+  validateMarkers = (p) =>{
+    
+    const map = this.mapRef.leafletElement;
+    if( p.geometry.type !=='Point'){
+      return false;
+    }
+    let latLngFilter = new LatLng(p.geometry.coordinates[1],p.geometry.coordinates[0]);
+    
+    return map.getBounds().contains(latLngFilter);
+  }
+
+  displayMarkers = () => {
+    const map = this.mapRef.leafletElement;
+    // const markers = this.allMarkers.filter(m => map.getBounds().contains(m));
+    const markers = this.props.mapa.groupLayers.map((g)=>{
+      let novoGrupo = {...g};
+      novoGrupo.pontos = g.pontos.filter((p)=>{
+        if( p.geometry.type !=='Point'){
+          return false;
+        }
+        let latLngFilter = new LatLng(p.geometry.coordinates[1],p.geometry.coordinates[0]);
+        
+        return map.getBounds().contains(latLngFilter);
+      });
+      return novoGrupo;
+    });
+
+    this.setState({
+      pontos: markers
+    });
   }
 
   render() {
@@ -197,7 +283,7 @@ class Mapa extends Component {
               onMessage={this.handleData.bind(this)}
             />
 
-            <Map center={position} zoom={this.state.zoom} onViewportChanged={(viewport) => this.atualizarPosicao(viewport)} >
+            <Map ref={(mapRef) => this.mapRef = mapRef } preferCanvas={false} center={position} zoom={this.state.zoom} onViewportChanged={(viewport) => this.atualizarPosicao(viewport)} >
               <TileLayer
                 attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
                 url="https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw"
@@ -211,58 +297,35 @@ class Mapa extends Component {
                this.props.alarme.geoJSON.features.map((f,idx)=>{
                   return <Alarme key={`alarme-${f.properties.id}`} feature={f} />
                })}
+              
 
-              {!this.state.exibirHeatmap && this.props.mapa.groupLayers.map((groupLayer) => 
-                groupLayer.pontos.map((ponto, idx) => {
-                  // exibir os pontos
-                  return (ponto.geometry.type ==='Point' &&  
-                    <Marker key={`marker-${idx}`} 
-                            position={[ponto.geometry.coordinates[1],ponto.geometry.coordinates[0]]} 
-                            icon={this.iconeCategoria(groupLayer.icone,'ativo')} > 
-                      <Popup className="status-popup"  >
-                        <div>
-                          <span className="descricao">{ponto.descricao} </span>
-                          <hr/>
-                          <span className="pontos-relacionados" >
-                            <div className="acao">
-                              <a onClick={(e) =>this.props.carregarPontosRelacionados(ponto)} >Obter pontos relacionados</a>
-                            </div>
-                            <div id="pontosRelacionados" className="itens">
-                              {ponto.pontosRelacionados.map((pontoRelacionado,idx)=>
-                                <div key={`ponto-relacionado-${pontoRelacionado.id}`} className="linha">
-                                <Row>
-                                  <Col xs={1} sm={1} md={1} lg={1} className="coluna">
-                                    <img src={`${pontoRelacionado.icone}`} alt="" onClick={(e)=>this.centralizar(pontoRelacionado)}/>
-                                  </Col>
-                                  <Col xs={7} sm={7} md={7} lg={7} className="coluna">
-                                    {pontoRelacionado.descricao}
-                                  </Col>
-                                  <Col xs={3} sm={4} md={4} lg={4} className="coluna">
-                                    {pontoRelacionado.distancia} (mts)
-                                  </Col>
-                                  <div className="row" ></div>
-                                </Row>  
-                                </div>
+              {//!this.state.exibirHeatmap && this.state.pontos.length && this.state.pontos.map((groupLayer) => 
+               !this.state.exibirHeatmap && this.props.mapa.groupLayers.map((groupLayer) => 
+                // exibir os pontos
+                (<MarkerClusterGroup removeOutsideVisibleBounds={true}
+                  iconCreateFunction={
+                    function (cluster) {
+                        var markers = cluster.getAllChildMarkers();
+                        var html = '<div class="agrupamento"><div class="imagem" style=\'background-image: url("'+groupLayer.icone+'")\'></div><div class="texto">' + markers.length + '</div></div>';
+                        return L.divIcon({ html: html, className: 'mycluster', iconSize: L.point(32, 32) });
+                    }
+                  }
+                >
+                  {groupLayer.pontos.map((ponto, idx) => ponto.geometry.type ==='Point' &&  this.gerarPontoNoMapa(groupLayer, ponto, idx))}
+                </MarkerClusterGroup>))}
 
-                              )}
-                            </div>
-                          </span>
-                        </div>
-                        
-                      </Popup>
-                    </Marker>)
-                    // Exibir polígonos
-                    ||  ((ponto.geometry.type ==='MultiPolygon'|| ponto.geometry.type ==='Polygon') &&  
+              {this.props.mapa.groupLayers.map((groupLayer) => 
+                // Exibir polígonos
+                 groupLayer.pontos.map((ponto, idx) => 
+                    ((ponto.geometry.type ==='MultiPolygon'|| ponto.geometry.type ==='Polygon') &&  
                     <Polygon positions={ponto.geometry.coordinates[0]} color={ponto.cor} >
                       <Popup className="status-popup">
                           <div>
                               <span className="descricao">{ponto.descricao }</span>
                               <hr/>
-                              
                           </div>
                       </Popup>
                     </Polygon>) 
-                }
               ))}
               
               { /* Marcadores da buscaGeo */
