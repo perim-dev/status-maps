@@ -12,6 +12,17 @@ export const carregarPontosDaCategoria = async (categoria) => {
     };
 }
 
+export const carregarAreaDeAtuacao = async (ponto) => {
+    var resource = config.url + config.resources.pontoDeInteresse +'/'+ ponto.id + "/detalhamento/areas";
+    const request = await axios.get(`${resource}`);
+ 
+    return {
+        type: 'CARREGAR_AREAS_DE_ATUACAO',
+        payload: request,
+        ponto: ponto
+    };
+}
+
 export const carregarPontosRelacionados = async (ponto) => {
     var resource = config.url + config.resources.pontoDeInteresse +'/'+ ponto.id + "/pontosRelacionados";
     const request = await axios.get(`${resource}`);

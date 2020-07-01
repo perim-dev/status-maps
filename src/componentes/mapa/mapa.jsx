@@ -3,14 +3,13 @@ import React, { Component } from 'react'
 import { Map, TileLayer, Marker, Popup, Polygon } from 'react-leaflet';
 
 import {connect} from 'react-redux';
-import L, {LatLng} from 'leaflet';
-import {load, carregarPontosDaCategoria, carregarPontosRelacionados} from './actions';
+import L from 'leaflet';
+import {load, carregarPontosDaCategoria, carregarPontosRelacionados, carregarAreaDeAtuacao} from './actions';
 import { bindActionCreators } from 'redux';
 
 import MarkerClusterGroup from "react-leaflet-markercluster";
 
 import Websocket from 'react-websocket';
-import {Row,Col} from 'react-bootstrap';
 import config from '../../config';
 //import pontosRelacionados from './pontos-relacionados';
 
@@ -20,6 +19,9 @@ import '../../css/leaflet-icon.css';
 import '../../css/letreiro-botao-menu.css';
 import '../../../node_modules/leaflet-draw/dist/leaflet.draw.css';
 import '../../css/marker-cluster-group.css';
+
+/* Marcador */
+import Marcador from './marcador';
 
 /* BuscaGeo */
 import BuscaGeo from '../buscageo';
@@ -70,11 +72,6 @@ class Mapa extends Component {
     this.props.buscarAlarmesDisparados();
     this.mapRef = null;
     
-    // for(let x=0;x<1000;x++){
-    //   let lat = Math.floor(Math.random() * 8999 + 1000);
-    //   let lng = Math.floor(Math.random() * 8999 + 1000);
-    //   console.log(`INSERT INTO public.pontodeinteresse(descricao, geometry, version, categoria_id) VALUES ('carro 05 ${x}', ST_GeomFromText('POINT(-43.${lat} -22.${lng})',4326), 0, 52);`);
-    // }
   }
 
   handleData(data) {
@@ -126,13 +123,23 @@ class Mapa extends Component {
 
   }
 
-  centralizar(ponto){
-    let geojson = JSON.parse(ponto.geometryAsGeoJSON);
-    this.setState( {...this.state,
-      lat: geojson.coordinates[1],//-22.123456, 
-      lng: geojson.coordinates[0],
-      zoom: 13
-      })
+  centralizar = (ponto, semzoom=false) => {
+
+    this.mapRef.leafletElement.invalidateSize();
+    let geojson = ponto.geometry || ponto.geometryAsGeoJSON ;//JSON.parse(ponto.geometryAsGeoJSON);
+    if(!semzoom) {
+      this.setState( {...this.state,
+        lat: geojson.coordinates[1],//-22.123456, 
+        lng: geojson.coordinates[0],
+        zoom: 13
+      });
+    } else {
+      this.setState( {...this.state,
+        lat: geojson.coordinates[1],
+        lng: geojson.coordinates[0],        
+      });
+    }
+      
   }
 
   atualizarPosicao(viewport) {
@@ -165,58 +172,6 @@ class Mapa extends Component {
 
   alternarLetreiro = () => {
     this.setState({exibirLetreiro:!this.state.exibirLetreiro});
-  }
-
-  gerarPontoNoMapa = (groupLayer, ponto, idx) => {
-    if(!this.validateMarkers(ponto)){
-      return ;
-    }
-
-    return (<Marker key={`marker-${idx}`} 
-              position={[ponto.geometry.coordinates[1],ponto.geometry.coordinates[0]]} 
-              icon={this.iconeCategoria(groupLayer.icone,'ativo')} > 
-                <Popup className="status-popup"  >
-                <div>
-                  <span className="descricao">{ponto.descricao} </span>
-                  <hr/>
-                  <span className="pontos-relacionados" >
-                    <div className="acao">
-                      <a onClick={(e) =>this.props.carregarPontosRelacionados(ponto)} >Obter pontos relacionados</a>
-                    </div>
-                    <div id="pontosRelacionados" className="itens">
-                      {ponto.pontosRelacionados.map((pontoRelacionado,idx)=>
-                        <div key={`ponto-relacionado-${pontoRelacionado.id}`} className="linha">
-                        <Row>
-                          <Col xs={1} sm={1} md={1} lg={1} className="coluna">
-                            <img src={`${pontoRelacionado.icone}`} alt="" onClick={(e)=>this.centralizar(pontoRelacionado)}/>
-                          </Col>
-                          <Col xs={7} sm={7} md={7} lg={7} className="coluna">
-                            {pontoRelacionado.descricao}
-                          </Col>
-                          <Col xs={3} sm={4} md={4} lg={4} className="coluna">
-                            {pontoRelacionado.distancia} (mts)
-                          </Col>
-                          <div className="row" ></div>
-                        </Row>  
-                        </div>
-                      )}
-                    </div>
-                  </span>
-                </div>
-
-              </Popup>
-            </Marker>)
-  }
-
-  validateMarkers = (p) =>{
-    
-    const map = this.mapRef.leafletElement;
-    if( p.geometry.type !=='Point'){
-      return false;
-    }
-    let latLngFilter = new LatLng(p.geometry.coordinates[1],p.geometry.coordinates[0]);
-    
-    return map.getBounds().contains(latLngFilter);
   }
 
   render() {
@@ -286,7 +241,17 @@ class Mapa extends Component {
                     }
                   }
                 >
-                  {groupLayer.pontos.map((ponto, idx) => ponto.geometry.type ==='Point' &&  this.gerarPontoNoMapa(groupLayer, ponto, idx))}
+                  {groupLayer.pontos.map((ponto, idx) => ponto.geometry.type ==='Point' &&  
+                    <Marcador icone={this.iconeCategoria(groupLayer.icone,'ativo')}
+                      carregarAreaDeAtuacao={this.props.carregarAreaDeAtuacao}
+                      carregarPontosRelacionados={this.props.carregarPontosRelacionados}
+                      ponto={ponto}
+                      key={`marcador-key-${idx}`}
+                      centralizar={this.centralizar}
+                      map={this.mapRef.leafletElement} />
+        
+                  
+                  )}
                 </MarkerClusterGroup>))}
 
               {this.props.mapa.groupLayers.map((groupLayer) => 
@@ -334,5 +299,5 @@ class Mapa extends Component {
 }
 
 const mapStateToProps = state => ({mapa: state.mapa, buscaGeo:state.buscaGeo, alarme:state.alarmes});
-const mapDispatchToProps = dispatch => bindActionCreators({load ,carregarPontosDaCategoria, carregarPontosRelacionados, buscarAlarmesDisparados, limparAlarmes}, dispatch); 
+const mapDispatchToProps = dispatch => bindActionCreators({load ,carregarPontosDaCategoria, carregarPontosRelacionados, buscarAlarmesDisparados, limparAlarmes, carregarAreaDeAtuacao}, dispatch); 
 export default connect(mapStateToProps, mapDispatchToProps)(Mapa) ;

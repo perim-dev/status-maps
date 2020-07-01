@@ -8,11 +8,10 @@ export default (state = INITIAL_STATE, action) => {
             novoEstado = {...state,pontos:[]};
 
             let pontos = action.payload.data.slice();
-            console.log(pontos);
             pontos.map((ponto) => {
                 ponto.pontosRelacionados = [];
                 ponto.geometry = JSON.parse(ponto.geometryAsGeoJSON);
-                console.log(ponto);
+                ponto.geometryAsGeoJSON = JSON.parse(ponto.geometryAsGeoJSON);
                 if(ponto.icone !== null){
                     let icone = 'data:image;base64, '+ ponto.icone.replace('data:image;base64, ','');
                     ponto.icone = icone;
@@ -45,15 +44,14 @@ export default (state = INITIAL_STATE, action) => {
             /* Removendo lixo deixado pela função anterior */
             group = group.filter((a)=> a !== undefined);
             group.sort((a,b)=> a.acervo.localeCompare(b.acervo));
-
+            //group.map((a => a.pontos.map((p)=> p.geometry = JSON.parse(p.geometryAsGeoJSON))));
             return {...state,acervos: group};
         }
 
         case 'MARCAR_DESMARCAR_FILTRO': {
             let newState = {...state};
-            console.log("reducer marcandoDesmarcando",newState.acervos);
+            
             newState.acervos.find(a =>{ 
-                console.log(a)
                 if(a){
                     return a.id === action.payload.acervoId
                 } 

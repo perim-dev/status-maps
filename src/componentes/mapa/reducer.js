@@ -36,15 +36,31 @@ export default (state = INITIAL_STATE, action) => {
             novoEstado = {...state};
 
             let pontos = action.payload.data.slice();
-
-            pontos.map((ponto)=>{
-                let icone = 'data:image;base64, '+ ponto.icone.replace('data:image;base64, ','');
-                ponto.icone = icone;
+            
+            pontos = pontos.filter( (p) => JSON.parse(p.geometryAsGeoJSON).type.toLowerCase() === 'point') ;
+            
+            pontos.map((ponto)=> {
+                ponto.icone = 'data:image;base64, '+ ponto.icone.replace('data:image;base64, ','')
+                ponto.geometry = JSON.parse(ponto.geometryAsGeoJSON);
                 return "";
             });
+
             let ponto = action.ponto;
             let i = novoEstado.groupLayers[ponto.categoriaId].pontos.findIndex(x => x.id === ponto.id);
             novoEstado.groupLayers[ponto.categoriaId].pontos[i].pontosRelacionados = pontos.slice();
+
+            return {...state,mapa:novoEstado};
+        }
+
+        case 'CARREGAR_AREAS_DE_ATUACAO':{
+            
+            novoEstado = {...state};
+
+            let areas = action.payload.data.slice();
+
+            let ponto = action.ponto;
+            let i = novoEstado.groupLayers[ponto.categoriaId].pontos.findIndex(x => x.id === ponto.id);
+            novoEstado.groupLayers[ponto.categoriaId].pontos[i].areasDeAtuacao = areas.slice();
 
             return {...state,mapa:novoEstado};
         }
