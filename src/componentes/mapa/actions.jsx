@@ -34,6 +34,17 @@ export const carregarPontosRelacionados = async (ponto) => {
     };
 }
 
+export const carregarCamerasProximas = async (ponto) => {
+    var resource = config.url + config.resources.pontoDeInteresse +'/'+ ponto.id + "/cameras";
+    const request = await axios.get(`${resource}`);
+ 
+    return {
+        type: 'CARREGAR_CAMERAS_PROXIMAS',
+        payload: request,
+        ponto: ponto
+    };
+}
+
 export const removerPontosDaCategoria = async (id) => {
     /* Limpa os pontos da categoria */
     return {

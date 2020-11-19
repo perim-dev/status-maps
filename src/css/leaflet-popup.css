@@ -1,8 +1,22 @@
 .status-popup {
-    width: 320px;
-    
-
+    width: 350px;
 }
+
+.status-popup-conteudo {
+    max-height: 300px;
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.leaflet-popup-content {
+    width: 100% !important; 
+    padding-right: 10px;
+}
+/*
+.leaflet-popup {
+    -webkit-perspective: 1000;
+}*/
 .status-popup .leaflet-popup-tip,
 .status-popup .leaflet-popup-content-wrapper {
     background: #312c2c;
@@ -11,11 +25,13 @@
 
 .leaflet-popup-content {
     margin: 15px 10px;
+    
 }
 
 .leaflet-popup-content-wrapper {
     border-radius:0;
     min-height: 70px; 
+    
 }
 
 .leaflet-popup-content .descricao{
@@ -60,4 +76,30 @@
     padding-top: 5px;
     text-align: center;
     font-size: 1.1em;
+}
+
+.carrega-url {
+    border: none;
+    height: 200px;
+}
+
+.cameras-proximas {
+    display: inline-block;
+    width: 33.3%;
+    border: none;
+    padding: 3;
+}
+
+.cameras-proximas .cameras-proximas-descricao {
+    color: white;
+    height: 30px;
+    text-overflow: clip;
+    /*white-space: nowrap;
+    overflow: hidden;*/
+    
+    
+}
+
+.cameras-proximas-iframe {
+    border: none;
 }

@@ -15,6 +15,7 @@
     "react-bootstrap": "0.31.3",
     "react-dom": "15.6.1",
     "react-google-charts": "^1.5.5",
+    "react-iframe": "^1.8.0",
     "react-leaflet": "1.6.5",
     "react-leaflet-draw": "^0.18.0",
     "react-leaflet-heatmap-layer": "^1.0.4",

@@ -5,6 +5,8 @@ import {Col, Row} from 'react-bootstrap';
 
 import {LatLng} from 'leaflet';
 
+import Iframe from 'react-iframe';
+
 import '../../css/leaflet.css';
 import '../../css/leaflet-popup.css';
 import '../../css/leaflet-icon.css';
@@ -20,6 +22,7 @@ export default class Marcador extends Component {
     this.setState({atualizandoMaisInformacoes:true});
     await this.props.carregarPontosRelacionados(ponto);
     await this.props.carregarAreaDeAtuacao(ponto);
+    await this.props.carregarCamerasProximas(ponto);
     this.setState({atualizandoMaisInformacoes:false});
   }
 
@@ -43,13 +46,40 @@ export default class Marcador extends Component {
         position={[ponto.geometry.coordinates[1],ponto.geometry.coordinates[0]]} 
         icon={icone} > 
         <Popup className="status-popup" >
-        <div>
+        <div className="status-popup-conteudo">
           <span className="descricao">{ponto.descricao} </span>
+          { ponto.atributos.url && 
+            <div>
+              <Iframe url={ponto.atributos.url}
+
+                width="100%"
+                height="100%"
+                id="myId"
+                className="carrega-url"
+                display="initial"
+                position="relative"/>
+            </div>
+          }
+          
           <hr/>
           <span className="pontos-relacionados" >
             <div className="acao">
               <a onClick={(e) => this.obterMaisInformacoesDoPonto(ponto)} >Obter mais informações</a>
               {this.state.atualizandoMaisInformacoes && <img style={{background:'none',paddingLeft:'5px'}} src={require('../../img/loading.gif')} alt="logo"/>}
+            </div>
+            <div id="camerasProximas" className="itens">
+              {ponto.cameras && ponto.cameras.length > 0 && <div className="titulo-informacoes" title="teste">Câmeras próximas</div>}
+              {ponto.cameras && ponto.cameras.map( c=> 
+                <div key={`camera-proxima-key-${c.id}`} className="cameras-proximas" title={c.descricao}>
+                  <Iframe url={c.atributos.url}
+                    width="100%"
+                    id={`camera-proxima-${c.id}`}
+                    display="initial"
+                    className="cameras-proximas-iframe"
+                    position="relative"/>
+                    <div className="cameras-proximas-descricao">{c.chaveExterna}</div>
+                </div>
+              )}
             </div>
             <div id="areasDeAtuacao" className="itens">
               {ponto.areasDeAtuacao && ponto.areasDeAtuacao.length > 0 && <div className="titulo-informacoes">Circunscrição</div>}

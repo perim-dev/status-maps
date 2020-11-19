@@ -4,7 +4,7 @@ import { Map, TileLayer, Marker, Popup, Polygon } from 'react-leaflet';
 
 import {connect} from 'react-redux';
 import L from 'leaflet';
-import {load, carregarPontosDaCategoria, carregarPontosRelacionados, carregarAreaDeAtuacao} from './actions';
+import {load, carregarPontosDaCategoria, carregarPontosRelacionados, carregarAreaDeAtuacao, carregarCamerasProximas} from './actions';
 import { bindActionCreators } from 'redux';
 
 import MarkerClusterGroup from "react-leaflet-markercluster";
@@ -245,6 +245,7 @@ class Mapa extends Component {
                     <Marcador icone={this.iconeCategoria(groupLayer.icone,'ativo')}
                       carregarAreaDeAtuacao={this.props.carregarAreaDeAtuacao}
                       carregarPontosRelacionados={this.props.carregarPontosRelacionados}
+                      carregarCamerasProximas={this.props.carregarCamerasProximas}
                       ponto={ponto}
                       key={`marcador-key-${idx}`}
                       centralizar={this.centralizar}
@@ -299,5 +300,5 @@ class Mapa extends Component {
 }
 
 const mapStateToProps = state => ({mapa: state.mapa, buscaGeo:state.buscaGeo, alarme:state.alarmes});
-const mapDispatchToProps = dispatch => bindActionCreators({load ,carregarPontosDaCategoria, carregarPontosRelacionados, buscarAlarmesDisparados, limparAlarmes, carregarAreaDeAtuacao}, dispatch); 
+const mapDispatchToProps = dispatch => bindActionCreators({load ,carregarPontosDaCategoria, carregarPontosRelacionados, buscarAlarmesDisparados, limparAlarmes, carregarAreaDeAtuacao, carregarCamerasProximas}, dispatch); 
 export default connect(mapStateToProps, mapDispatchToProps)(Mapa) ;

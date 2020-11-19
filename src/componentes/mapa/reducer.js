@@ -12,7 +12,7 @@ export default (state = INITIAL_STATE, action) => {
             let coresBairro = ['blue','yellow','green','orange','navy','purple'];
             novoEstado = {...state};
             let pontos = action.payload.data.slice();
-            let icone = action.categoria.icone?'data:image;base64, '+ action.categoria.icone.replace('data:image;base64, ',''):'';
+            let icone = action.categoria.icone?'data:image;base64, '+ action.categoria.icone.replace('data:image;base64, ',''):'https://icons.iconarchive.com/icons/icons-land/vista-map-markers/32/Map-Marker-Marker-Outside-Azure-icon.png';
             novoEstado.groupLayers[action.categoria.id] = {id:action.categoria.id, icone:icone,pontos:[]};
 
             pontos.map((ponto) => {
@@ -21,7 +21,11 @@ export default (state = INITIAL_STATE, action) => {
 
                 if(ponto.geometry.type === 'Polygon' || ponto.geometry.type === 'MultiPolygon') {
                     ponto.geometry.coordinates[0] = ponto.geometry.coordinates[0].map((e) => [e[1],e[0]])
-                    ponto.cor = coresBairro[Math.floor(Math.random() * coresBairro.length)];
+                    if(ponto.atributos) {
+                        ponto.cor = ponto.atributos.cor || coresBairro[Math.floor(Math.random() * coresBairro.length)];
+                    } else {
+                        ponto.cor = coresBairro[Math.floor(Math.random() * coresBairro.length)];
+                    }
                 }
                 
                 novoEstado.groupLayers[action.categoria.id].pontos.push(ponto);
@@ -50,6 +54,17 @@ export default (state = INITIAL_STATE, action) => {
             novoEstado.groupLayers[ponto.categoriaId].pontos[i].pontosRelacionados = pontos.slice();
 
             return {...state,mapa:novoEstado};
+        }
+
+        case 'CARREGAR_CAMERAS_PROXIMAS':{
+            
+            novoEstado = {...state};
+
+            let ponto = action.ponto;
+            let i = novoEstado.groupLayers[ponto.categoriaId].pontos.findIndex(x => x.id === ponto.id);
+            novoEstado.groupLayers[ponto.categoriaId].pontos[i].cameras = action.payload.data.slice();
+
+            return {...state};
         }
 
         case 'CARREGAR_AREAS_DE_ATUACAO':{
