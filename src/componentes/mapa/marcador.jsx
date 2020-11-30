@@ -40,7 +40,7 @@ export default class Marcador extends Component {
   render() {
 
     const {ponto, icone, centralizar} = this.props;
-    
+
     return this.validateMarkers(ponto) && (
       <Marker onclick={(e) => centralizar(ponto, true)}
         position={[ponto.geometry.coordinates[1],ponto.geometry.coordinates[0]]} 
@@ -48,7 +48,12 @@ export default class Marcador extends Component {
         <Popup className="status-popup" >
         <div className="status-popup-conteudo">
           <span className="descricao">{ponto.descricao} </span>
-          { ponto.atributos.url && 
+          
+          {ponto.atributos && ponto.atributos.html && 
+            <div className="status-popup-html" dangerouslySetInnerHTML={{__html:ponto.atributos.html}}/>
+          }
+          
+          { ponto.atributos && ponto.atributos.url && 
             <div>
               <Iframe url={ponto.atributos.url}
 

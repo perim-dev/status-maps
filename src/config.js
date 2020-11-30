@@ -11,7 +11,7 @@ const config = {
         graficoTransito: '/graficos/transito',
         graficoEngarrafamento: '/transito/engarrafamento'
     },
-    apiEstagioAtencao:'http://157.230.119.186:8000/estagio_api',
+    apiEstagioAtencao:'http://aplicativo.cocr.com.br/estagio_api',
     websockets:{
         atualizacaoPontosPorCategoria:'ws://'+url_base+'/atualizacaoDePontos'
     }

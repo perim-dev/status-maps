@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { Map, TileLayer, Marker, Popup, Polygon } from 'react-leaflet';
+import { Map, TileLayer, Marker, Popup, Polygon, LayersControl } from 'react-leaflet';
 
 import {connect} from 'react-redux';
 import L from 'leaflet';
@@ -214,12 +214,7 @@ class Mapa extends Component {
             />
 
             <Map ref={(mapRef) => this.mapRef = mapRef } preferCanvas={false} center={position} zoom={this.state.zoom} onViewportChanged={(viewport) => this.atualizarPosicao(viewport)} >
-              <TileLayer
-                attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
-                url="https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw"
-                url_old="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
-                id='mapbox.streets'
-              />
+
               {this.state.exibirHeatmap && <Heatmap pontos={this.props.mapa.groupLayers} />}
 
               {this.state.exibirAlertas && 
@@ -286,6 +281,26 @@ class Mapa extends Component {
               )}
 
               <BuscaGeo />
+
+
+              <LayersControl position="bottomright">
+                <LayersControl.BaseLayer checked name="Mapa">
+                  <TileLayer
+                    attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
+                    url="https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw"
+                    url_old="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
+                    id='mapbox.streets'
+                  />
+                </LayersControl.BaseLayer>
+                <LayersControl.BaseLayer name="Satélite">
+                  <TileLayer
+                    attribution='Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+                    url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+                  />
+                </LayersControl.BaseLayer>
+              </LayersControl>
+
+
             </Map>
             <Listagem centralizar={this.centralizar.bind(this)}/>
             <div className="utilitario-rodape-mapa">

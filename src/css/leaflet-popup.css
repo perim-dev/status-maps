@@ -103,3 +103,7 @@
 .cameras-proximas-iframe {
     border: none;
 }
+
+.status-popup-html {
+    overflow: auto;   
+}
