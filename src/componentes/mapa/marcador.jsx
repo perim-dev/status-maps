@@ -56,7 +56,6 @@ export default class Marcador extends Component {
           { ponto.atributos && ponto.atributos.url && 
             <div>
               <Iframe url={ponto.atributos.url}
-
                 width="100%"
                 height="100%"
                 id="myId"

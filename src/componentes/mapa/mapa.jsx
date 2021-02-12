@@ -44,6 +44,11 @@ import Letreiro from '../letreiro';
 /* Utils */
 import {notify} from '../../utils';
 
+/* Avisos */
+import Avisos from '../avisos';
+import '../../css/avisos.css';
+import GerenciadorDeAvisos from '../../utils/GerenciadorDeAvisos';
+
 class Mapa extends Component {
 
   constructor(props) {
@@ -66,11 +71,15 @@ class Mapa extends Component {
       exibirAlertas: true,
       exibirGraficoTransito: true,
       exibirLetreiro: true,
+      exibirAvisos: false,
+      novoAviso: false,
       data : [],
       letreiroInfo:{},
     };
     this.props.buscarAlarmesDisparados();
     this.mapRef = null;
+    this.avisosRef = null;
+
   }
 
   handleData(data) {
@@ -92,13 +101,31 @@ class Mapa extends Component {
 
     if(retorno.aviso) {
       let intervalo = 0;
+      
+      this.setState({novoAviso: true});
+      let tempoPiscando = this.state.exibirAvisos? 60000:config.TEMPO_AVISO_MINUTOS*60*1000;
+      
+      clearTimeout(this.timerPiscandoAviso);
+      this.timerPiscandoAviso = setTimeout(()=>{
+        this.setState({novoAviso: false});
+      },tempoPiscando);
+
+
       retorno.aviso.map((a) => {
+
+        GerenciadorDeAvisos.adicionar(a);
+
         setTimeout(()=>{
           notify(a.titulo,a.mensagem);
         },intervalo * 5000);
         intervalo++;
         return {};
       });
+
+      if(this.state.exibirAvisos) {
+        this.avisosRef.atualizaDados();
+      }
+
     }
     
   }
@@ -173,6 +200,10 @@ class Mapa extends Component {
     this.setState({exibirLetreiro:!this.state.exibirLetreiro});
   }
 
+  exibirAvisos = () => {
+     this.setState({novoAviso: false, exibirAvisos: !this.state.exibirAvisos });
+  }
+
   render() {
 
     const position = [this.state.lat, this.state.lng];
@@ -196,6 +227,8 @@ class Mapa extends Component {
                   <img width="100%" src={require('../../img/icone-cidade-rj.png')} alt="logo"/> </div>
             </div>
 
+            {this.state.exibirAvisos && (<Avisos ref={(avisosRef) => this.avisosRef = avisosRef } onRemove={()=> this.setState({novoAviso:false})} />)}
+
             <div className="heatmap-button">
               <div className={`heatmap-button-conteudo `+ (this.state.exibirHeatmap?'ativo':'')} onClick={(e)=>this.alternarHeatmapPontos()}>HM</div>              
             </div>
@@ -208,7 +241,14 @@ class Mapa extends Component {
               <div className={`transito-menu-button-conteudo `+ (this.state.exibirGraficoTransito?'ativo':'')} onClick={(e)=>this.alternarGraficoTransito()} title="Gráfico de trânsito"><i className="fa fa-area-chart"></i></div>
             </div>
 
+            <div className="avisos-menu-button">
+              <div className={`avisos-menu-button-conteudo `+ (this.state.novoAviso?'ativo':'')} onClick={(e)=>this.exibirAvisos()} title="Avisos"><i className="fa fa-bell"></i></div>
+            </div>
+
             <Websocket 
+              debug={true}
+              onOpen={() => console.log('Abriu o socket')}
+              onclose={() => console.log('Fechou o socket')}
               url={config.websockets.atualizacaoPontosPorCategoria} 
               onMessage={this.handleData.bind(this)}
             />
@@ -254,7 +294,7 @@ class Mapa extends Component {
                 // Exibir polígonos
                  groupLayer.pontos.map((ponto, idx) => 
                     ((ponto.geometry.type ==='MultiPolygon'|| ponto.geometry.type ==='Polygon') &&  
-                    <Polygon positions={ponto.geometry.coordinates[0]} color={ponto.cor} >
+                    <Polygon positions={ponto.geometry.coordinates[0]} color={ponto.cor} style={{"stroke-width":"0","fill-opacity":0.1}} >
                       <Popup className="status-popup">
                           <div>
                               <span className="descricao">{ponto.descricao }</span>
@@ -286,10 +326,8 @@ class Mapa extends Component {
               <LayersControl position="bottomright">
                 <LayersControl.BaseLayer checked name="Mapa">
                   <TileLayer
-                    attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
-                    url="https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw"
-                    url_old="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
-                    id='mapbox.streets'
+                    attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                   />
                 </LayersControl.BaseLayer>
                 <LayersControl.BaseLayer name="Satélite">

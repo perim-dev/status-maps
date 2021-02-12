@@ -18,7 +18,6 @@ class GraficoTransitoSinglePage extends Component {
 
     render() {
         
-        console.log(this.getToken());
         return (
             <div className="single-page">
                 <GraficoTransito singlePage={true} hideButtons={true} token={this.getToken()}/>

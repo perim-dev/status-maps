@@ -13,7 +13,6 @@ class PontosRelacionados extends Component {
 
   constructor(props) {
     super(props);
-    console.log('iniciou pontos relacionados');
   }
   
   render() {

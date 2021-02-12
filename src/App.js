@@ -12,9 +12,6 @@ import Rotas from './routes.js';
 
 class App extends Component {
 
-  componentDidMount(){
-    console.log("App","montou o objeto");
-  }
   render() {
     return (
       <div className="content-fluid h-100">

@@ -17,7 +17,6 @@ export default (state = INITIAL_STATE, action) => {
             }
         }
         case 'AUTH_LOGIN':{
-            console.log(action.payload);
             localStorage.setItem(userKey,action.token)
             return {...state, validToken:true,token:action.token};
         }
