@@ -34,7 +34,11 @@ export default (state = INITIAL_STATE, action) => {
                 ))
             );
 
-            novoEstado.pontos.sort((a, b) => a.descricao.localeCompare(b.descricao));
+            novoEstado.pontos.sort((a, b) => {
+                const descA = a.descricao || '';
+                const descB = b.descricao || '';
+                return descA.localeCompare(descB);
+            });
 
             let group = novoEstado.pontos.reduce(function(r,p){
                 r[p.acervoId] = r[p.acervoId] || {pontos:[],acervo:p.descricaoAcervo,visivel:true, id:p.acervoId};
