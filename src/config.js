@@ -1,4 +1,4 @@
-const WSS_HOM = 'ws://10.5.224.184:8080/status/atualizacaoDePontos';//'ws://34.120.28.181/status/atualizacaoDePontos';
+const WSS_HOM = 'ws://34.120.28.181/status/atualizacaoDePontos';
 const URL_BASE = process.env.REACT_APP_API_URL|| process.env.NODE_ENV === "development" ? '10.5.224.163:5001/status':window.location.href.split('/')[2]+"/status";
 const WSS_BASE = process.env.NODE_ENV === "development" ? WSS_HOM :'ws://'+URL_BASE+'/atualizacaoDePontos';
 
