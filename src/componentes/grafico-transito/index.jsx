@@ -12,7 +12,7 @@ import ViaEngarrafada from '../via-engarrafada';
 import {options} from './options.js';
 
 // const dataReferencia = '2020-01-01'; // Deve estar igual ao do arquivo options.js
-const intervaloDeAtualização = 10000;//180000;
+const intervaloDeAtualização = 180000;
 export default class GraficoTransito extends Component {
 
   constructor(props) {
