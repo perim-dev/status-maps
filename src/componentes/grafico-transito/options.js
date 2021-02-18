@@ -33,6 +33,9 @@ export const options = {
   },
   vAxes: {
     0: {
+      ticks:{
+        max: 2
+      },
       baselineColor: '#777777',
       textColor: '#00ffff',
       gridlines: {
@@ -46,6 +49,9 @@ export const options = {
 
     },
     1: {
+      ticks:{
+        max: 2
+      },
       baselineColor: '#777777',
       textColor: '#FF0000',
       gridlines: {
@@ -60,6 +66,9 @@ export const options = {
       }
     },
     2: {
+      ticks:{
+        max: 2
+      },
       baselineColor: '#777777',
       textColor: '#777777',
       gridlines: {

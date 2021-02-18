@@ -12,7 +12,7 @@ import ViaEngarrafada from '../via-engarrafada';
 import {options} from './options.js';
 
 const dataReferencia = '2020-01-01'; // Deve estar igual ao do arquivo options.js
-const intervaloDeAtualização = 180000;
+const intervaloDeAtualização = 10000;//180000;
 export default class GraficoTransito extends Component {
 
   constructor(props) {
@@ -20,7 +20,7 @@ export default class GraficoTransito extends Component {
     this.feature = props.feature;
     let expandido = props.singlePage || false;
     this.hideButtons = props.hideButtons || false;
-    this.state = {expandido:expandido, data:[], filtro:moment().format("YYYY-MM-DD")}
+    this.state = {expandido:expandido, data:[], filtro:moment().format("YYYY-MM-DD"),options:options}
     this.ativo = true;
   }
   
@@ -52,6 +52,22 @@ export default class GraficoTransito extends Component {
   }
 
   refresh = () =>{
+    setTimeout(() => {
+      // return this.setState({options:{}})
+      let {options} = this.state;
+      options.vAxes[0].viewWindow.max = 100;
+      options.vAxes[0].gridlines.count = 4;
+      
+      options.vAxes[1].viewWindow.max = 200;
+      options.vAxes[1].gridlines.count = 4;
+      
+      options.vAxes[2].viewWindow.max = 200;
+      options.vAxes[2].gridlines.count = 4;
+      this.setState({options});
+
+      return console.log('options', this.state.options);
+
+    }, 3000);
     setTimeout(()=> {
       this.atualizaDados(this.state.filtro);
       if(this.ativo) {
@@ -70,7 +86,7 @@ export default class GraficoTransito extends Component {
   }
 
   render() {
-    const { expandido, data } = this.state
+    const { expandido, data, options } = this.state
 
     return (
       <div className={`transito ${expandido?'expandido':'normal'}`}>
