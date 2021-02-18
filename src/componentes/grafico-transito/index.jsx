@@ -11,7 +11,7 @@ import ViaEngarrafada from '../via-engarrafada';
 
 import {options} from './options.js';
 
-const dataReferencia = '2020-01-01'; // Deve estar igual ao do arquivo options.js
+// const dataReferencia = '2020-01-01'; // Deve estar igual ao do arquivo options.js
 const intervaloDeAtualização = 10000;//180000;
 export default class GraficoTransito extends Component {
 
@@ -41,9 +41,24 @@ export default class GraficoTransito extends Component {
     if( status === 200){
       const dataResponse = response.payload.data;
       let newData = [['Hora','Trânsito', 'Histórico', 'Pluviômetro']];
+      let {options, filtro} = this.state;
+      let maximizado = false;
+      dataResponse.map((dado) => {
 
-      dataResponse.map((dado) => newData.push([new Date(`${dataReferencia} ${dado[0]}`),dado[1], dado[2], dado[3]]));
-      this.setState({data: newData});
+        if(dado[1] > 150 || dado[2] > 150 || dado[3]>100){
+          maximizado = true;
+        }
+        return newData.push([new Date(`${this.state.filtro} ${dado[0]}`),dado[1], dado[2], dado[3]])
+      });
+
+      options.vAxes[0].viewWindow.max = maximizado ? options.limites.maximizado.pluviometro:options.limites.normal.pluviometro;
+      options.vAxes[1].viewWindow.max = maximizado ? options.limites.maximizado.transito:options.limites.normal.transito;
+      options.vAxes[2].viewWindow.max = maximizado ? options.limites.maximizado.transito:options.limites.normal.transito;
+      options.hAxis.viewWindow.min = new Date(`${filtro} 00:00:00`);
+      options.hAxis.viewWindow.max = moment(`${filtro} 00:00:00`,'YYYY-MM-DD HH:mm:ss').add(1,'days').toDate();
+      //moment(startdate, "DD-MM-YYYY").add(5, 'days')
+
+      this.setState({data: newData, options:options});
 
     } else {
       this.setState({data: []});
@@ -52,22 +67,6 @@ export default class GraficoTransito extends Component {
   }
 
   refresh = () =>{
-    setTimeout(() => {
-      // return this.setState({options:{}})
-      let {options} = this.state;
-      options.vAxes[0].viewWindow.max = 100;
-      options.vAxes[0].gridlines.count = 4;
-      
-      options.vAxes[1].viewWindow.max = 200;
-      options.vAxes[1].gridlines.count = 4;
-      
-      options.vAxes[2].viewWindow.max = 200;
-      options.vAxes[2].gridlines.count = 4;
-      this.setState({options});
-
-      return console.log('options', this.state.options);
-
-    }, 3000);
     setTimeout(()=> {
       this.atualizaDados(this.state.filtro);
       if(this.ativo) {

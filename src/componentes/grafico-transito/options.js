@@ -1,4 +1,14 @@
 export const options = {
+  limites: {
+    normal: {
+      transito: 200,
+      pluviometro: 100
+    },
+    maximizado: {
+      transito: 300,
+      pluviometro: 150
+    }
+  },
   width: '100%',
   height: '100%',
   chartArea: { 'width': '75%', 'height': '80%' },
@@ -10,7 +20,7 @@ export const options = {
   legendTextStyle: { color: '#777777' },
   hAxis: {
     textColor: '#FFF',
-    viewWindow: {
+    viewWindow: { // Valor atualizado dinâmicamente no index.jsx
       min: new Date('2020-01-01 00:00:00'),
       max: new Date('2020-01-02 00:00:00')
     },
