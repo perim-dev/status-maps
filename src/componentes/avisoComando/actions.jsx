@@ -6,7 +6,6 @@ const headers = {'Content-Type': 'application/json'}
 export const enviarAviso = async (aviso) => {
 
     var resource = config.URL_COMANDO+'/aviso';
-    console.log(aviso);
     if(!aviso.endereco || aviso.endereco === ''){
         aviso.endereco = " ";
     }

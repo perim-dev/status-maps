@@ -10,6 +10,22 @@
 
 .aviso-comando input {
   color:black;
+  margin-bottom: 3px;
+}
+.aviso-comando-barra-titulo {
+  
+  background-color: #404040;
+  margin-bottom: 5px;
+  margin-top: -10px;
+  margin-left: -10px;
+  margin-right: -10px;
+  padding: 5px;
+  padding-left: 10px;
+  border-radius: 5px 5px 0 0;
+}
+
+.aviso-comando-barra-titulo-label {
+  font-weight: bold; 
 }
 
 .aviso-comando-fechar {
