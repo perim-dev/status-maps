@@ -77,7 +77,7 @@ class Mapa extends Component {
       novoAviso: false,
       data : [],
       letreiroInfo:{},
-      avisoComando: {show:true, left:0, top:0, latlng: {lat:0,lng:0}},
+      avisoComando: {show:false, left:0, top:0, latlng: {lat:0,lng:0}},
     };
     this.props.buscarAlarmesDisparados();
     this.mapRef = null;
