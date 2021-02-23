@@ -43,7 +43,7 @@ export default class AvisoComando extends Component {
                 style={{left:this.props.left-5, top:this.props.top-5}}>
                     <div className="aviso-comando-barra-titulo">
                         <span className="aviso-comando-barra-titulo-label">Enviar aviso ao COMANDO</span>
-                        <div className="aviso-comando-fechar"><i className="fa fa-times-circle" aria-hidden="true" title="Remover" onClick={() => this.props.fechar()}/></div>
+                        <div className="aviso-comando-fechar"><i className="fa fa-times-circle" aria-hidden="true" title="Fechar" onClick={() => this.props.fechar()}/></div>
                     </div>
                     <form>
                         <input type="text" value={this.state.descricao} onChange={this.handleChangeDescricao} placeholder="Informação / Descrição"/>

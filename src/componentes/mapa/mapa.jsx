@@ -274,6 +274,9 @@ class Mapa extends Component {
                 center={position} 
                 zoom={this.state.zoom} 
                 onViewportChanged={(viewport) => this.atualizarPosicao(viewport)} 
+                onzoomstart={(e) => this.setState({avisoComando: {show:false}}) }
+                onmovestart={(e) => this.setState({avisoComando: {show:false}}) }
+                onresize={(e) => this.setState({avisoComando: {show:false}}) }
                 oncontextmenu={(e)=> {
                   this.setState({avisoComando: {show:false}});
                   this.setState({avisoComando: {show:true, left: e.originalEvent.clientX, top: e.originalEvent.clientY, latlng: e.latlng}})
@@ -367,7 +370,14 @@ class Mapa extends Component {
             </Map>
             <Listagem centralizar={this.centralizar.bind(this)}/>
             <div className="utilitario-rodape-mapa">
-              <div className='botao-expandir-mapa' onClick={(e)=>alternarTamanhoMapa()} title={`${this.props.maximizar?'Reduzir mapa':'Expandir mapa'}`}><i className={`fa fa-${this.props.maximizar?'chevron-right':'chevron-left'}`}></i></div>
+              <div className='botao-expandir-mapa' 
+                onClick={(e)=>{ 
+                  alternarTamanhoMapa();
+                  this.setState({avisoComando: {show:false}});
+                }} 
+                title={`${this.props.maximizar?'Reduzir mapa':'Expandir mapa'}`}>
+                  <i className={`fa fa-${this.props.maximizar?'chevron-right':'chevron-left'}`}></i>
+              </div>
             </div>            
           </span>
         </div>
