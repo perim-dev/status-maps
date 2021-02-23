@@ -72,7 +72,7 @@ export default class Avisos extends Component {
                     {aviso.intervalo}
                   </div>
                   <div className="avisos-mensagem-fechar">
-                    <i className="fa fa-times-circle" aria-hidden="true" title="Remover" onClick={() => this.removerAviso(aviso.id)}/>
+                    <i className="fa fa-times-circle" aria-hidden="true" title="fechar" onClick={() => this.removerAviso(aviso.id)}/>
                   </div>
                 </div>
                 <div className="avisos-mensagem-texto">

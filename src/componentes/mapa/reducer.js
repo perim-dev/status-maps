@@ -4,6 +4,12 @@ const INITIAL_STATE = {lat:-22.9335,lng:-43.3206,zoom:11,
                       };
 
 export default (state = INITIAL_STATE, action) => {
+    
+    const ajusteCamera = (ponto) => {
+        ponto.atributos.html = `<html><body><img onerror="this.src='${require('../../img/camera-not-found.png')}';this.style.width='80%'" style="width:100%" src="http://10.50.3.180:9${ponto.chaveExterna}/video-1"/></body></html>`;
+        ponto.atributos.url = null;
+    }
+
     var novoEstado;
     switch(action.type){
         case 'MAP_LOAD':
@@ -18,6 +24,10 @@ export default (state = INITIAL_STATE, action) => {
             pontos.map((ponto) => {
                 ponto.pontosRelacionados = [];
                 ponto.geometry = JSON.parse(ponto.geometry)
+
+                if(ponto.categoriaId === 55){
+                    ajusteCamera(ponto);
+                }
 
                 if(ponto.geometry.type === 'Polygon' || ponto.geometry.type === 'MultiPolygon') {
                     ponto.geometry.coordinates[0] = ponto.geometry.coordinates[0].map((e) => [e[1],e[0]])
@@ -63,6 +73,7 @@ export default (state = INITIAL_STATE, action) => {
             let ponto = action.ponto;
             let i = novoEstado.groupLayers[ponto.categoriaId].pontos.findIndex(x => x.id === ponto.id);
             novoEstado.groupLayers[ponto.categoriaId].pontos[i].cameras = action.payload.data.slice();
+            novoEstado.groupLayers[ponto.categoriaId].pontos[i].cameras.map( c => ajusteCamera(c));
 
             return {...state};
         }

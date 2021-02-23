@@ -49,6 +49,8 @@ import Avisos from '../avisos';
 import '../../css/avisos.css';
 import GerenciadorDeAvisos from '../../utils/GerenciadorDeAvisos';
 
+import AvisoComando from '../avisoComando';
+
 class Mapa extends Component {
 
   constructor(props) {
@@ -75,6 +77,7 @@ class Mapa extends Component {
       novoAviso: false,
       data : [],
       letreiroInfo:{},
+      avisoComando: {show:false, left:0, top:0, latlng: {lat:0,lng:0}},
     };
     this.props.buscarAlarmesDisparados();
     this.mapRef = null;
@@ -204,6 +207,10 @@ class Mapa extends Component {
      this.setState({novoAviso: false, exibirAvisos: !this.state.exibirAvisos });
   }
 
+  criarAviso = () => {
+
+  }
+
   render() {
 
     const position = [this.state.lat, this.state.lng];
@@ -245,6 +252,15 @@ class Mapa extends Component {
               <div className={`avisos-menu-button-conteudo `+ (this.state.novoAviso?'ativo':'')} onClick={(e)=>this.exibirAvisos()} title="Avisos"><i className="fa fa-bell"></i></div>
             </div>
 
+            {this.state.avisoComando.show && 
+              <AvisoComando fechar={(e) => this.setState({avisoComando:{show:false}})} 
+                left={this.state.avisoComando.left-5}  
+                top={this.state.avisoComando.top-5} 
+                lat={this.state.avisoComando.latlng.lat}
+                lng={this.state.avisoComando.latlng.lng}
+              />
+            }
+
             <Websocket 
               debug={true}
               onOpen={() => console.log('Abriu o socket')}
@@ -253,7 +269,16 @@ class Mapa extends Component {
               onMessage={this.handleData.bind(this)}
             />
 
-            <Map ref={(mapRef) => this.mapRef = mapRef } preferCanvas={false} center={position} zoom={this.state.zoom} onViewportChanged={(viewport) => this.atualizarPosicao(viewport)} >
+            <Map ref={(mapRef) => this.mapRef = mapRef } 
+                preferCanvas={false} 
+                center={position} 
+                zoom={this.state.zoom} 
+                onViewportChanged={(viewport) => this.atualizarPosicao(viewport)} 
+                oncontextmenu={(e)=> {
+                  this.setState({avisoComando: {show:false}});
+                  this.setState({avisoComando: {show:true, left: e.originalEvent.clientX, top: e.originalEvent.clientY, latlng: e.latlng}})
+                }}
+            >
 
               {this.state.exibirHeatmap && <Heatmap pontos={this.props.mapa.groupLayers} />}
 

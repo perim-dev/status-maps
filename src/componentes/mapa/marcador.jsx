@@ -45,7 +45,7 @@ export default class Marcador extends Component {
       <Marker onclick={(e) => centralizar(ponto, true)}
         position={[ponto.geometry.coordinates[1],ponto.geometry.coordinates[0]]} 
         icon={icone} > 
-        <Popup className="status-popup" >
+        <Popup className="status-popup" autoPan={false} >
         <div className="status-popup-conteudo">
           <span className="descricao">{ponto.descricao} </span>
           
@@ -75,13 +75,8 @@ export default class Marcador extends Component {
               {ponto.cameras && ponto.cameras.length > 0 && <div className="titulo-informacoes" title="teste">Câmeras próximas</div>}
               {ponto.cameras && ponto.cameras.map( c=> 
                 <div key={`camera-proxima-key-${c.id}`} className="cameras-proximas" title={c.descricao}>
-                  <Iframe url={c.atributos.url}
-                    width="100%"
-                    id={`camera-proxima-${c.id}`}
-                    display="initial"
-                    className="cameras-proximas-iframe"
-                    position="relative"/>
-                    <div className="cameras-proximas-descricao">{c.chaveExterna}</div>
+                  <div className="cameras-proximas-img" dangerouslySetInnerHTML={{__html:c.atributos.html}}/>
+                  <div className="cameras-proximas-descricao">{c.chaveExterna}</div>
                 </div>
               )}
             </div>

@@ -45,15 +45,15 @@ export default class GraficoTransito extends Component {
       let maximizado = false;
       dataResponse.map((dado) => {
 
-        if(dado[1] > 150 || dado[2] > 150 || dado[3]>100){
+        if(dado[1] > 200 || dado[2] > 200 || dado[3]>100){
           maximizado = true;
         }
-        return newData.push([new Date(`${this.state.filtro} ${dado[0]}`),dado[1], dado[2], dado[3]])
+        return newData.push([new Date(`${this.state.filtro} ${dado[0]}`),dado[1], dado[2], dado[3]]);
       });
 
-      options.vAxes[0].viewWindow.max = maximizado ? options.limites.maximizado.pluviometro:options.limites.normal.pluviometro;
-      options.vAxes[1].viewWindow.max = maximizado ? options.limites.maximizado.transito:options.limites.normal.transito;
-      options.vAxes[2].viewWindow.max = maximizado ? options.limites.maximizado.transito:options.limites.normal.transito;
+      options.vAxes[0].viewWindow.max = maximizado ? options.limites.maximizado.pluviometro : options.limites.normal.pluviometro;
+      options.vAxes[1].viewWindow.max = maximizado ? options.limites.maximizado.transito : options.limites.normal.transito;
+      options.vAxes[2].viewWindow.max = maximizado ? options.limites.maximizado.transito : options.limites.normal.transito;
       options.hAxis.viewWindow.min = new Date(`${filtro} 00:00:00`);
       options.hAxis.viewWindow.max = moment(`${filtro} 00:00:00`,'YYYY-MM-DD HH:mm:ss').add(1,'days').toDate();
       //moment(startdate, "DD-MM-YYYY").add(5, 'days')

@@ -96,12 +96,16 @@
     text-overflow: clip;
     /*white-space: nowrap;
     overflow: hidden;*/
-    
-    
 }
 
-.cameras-proximas-iframe {
+.cameras-proximas-img img{
+    background-color: transparent !important;
+}
+
+.cameras-proximas-img{
     border: none;
+    background-attachment: fixed;
+    
 }
 
 .status-popup-html {
