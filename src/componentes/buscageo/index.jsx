@@ -15,6 +15,11 @@ class BuscaGeo extends Component {
         this._editableFG = null;
     }
 
+    limparTudo = () => {
+        console.log('Limpando todos os pontos');
+        this.limparPontos();
+    }
+
     render(){
         return (
             <div>

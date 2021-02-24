@@ -13,15 +13,20 @@ class Listagem extends Component {
         return (
             <div className={this.props.buscaGeo.acervos.length>0?'resultado-buscageo ativo':'resultado-buscageo inativo'} >
                 <div className="row buscageo-filtro">
-                {this.props.buscaGeo.acervos.map((acervo,idAcervo)=> 
-                  <Col xs={6} sm={6} md={2} key={`buscageo-filtro-acervo` +idAcervo}>
-                    <input  type="checkbox" 
-                        checked={acervo.visivel} 
-                        onChange={(e)=>this.props.marcarDesmarcarFiltro(acervo.id,e.target.checked)}
-                        name={"buscageo_acervo_input"+acervo.id} 
-                        id={"buscageo_acervo_input_"+acervo.id}/><div className="buscageo-filtro-texto">{acervo.acervo} </div>
-                  </Col>
-                )}
+                
+                  {this.props.buscaGeo.acervos.map((acervo,idAcervo)=> 
+                    <Col xs={6} sm={6} md={2} key={`buscageo-filtro-acervo` +idAcervo}>
+                      <input  type="checkbox" 
+                          checked={acervo.visivel} 
+                          onChange={(e)=>this.props.marcarDesmarcarFiltro(acervo.id,e.target.checked)}
+                          name={"buscageo_acervo_input"+acervo.id} 
+                          id={"buscageo_acervo_input_"+acervo.id}/><div className="buscageo-filtro-texto">{acervo.acervo} </div>
+                    </Col>
+                  )}
+                </div>
+
+                <div className="buscageo-limpar">
+                  <span onClick={() => this.props.limpar()} style={{float:'right'}}><i className="fa fa-trash" title="limpar"></i></span>
                 </div>
 
                 <div className="row" />

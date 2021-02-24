@@ -38,6 +38,12 @@
     white-space:pre-line;
 }
 
+.leaflet-popup-content .link-exibir-pontos-poligono{
+    display: inline-block;
+    white-space:pre-line;
+    cursor: pointer;
+}
+
 .leaflet-popup .pontos-relacionados img{
     width: 20px;
     border: solid 1px rgba(10,10,10,0.2);

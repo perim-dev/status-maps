@@ -74,6 +74,7 @@ class Mapa extends Component {
       exibirGraficoTransito: true,
       exibirLetreiro: true,
       exibirAvisos: false,
+      exibirBuscaGeo: true,
       novoAviso: false,
       data : [],
       letreiroInfo:{},
@@ -82,6 +83,7 @@ class Mapa extends Component {
     this.props.buscarAlarmesDisparados();
     this.mapRef = null;
     this.avisosRef = null;
+    this.buscaGeoRef = null;
 
   }
 
@@ -135,7 +137,6 @@ class Mapa extends Component {
 
   updateLetreiroInfo = (data) => {
     this.setState({letreiroInfo:data});
-//    notify("Mudança de Estágio - " + this.state.letreiroInfo.estagio,this.state.letreiroInfo.mensagem);
   }
 
   iconeCategoria(icone,classe){
@@ -206,9 +207,11 @@ class Mapa extends Component {
   exibirAvisos = () => {
      this.setState({novoAviso: false, exibirAvisos: !this.state.exibirAvisos });
   }
-
-  criarAviso = () => {
-
+ 
+  limparBuscaGeo = () => {
+    this.buscaGeoRef.selector.props.limparPontos();
+    this.setState({exibirBuscaGeo:false},() => this.setState({exibirBuscaGeo:true}));
+    
   }
 
   render() {
@@ -327,6 +330,14 @@ class Mapa extends Component {
                           <div>
                               <span className="descricao">{ponto.descricao }</span>
                               <hr/>
+                              <span className="link-exibir-pontos-poligono" 
+                                onClick={(e) =>{
+                                  let geometry = {type: ponto.geometry.type, coordinates:[[]]};
+                                  geometry.coordinates[0] = ponto.geometry.coordinates[0].map( c => [c[1], c[0]] );
+                                  this.buscaGeoRef.selector.props.buscarPontos(geometry);
+                                }}>
+                                Exibir pontos no polígono
+                              </span>
                           </div>
                       </Popup>
                     </Polygon>) 
@@ -348,8 +359,7 @@ class Mapa extends Component {
                 )
               )}
 
-              <BuscaGeo />
-
+              {this.state.exibirBuscaGeo && <BuscaGeo ref={(buscaGeoRef) => this.buscaGeoRef = buscaGeoRef}  />}
 
               <LayersControl position="bottomright">
                 <LayersControl.BaseLayer checked name="Mapa">
@@ -366,9 +376,8 @@ class Mapa extends Component {
                 </LayersControl.BaseLayer>
               </LayersControl>
 
-
             </Map>
-            <Listagem centralizar={this.centralizar.bind(this)}/>
+            <Listagem limpar={() => this.limparBuscaGeo()} centralizar={this.centralizar.bind(this)}/>
             <div className="utilitario-rodape-mapa">
               <div className='botao-expandir-mapa' 
                 onClick={(e)=>{ 

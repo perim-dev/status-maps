@@ -65,3 +65,17 @@
     position: relative;
     bottom: 1px;
 }
+
+.buscageo-limpar span{
+    cursor: pointer;
+    color: #f00202;
+    font-weight: bold;
+    font-size: 1.1em;
+    
+}
+
+.buscageo-limpar {
+    right: 18px;
+    position: absolute;
+    top: 0;
+}
