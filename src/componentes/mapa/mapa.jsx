@@ -326,7 +326,7 @@ class Mapa extends Component {
                  groupLayer.pontos.map((ponto, idx) => 
                     ((ponto.geometry.type ==='MultiPolygon'|| ponto.geometry.type ==='Polygon') &&  
                     <Polygon positions={ponto.geometry.coordinates[0]} color={ponto.cor} style={{"stroke-width":"0","fill-opacity":0.1}} >
-                      <Popup className="status-popup">
+                      <Popup className="status-popup" autoPan={false}>
                           <div>
                               <span className="descricao">{ponto.descricao }</span>
                               <hr/>
