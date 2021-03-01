@@ -21,7 +21,7 @@ class ListaLateral extends Component {
             </div>            
           </div>
           <Panel header="Acervos"  className="lista-lateral hidden-sm-up nopadding bg-grafite modulo" >
-              <ArvoreAcervo />
+              <ArvoreAcervo controleRemotoSocket={this.props.controleRemotoSocket}/>
           </Panel>
           <br />
         </Col>

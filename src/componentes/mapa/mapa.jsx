@@ -51,6 +51,9 @@ import GerenciadorDeAvisos from '../../utils/GerenciadorDeAvisos';
 
 import AvisoComando from '../avisoComando';
 
+import QRCode from 'qrcode';
+import DialogFlow from '../dialogFlow';
+
 class Mapa extends Component {
 
   constructor(props) {
@@ -79,12 +82,86 @@ class Mapa extends Component {
       data : [],
       letreiroInfo:{},
       avisoComando: {show:false, left:0, top:0, latlng: {lat:0,lng:0}},
+      controleRemotoId: null,
+      qrcode:null,
+      exibirDialogFlow:false,
     };
     this.props.buscarAlarmesDisparados();
     this.mapRef = null;
     this.avisosRef = null;
     this.buscaGeoRef = null;
+    
+    
+    // setInterval(() => {
+    //   console.log("enviando emit");
+    //   this.controleRemotoSocket.emit('who',"fala aí");
+    // }, 1000);
 
+    this.controleRemotoSocket = this.props.controleRemotoSocket;
+  }
+
+  componentDidMount(){
+
+
+    this.controleRemotoSocket.emit('who',"eita");
+
+    this.controleRemotoSocket.on('mapa-controle', controle => {
+      console.log(controle);
+      console.log(this.state.zoom);
+      if(controle.tipo === "grafico-transito"){
+        this.setState({exibirGraficoTransito:!this.state.exibirGraficoTransito});
+      }
+
+      if(controle.tipo === "alarme"){
+        this.setState({exibirAlertas:!this.state.exibirAlertas});
+      }
+
+      if(controle.tipo === "HM"){
+        this.setState({exibirHeatmap:!this.state.exibirHeatmap});
+      }
+
+      if(controle.tipo === "expandir-comprimir"){
+    //    this.alternarTamanhoMapa();
+    this.props.alternarTamanhoMapa();
+      }
+
+
+      if(controle.tipo === "zoom"){
+        if(controle.valor === "+"){
+          this.setState({zoom:this.state.zoom + 1})
+        } else if (controle.valor === "-"){
+          this.setState({zoom:this.state.zoom - 1})
+        }
+      }
+
+      if(controle.tipo === "movimento"){
+        if(controle.valor === "cima"){
+          this.setState({lat:this.state.lat + 5/Math.pow(10,this.state.zoom/4)});
+         
+        } else if (controle.valor === "baixo"){
+          this.setState({lat:this.state.lat - 5/Math.pow(10,this.state.zoom/4)});
+         
+        } else if(controle.valor === "direita"){
+          this.setState({lng:this.state.lng + 5/Math.pow(10,this.state.zoom/4)});
+         
+        } else if (controle.valor === "esquerda"){
+          this.setState({lng:this.state.lng - 5/Math.pow(10,this.state.zoom/4)});
+         
+        }
+      }
+
+    });
+
+    this.controleRemotoSocket.on('meu-id', id => {
+      this.setState({controleRemotoId:id})
+      QRCode.toDataURL(id)
+      .then(url => {
+        this.setState({qrcode:url})
+      })
+      .catch(err => {
+        console.error(err)
+      })
+    });
   }
 
   handleData(data) {
@@ -207,6 +284,10 @@ class Mapa extends Component {
   exibirAvisos = () => {
      this.setState({novoAviso: false, exibirAvisos: !this.state.exibirAvisos });
   }
+
+  exibirDialogFlow = () => {
+    this.setState({exibirDialogFlow: !this.state.exibirDialogFlow });
+ }
  
   limparBuscaGeo = () => {
     this.buscaGeoRef.selector.props.limparPontos();
@@ -229,6 +310,10 @@ class Mapa extends Component {
               <Letreiro updateLetreiroInfo={this.updateLetreiroInfo} />
             </div>
 
+            <img alt="qr-code" style={{position:'absolute',width:'50px',right:'80px',bottom:'40px',zIndex:1000}} src={this.state.qrcode} />
+            
+            {this.state.exibirDialogFlow && <DialogFlow  />}
+
             <div className="letreiro-button" style={{ borderColor:letreiroInfo.offline?'red':'', borderStyle:letreiroInfo.offline?'Dashed':''}}>
               <div className={`letreiro-button-conteudo`} 
                 style={{backgroundColor:letreiroInfo.cor, cursor:letreiroInfo.offline?'not-allowed ':'pointer', color:letreiroInfo.offline?'rgba(255,0,0,0,3)':''}} 
@@ -236,6 +321,8 @@ class Mapa extends Component {
                 title="Estágio"> 
                   <img width="100%" src={require('../../img/icone-cidade-rj.png')} alt="logo"/> </div>
             </div>
+            
+            
 
             {this.state.exibirAvisos && (<Avisos ref={(avisosRef) => this.avisosRef = avisosRef } onRemove={()=> this.setState({novoAviso:false})} />)}
 
@@ -253,6 +340,10 @@ class Mapa extends Component {
 
             <div className="avisos-menu-button">
               <div className={`avisos-menu-button-conteudo `+ (this.state.novoAviso?'ativo':'')} onClick={(e)=>this.exibirAvisos()} title="Avisos"><i className="fa fa-bell"></i></div>
+            </div>
+
+            <div className="dialog-flow-menu-button">
+              <div className={`dialog-flow-menu-button-conteudo `+ (this.state.exibirDialogFlow?'ativo':'')} onClick={(e)=>this.exibirDialogFlow()} title="DialogFlow"><img alt="Dialog Flow" src={require('../../img/flow.png')}/></div>
             </div>
 
             {this.state.avisoComando.show && 

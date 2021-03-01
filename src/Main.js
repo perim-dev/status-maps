@@ -7,6 +7,8 @@ import {SidebarDemo} from './componentes/lista-lateral/sidebar';
 
 import {Row} from 'react-bootstrap';
 
+import io from "socket.io-client";
+
 import '../node_modules/font-awesome/css/font-awesome.min.css';
 
 import '../node_modules/bootstrap/dist/css/bootstrap.css';
@@ -33,13 +35,16 @@ class Main extends Component {
 
   render() {
     const {mapaExpandido} = this.state;
+    const controleRemotoSocket = io.connect("http://www.bjlima.com.br:8001", {
+      transports: ['websocket']
+    });
     
     return (
       <div className="h-100">
         <Row id="layout-corpo" className="safari-fix">
             <SidebarDemo exibir={mapaExpandido}/>
-            <ListaLateral ocultar={mapaExpandido} />
-            <Mapa maximizar={mapaExpandido} alternarTamanhoMapa={this.alternarTamanhoMapa} />            
+            <ListaLateral ocultar={mapaExpandido} controleRemotoSocket={controleRemotoSocket}/>
+            <Mapa maximizar={mapaExpandido} alternarTamanhoMapa={this.alternarTamanhoMapa} controleRemotoSocket={controleRemotoSocket}/>
         </Row>
         <Row id="layout-rodape">
           <Rodape />
