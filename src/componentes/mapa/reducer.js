@@ -15,7 +15,7 @@ export default (state = INITIAL_STATE, action) => {
         case 'MAP_LOAD':
             return {...state}
         case 'CARREGAR_PONTOS_CATEGORIA_MAPA':{
-            let coresBairro = ['blue','yellow','green','orange','navy','purple'];
+            let cores = ['blue','yellow','green','orange','navy','purple'];
             novoEstado = {...state};
             let pontos = action.payload.data.slice();
             let icone = action.categoria.icone?'data:image;base64, '+ action.categoria.icone.replace('data:image;base64, ',''):'https://icons.iconarchive.com/icons/icons-land/vista-map-markers/32/Map-Marker-Marker-Outside-Azure-icon.png';
@@ -28,14 +28,19 @@ export default (state = INITIAL_STATE, action) => {
                 if(ponto.categoriaId === 55){
                     ajusteCamera(ponto);
                 }
-
-                if(ponto.geometry.type === 'Polygon' || ponto.geometry.type === 'MultiPolygon') {
-                    ponto.geometry.coordinates[0] = ponto.geometry.coordinates[0].map((e) => [e[1],e[0]])
-                    if(ponto.atributos) {
-                        ponto.cor = ponto.atributos.cor || coresBairro[Math.floor(Math.random() * coresBairro.length)];
-                    } else {
-                        ponto.cor = coresBairro[Math.floor(Math.random() * coresBairro.length)];
+                
+                if(ponto.geometry.type !== 'Point') {
+                                        
+                    if(!ponto.style) {
+                        const cor = cores[Math.floor(Math.random() * cores.length)];
+                        ponto.style = {
+                            fillColor:cor,
+                            color:cor,
+                            weight:2,
+                            fillOpacity:0.2
+                        };
                     }
+
                 }
                 
                 novoEstado.groupLayers[action.categoria.id].pontos.push(ponto);

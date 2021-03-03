@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { Map, TileLayer, Marker, Popup, Polygon, LayersControl } from 'react-leaflet';
+import { Map, TileLayer, Marker, Popup, LayersControl, GeoJSON } from 'react-leaflet';
 
 import {connect} from 'react-redux';
 import L from 'leaflet';
@@ -305,14 +305,16 @@ class Mapa extends Component {
       <div className={`col-xs-12 col-sm-12 ${maximizar?'col-md-12 col-lg-12':'col-md-9 col-lg-9'} mapa-lateral h-100`}>
         <div className="panel bg-grafite modulo">
           <span className="borda-interativa-mapa" style={{borderColor:letreiroInfo.estagio==='Normalidade'?'rgba(51, 51, 51, 0.8)':letreiroInfo.cor}}>
-            {this.state.exibirGraficoTransito && (<GraficoTransito/>)}
+            
+            <GraficoTransito exibir={this.state.exibirGraficoTransito} onClick={() => this.alternarGraficoTransito()}/>
+            
             <div style={{display:this.state.exibirLetreiro?'':'none'}}>
               <Letreiro updateLetreiroInfo={this.updateLetreiroInfo} />
             </div>
 
             <img alt="qr-code" style={{position:'absolute',width:'50px',right:'80px',bottom:'40px',zIndex:1000}} src={this.state.qrcode} />
             
-            {this.state.exibirDialogFlow && <DialogFlow  />}
+            <DialogFlow exibir={this.state.exibirDialogFlow} onClick={() => this.exibirDialogFlow()}/>
 
             <div className="letreiro-button" style={{ borderColor:letreiroInfo.offline?'red':'', borderStyle:letreiroInfo.offline?'Dashed':''}}>
               <div className={`letreiro-button-conteudo`} 
@@ -321,30 +323,20 @@ class Mapa extends Component {
                 title="Estágio"> 
                   <img width="100%" src={require('../../img/icone-cidade-rj.png')} alt="logo"/> </div>
             </div>
-            
-            
 
             {this.state.exibirAvisos && (<Avisos ref={(avisosRef) => this.avisosRef = avisosRef } onRemove={()=> this.setState({novoAviso:false})} />)}
 
-            <div className="heatmap-button">
-              <div className={`heatmap-button-conteudo `+ (this.state.exibirHeatmap?'ativo':'')} onClick={(e)=>this.alternarHeatmapPontos()}>HM</div>              
-            </div>
+            
 
             <div className="alertas-button">
               <div className={`alertas-button-conteudo `+ (this.state.exibirAlertas?'ativo':'')} onClick={(e)=>this.alternarAlertas()} title="Alarmes"><i className="fa fa-bullhorn"></i></div>
-            </div>
-
-            <div className="transito-menu-button">
-              <div className={`transito-menu-button-conteudo `+ (this.state.exibirGraficoTransito?'ativo':'')} onClick={(e)=>this.alternarGraficoTransito()} title="Gráfico de trânsito"><i className="fa fa-area-chart"></i></div>
             </div>
 
             <div className="avisos-menu-button">
               <div className={`avisos-menu-button-conteudo `+ (this.state.novoAviso?'ativo':'')} onClick={(e)=>this.exibirAvisos()} title="Avisos"><i className="fa fa-bell"></i></div>
             </div>
 
-            <div className="dialog-flow-menu-button">
-              <div className={`dialog-flow-menu-button-conteudo `+ (this.state.exibirDialogFlow?'ativo':'')} onClick={(e)=>this.exibirDialogFlow()} title="DialogFlow"><img alt="Dialog Flow" src={require('../../img/flow.png')}/></div>
-            </div>
+            
 
             {this.state.avisoComando.show && 
               <AvisoComando fechar={(e) => this.setState({avisoComando:{show:false}})} 
@@ -377,7 +369,7 @@ class Mapa extends Component {
                 }}
             >
 
-              {this.state.exibirHeatmap && <Heatmap pontos={this.props.mapa.groupLayers} />}
+              <Heatmap pontos={this.props.mapa.groupLayers} exibir={this.state.exibirHeatmap} onClick={(e) => this.alternarHeatmapPontos()} />
 
               {this.state.exibirAlertas && 
                this.props.alarme.geoJSON.features && 
@@ -415,23 +407,19 @@ class Mapa extends Component {
               {this.props.mapa.groupLayers.map((groupLayer) => 
                 // Exibir polígonos
                  groupLayer.pontos.map((ponto, idx) => 
-                    ((ponto.geometry.type ==='MultiPolygon'|| ponto.geometry.type ==='Polygon') &&  
-                    <Polygon positions={ponto.geometry.coordinates[0]} color={ponto.cor} style={{"stroke-width":"0","fill-opacity":0.1}} >
+                    ((ponto.geometry.type !=='Point') &&  
+                    <GeoJSON data={ponto.geometry} style={ponto.style} >
                       <Popup className="status-popup" autoPan={false}>
                           <div>
                               <span className="descricao">{ponto.descricao }</span>
                               <hr/>
                               <span className="link-exibir-pontos-poligono" 
-                                onClick={(e) =>{
-                                  let geometry = {type: ponto.geometry.type, coordinates:[[]]};
-                                  geometry.coordinates[0] = ponto.geometry.coordinates[0].map( c => [c[1], c[0]] );
-                                  this.buscaGeoRef.selector.props.buscarPontos(geometry);
-                                }}>
+                                onClick={e =>this.buscaGeoRef.selector.props.buscarPontos(ponto.geometry)}>
                                 Exibir pontos no polígono
                               </span>
                           </div>
                       </Popup>
-                    </Polygon>) 
+                    </GeoJSON>) 
               ))}
               
               { /* Marcadores da buscaGeo */

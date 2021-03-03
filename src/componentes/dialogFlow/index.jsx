@@ -19,20 +19,27 @@ export default class DialogFlow extends Component {
   }
 
   render() {
-    const { expandido } = this.state
-
+    const { expandido } = this.state;
+    const { exibir, onClick } = this.props;
     return (
-      <div className={`dialog-flow ${expandido?'expandido':'normal'}`}>
-        <iframe
-            allow="microphone;"
-            width="100%"
-            height="100%"
-            src="https://console.dialogflow.com/api-client/demo/embedded/d6033a05-6897-45c9-bd76-c9165050b98f">
-        </iframe>
-        <div className="dialog-flow-botoes">
-            <div className='dialog-flow-botao-expandir' onClick={(e)=>this.alternarTamanhos()} title="Expandir"><i className={`fa fa-${expandido?'compress':'expand'}`}></i></div>
+      <span>
+        <div className="dialog-flow-menu-button">
+          <div className={`dialog-flow-menu-button-conteudo `+ (exibir?'ativo':'')} onClick={(e)=>onClick()} title="DialogFlow"><img alt="Dialog Flow" src={require('../../img/flow.png')}/></div>
         </div>
-      </div>
+        {exibir &&
+          <div className={`dialog-flow ${expandido?'expandido':'normal'}`}>
+            <iframe
+                allow="microphone;"
+                width="100%"
+                height="100%"
+                src="https://console.dialogflow.com/api-client/demo/embedded/d6033a05-6897-45c9-bd76-c9165050b98f">
+            </iframe>
+            <div className="dialog-flow-botoes">
+                <div className='dialog-flow-botao-expandir' onClick={(e)=>this.alternarTamanhos()} title="Expandir"><i className={`fa fa-${expandido?'compress':'expand'}`}></i></div>
+            </div>
+          </div>
+        }
+      </span>
     );
   }
 

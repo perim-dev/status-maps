@@ -85,53 +85,66 @@ export default class GraficoTransito extends Component {
   }
 
   render() {
-    const { expandido, data, options } = this.state
+    
+    const { expandido, data, options } = this.state;
+    
+    const { exibir, onClick } = this.props;
 
     return (
-      <div className={`transito ${expandido?'expandido':'normal'}`}>
-        <div className="grafico">
-          <Chart
-            key="grafico-transito"
-            chartType="LineChart"
-            curveType='function'
-            data={data}
-            loader={<div>Obtendo dados</div>}
-            options={options}
-            graph_id="GraficoTransito"
-            width="100%"
-            height="100%"
-            legend_toggle
-          />
-        </div>
-        <div className="transito-legendas">
-          <span className="azul"> Chuva</span>
-          <span> Média de trânsito</span>
-          <span className="vermelho"> Trânsito</span>
-        </div>
-        <div className="titulo-data-filtro">
-          <span> Dia: {moment(this.state.filtro).format("DD-MM-yyyy")}</span>
-        </div>
-        {!this.hideButtons && (
-          <div className="botoes">
-            <button className="somente-expandido" onClick={()=>this.alterarFiltro(7)}> -7D </button>
-            <button className="somente-expandido" onClick={()=>this.alterarFiltro(2)}> -2D </button>
-            <button className="somente-expandido" onClick={()=>this.alterarFiltro(1)}> -1D </button>
-            <button className="somente-expandido" onClick={()=>this.alterarFiltro(0)}> Hoje </button>
-          </div>
-        )}
-        <div className="via-engarrafada-modulo">
-          <ViaEngarrafada />
-        </div>
-        {!this.hideButtons && (
-          <div className="botoes">
-            <div className='botao-expandir' onClick={(e)=>this.alternarTamanhos()} title="Expandir"><i className={`fa fa-${expandido?'compress':'expand'}`}></i></div>
-          </div>
-        )}
+      <span>
+        {!this.props.singlePage && <GTButtonMenu exibir={exibir} onClick={onClick}/>}
+        {(exibir || this.props.singlePage) &&
+          <div className={`transito ${expandido?'expandido':'normal'}`}>
+            <div className="grafico">
+              <Chart
+                key="grafico-transito"
+                chartType="LineChart"
+                curveType='function'
+                data={data}
+                loader={<div>Obtendo dados</div>}
+                options={options}
+                graph_id="GraficoTransito"
+                width="100%"
+                height="100%"
+                legend_toggle
+              />
+            </div>
+            <div className="transito-legendas">
+              <span className="azul"> Chuva</span>
+              <span> Média de trânsito</span>
+              <span className="vermelho"> Trânsito</span>
+            </div>
+            <div className="titulo-data-filtro">
+              <span> Dia: {moment(this.state.filtro).format("DD-MM-yyyy")}</span>
+            </div>
+            {!this.hideButtons && (
+              <div className="botoes">
+                <button className="somente-expandido" onClick={()=>this.alterarFiltro(7)}> -7D </button>
+                <button className="somente-expandido" onClick={()=>this.alterarFiltro(2)}> -2D </button>
+                <button className="somente-expandido" onClick={()=>this.alterarFiltro(1)}> -1D </button>
+                <button className="somente-expandido" onClick={()=>this.alterarFiltro(0)}> Hoje </button>
+              </div>
+            )}
+            <div className="via-engarrafada-modulo">
+              <ViaEngarrafada />
+            </div>
+            {!this.hideButtons && (
+              <div className="botoes">
+                <div className='botao-expandir' onClick={(e)=>this.alternarTamanhos()} title="Expandir"><i className={`fa fa-${expandido?'compress':'expand'}`}></i></div>
+              </div>
+            )}
 
-      </div>
+          </div>}
+      </span>
     );
   }
 
-  
+}
 
+export const GTButtonMenu = (props) => {
+  return (
+    <div className="transito-menu-button">
+    <div className={`transito-menu-button-conteudo `+ (props.exibir?'ativo':'')} onClick={(e)=>props.onClick(e)} title="Gráfico de trânsito"><i className="fa fa-area-chart"></i></div>
+    </div>
+  )
 }
