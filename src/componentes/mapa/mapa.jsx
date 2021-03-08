@@ -85,6 +85,7 @@ class Mapa extends Component {
       controleRemotoId: null,
       qrcode:null,
       exibirDialogFlow:false,
+      rastreio:[],
     };
     this.props.buscarAlarmesDisparados();
     this.mapRef = null;
@@ -107,7 +108,12 @@ class Mapa extends Component {
 
     this.controleRemotoSocket.on('mapa-controle', controle => {
       console.log(controle);
-      console.log(this.state.zoom);
+      if(controle.tipo === "rastreio"){
+        let rastreio = this.state.rastreio.filter( r => r.id !== controle.valor.id);
+        rastreio.push(controle.valor);
+        this.setState({rastreio:rastreio});
+      }
+
       if(controle.tipo === "grafico-transito"){
         this.setState({exibirGraficoTransito:!this.state.exibirGraficoTransito});
       }
@@ -336,8 +342,6 @@ class Mapa extends Component {
               <div className={`avisos-menu-button-conteudo `+ (this.state.novoAviso?'ativo':'')} onClick={(e)=>this.exibirAvisos()} title="Avisos"><i className="fa fa-bell"></i></div>
             </div>
 
-            
-
             {this.state.avisoComando.show && 
               <AvisoComando fechar={(e) => this.setState({avisoComando:{show:false}})} 
                 left={this.state.avisoComando.left-5}  
@@ -437,6 +441,22 @@ class Mapa extends Component {
                     </Marker>
                 )
               )}
+
+
+              { /* Marcadores da Localização via app */
+                this.state.rastreio.map(rastreio => 
+                    <Marker key={`marker-rastreio-${rastreio.id}`} 
+                                  position={[rastreio.location.coords.latitude,rastreio.location.coords.longitude]} 
+                                  icon={this.iconeCategoria("https://icons.iconarchive.com/icons/graphicloads/colorful-long-shadow/32/Mobile-icon.png",'ativo')}                                  
+                                  > 
+                          <Popup className="status-popup">
+                            <div>
+                              <span className="descricao">{rastreio.id} </span>
+                            </div>
+                          </Popup>
+                    </Marker>
+                )
+              }
 
               {this.state.exibirBuscaGeo && <BuscaGeo ref={(buscaGeoRef) => this.buscaGeoRef = buscaGeoRef}  />}
 
