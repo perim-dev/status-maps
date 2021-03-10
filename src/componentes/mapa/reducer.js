@@ -23,12 +23,12 @@ export default (state = INITIAL_STATE, action) => {
 
             pontos.map((ponto) => {
                 ponto.pontosRelacionados = [];
-                // ponto.geometry = JSON.parse(ponto.geometry)
+                ponto.geometry = JSON.parse(ponto.geometry)
 
                 if(ponto.categoriaId === 55){
                     ajusteCamera(ponto);
                 }
-                
+
                 if(ponto.geometry.type !== 'Point') {
                                         
                     if(!ponto.style) {

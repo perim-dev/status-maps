@@ -10,30 +10,17 @@ class ArvoreAcervo extends Component {
 
     constructor(props){
         super(props);
-        this.controleRemotoSocket = this.props.controleRemotoSocket;
+        if(this.props.controleRemotoSocket){
+            this.controleRemotoSocket = this.props.controleRemotoSocket;
 
-        this.controleRemotoSocket.on('mapa-controle', controle => {
-            if(controle.tipo === 'selecionar-acervo'){
-                console.log(controle);
-                const acervoSelecionado = this.props.lista.filter( a => a.id === controle.valor * 1);
-                console.log('Acervo selecionado', acervoSelecionado);
-                acervoSelecionado[0].ref.click();
-            }
-            
-        });
-/*        setTimeout(()=> {
-            console.log(this.props.lista);
-            const acervoSelecionado = this.props.lista.filter( a => a.id === 52);
-            console.log(acervoSelecionado);
-            acervoSelecionado[0].ref.click();
-        },5000);
-        
-        setTimeout(()=> {
-            console.log(this.props.lista);
-            const acervoSelecionado = this.props.lista.filter( a => a.id === 52);
-            console.log(acervoSelecionado);
-            acervoSelecionado[0].ref.click();
-        },8000);*/
+            this.controleRemotoSocket.on('mapa-controle', controle => {
+                if(controle.tipo === 'selecionar-acervo'){
+                    const acervoSelecionado = this.props.lista.filter( a => a.id === controle.valor * 1);
+                    acervoSelecionado.length > 0 && acervoSelecionado[0].ref.click();
+                }
+                
+            });
+        }
     }
 
     componentWillMount() {

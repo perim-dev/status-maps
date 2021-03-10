@@ -91,12 +91,6 @@ class Mapa extends Component {
     this.mapRef = null;
     this.avisosRef = null;
     this.buscaGeoRef = null;
-    
-    
-    // setInterval(() => {
-    //   console.log("enviando emit");
-    //   this.controleRemotoSocket.emit('who',"fala aí");
-    // }, 1000);
 
     this.controleRemotoSocket = this.props.controleRemotoSocket;
   }
@@ -107,7 +101,7 @@ class Mapa extends Component {
     this.controleRemotoSocket.emit('who',"eita");
 
     this.controleRemotoSocket.on('mapa-controle', controle => {
-      console.log(controle);
+      
       if(controle.tipo === "rastreio"){
         let rastreio = this.state.rastreio.filter( r => r.id !== controle.valor.id);
         rastreio.push(controle.valor);
@@ -411,7 +405,7 @@ class Mapa extends Component {
               {this.props.mapa.groupLayers.map((groupLayer) => 
                 // Exibir polígonos
                  groupLayer.pontos.map((ponto, idx) => 
-                    ((ponto.geometry.type !=='Point') &&  
+                    ((ponto.geometry && ponto.geometry.type !=='Point') &&  
                     <GeoJSON data={ponto.geometry} style={ponto.style} >
                       <Popup className="status-popup" autoPan={false}>
                           <div>
