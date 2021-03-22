@@ -406,7 +406,7 @@ class Mapa extends Component {
                 // Exibir polígonos
                  groupLayer.pontos.map((ponto, idx) => 
                     ((ponto.geometry && ponto.geometry.type !=='Point') &&  
-                    <GeoJSON data={ponto.geometry} style={ponto.style} >
+                    <GeoJSON data={ponto.geometry} style={ponto.style} key={`poligono-key-${ponto.id||idx}`}>
                       <Popup className="status-popup" autoPan={false}>
                           <div>
                               <span className="descricao">{ponto.descricao }</span>
