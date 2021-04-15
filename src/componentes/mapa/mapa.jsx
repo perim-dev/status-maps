@@ -377,7 +377,7 @@ class Mapa extends Component {
 
               {!this.state.exibirHeatmap && this.props.mapa.groupLayers.map((groupLayer) => 
                 // exibir os pontos
-                groupLayer.pontos.length > 0 &&
+                groupLayer.pontos.length > 1 &&
                 (<MarkerClusterGroup removeOutsideVisibleBounds={true}
                   key={`markerClusterkey-${groupLayer.id}`}
                   iconCreateFunction={
@@ -394,13 +394,25 @@ class Mapa extends Component {
                       carregarPontosRelacionados={this.props.carregarPontosRelacionados}
                       carregarCamerasProximas={this.props.carregarCamerasProximas}
                       ponto={ponto}
-                      key={`marcador-key-${idx}`}
+                      key={`marcador-key-${ponto.id}`}
                       centralizar={this.centralizar}
                       map={this.mapRef.leafletElement} />
-        
-                  
                   )}
                 </MarkerClusterGroup>))}
+
+                {!this.state.exibirHeatmap && this.props.mapa.groupLayers.map((groupLayer) => 
+                // exibir os pontos
+                groupLayer.pontos.length === 1 &&
+                  groupLayer.pontos.map((ponto, idx) => ponto.geometry.type ==='Point' &&  
+                    <Marcador icone={this.iconeCategoria(groupLayer.icone,'ativo')}
+                      carregarAreaDeAtuacao={this.props.carregarAreaDeAtuacao}
+                      carregarPontosRelacionados={this.props.carregarPontosRelacionados}
+                      carregarCamerasProximas={this.props.carregarCamerasProximas}
+                      ponto={ponto}
+                      key={`marcador-key-${ponto.id}`}
+                      centralizar={this.centralizar}
+                      map={this.mapRef.leafletElement} />
+                ))}
 
               {this.props.mapa.groupLayers.map((groupLayer) => 
                 // Exibir polígonos
