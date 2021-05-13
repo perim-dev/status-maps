@@ -312,7 +312,7 @@ class Mapa extends Component {
               <Letreiro updateLetreiroInfo={this.updateLetreiroInfo} />
             </div>
 
-            <img alt="qr-code" style={{position:'absolute',width:'50px',right:'80px',bottom:'40px',zIndex:1000}} src={this.state.qrcode} />
+            <img alt="." style={{position:'absolute',width:'50px',right:'80px',bottom:'40px',zIndex:1000}} src={this.state.qrcode} />
             
             <DialogFlow exibir={this.state.exibirDialogFlow} onClick={() => this.exibirDialogFlow()}/>
 
