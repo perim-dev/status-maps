@@ -8,7 +8,7 @@ const WSS_BASE = process.env.NODE_ENV === "development" ? WSS_HOM :`${wssProtoco
 
 
 const config = {
-    url:`${protocol}://`+URL_BASE+'/api/v1',
+    url:`${protocol}://`+URL_BASE+'/status/api/v1',
     resources:{
         acervo:'/acervos',
         categoria:'/categorias',
