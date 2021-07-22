@@ -1,9 +1,9 @@
 const protocol = window.location.protocol.replace(':','');
 const wssProtocol = protocol ==='https'?'wss':'ws';
 
-const WSS_HOM = 'ws://34.117.174.108/status/atualizacaoDePontos';
+const WSS_HOM = 'ws://34.117.174.108/status-websocket/atualizacaoDePontos';
 const URL_BASE = process.env.REACT_APP_API_URL|| process.env.NODE_ENV === "development" ? '192.168.10.100:5001/status':window.location.href.split('/')[2]+"/status";
-const WSS_BASE = process.env.NODE_ENV === "development" ? WSS_HOM :`${wssProtocol}://`+URL_BASE+'/atualizacaoDePontos';
+const WSS_BASE = process.env.NODE_ENV === "development" ? WSS_HOM :`${wssProtocol}://`+URL_BASE+'/status-websocket/atualizacaoDePontos';
 
 
 
