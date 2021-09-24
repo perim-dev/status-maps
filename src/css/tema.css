@@ -101,20 +101,24 @@ body {
 .area-titulo .box {
   border: solid 1px #444;
   height: 100%;
-  padding: 3px ;
+  padding: 5% ;
   background-color:#404040;
   vertical-align: middle;  
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .area-titulo img{
-  height: 100%;
+  width: 100%;
+  max-width: 300px;
   border-radius: 5px;
   float:left; 
   
 }
 .area-titulo-logo{
   text-align: center;
-  
+  padding: 10%;
 }
 
 .area-titulo .texto {

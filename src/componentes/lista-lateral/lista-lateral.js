@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 
 import ArvoreAcervo from './arvore-acervos';
 import {logout} from '../../auth/actions';
+import logo from '../../img/logo-cor.png';
 
 class ListaLateral extends Component {
   render() {
@@ -14,7 +15,7 @@ class ListaLateral extends Component {
         <Col xsHidden={true} sm={3} md={3} lg={3} className="modulo h-100" hidden={ocultar}>
           <div className="area-titulo">
             <div className="area-titulo box area-titulo-logo">
-              <img src={require('../../img/logo-IPLANRIO1.png')} alt="logo"/>
+              <img src={logo} alt="logo"/>
             </div>
             <div onClick={(e)=>this.props.logout()} className="logout"> 
               <i className="fa fa-sign-out" title="Sair"></i> 
