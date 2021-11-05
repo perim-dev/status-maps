@@ -8,5 +8,5 @@
 }
 
 .leaflet-top {
-    top: 50px
+    top: var(--menu-topo);
 }

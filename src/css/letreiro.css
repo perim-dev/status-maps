@@ -1,17 +1,23 @@
+:root {
+    --tamanhoElementoLinha1: -200px;
+    --tamanhoElementoLinha2: -200px;
+}
 .letreiro {
     position: absolute;
     left: 13px;
     right: 13px;
     top: 4px;
     z-index: 500;
-    height: 50px;
-    border: solid 2px rgba(120,120,120,0.5);
+    height: 45px;
+    border: solid 2px rgba(120, 120, 120, 0.5);
     margin-top: 9px;
-    background-color: rgba(0,0,0,0.8);
+    background-color: rgba(0, 0, 0, 0.8);
+    
+    
 }
 
 .letreiro .texto {
-    color: rgba(0,0,0,0.7);
+    color: rgba(0, 0, 0, 0.7);
     font-size: 1.4em;
     font-weight: 700;
     text-transform: uppercase;
@@ -19,61 +25,122 @@
 
 .scroll-left {
     overflow: hidden;
+    display: inline-block;
+    flex-direction: column;
+    
 }
+/* animation: slide 15s linear infinite; */
 
-.scroll-left p {
-    position: absolute;
-    width: 100%;
-    height: 100%;
+.scroll-left #linha1 {
+    position: relative;
+    white-space: nowrap; 
+    text-overflow: clip;
     vertical-align: middle;
     margin: 0;
-    line-height: 50px;
-    text-align: center;
-    /* Starting position */
+    line-height: normal;
+    /* height: 50px; */
+    max-height: 55px;
+    animation: slide-linha-1 15s linear infinite; 
+    width: min-content;
+    padding-top: 10px;
+    /* animation: scroll-left 30s linear infinite; */
+    
+    
+    /* Starting position
     -moz-transform:translateX(100%);
     -webkit-transform:translateX(100%);	
     transform:translateX(100%);
-    /* Apply animation to this element */	
+    /* Apply animation to this element 	
     -moz-animation: scroll-left 30s linear infinite;
-    -webkit-animation: scroll-left 30s linear infinite;
-    animation: scroll-left 30s linear infinite;
+    -webkit-animation: scroll-left 30s linear infinite; */
 }
 
-@media (max-width: 768px) { 
+.scroll-left #linha2 {
+    position: relative;
+    white-space: nowrap; 
+    text-overflow: clip;
+    vertical-align: middle;
+    margin: 0;
+    line-height: normal;
+    /*height: 50px; */
+    max-height: 55px;
+    animation: slide-linha-2 20s linear infinite; 
+    width: min-content;
+    padding-top: 5px;
+    color: yellow;
+    /* animation: scroll-left 30s linear infinite; */
+    
+    
+    /* Starting position
+    -moz-transform:translateX(100%);
+    -webkit-transform:translateX(100%);	
+    transform:translateX(100%);
+    /* Apply animation to this element 	
+    -moz-animation: scroll-left 30s linear infinite;
+    -webkit-animation: scroll-left 30s linear infinite; */
+}
+
+@media (max-width: 768px) {
     .letreiro {
         height: 50px;
     }
-    
     .letreiro .texto {
         font-size: 1.1em;
     }
-    
     .scroll-left p {
-        width : 150%;
+        width: 150%;
     }
 }
-   /* Move it (define the animation) */
+
+/* Move it (define the animation) */
+
 @-moz-keyframes scroll-left {
-    0%   { -moz-transform: translateX(100%); }
-    100% { -moz-transform: translateX(-100%); }
+    0% {
+        -moz-transform: translateX(100%);
+    }
+    100% {
+        -moz-transform: translateX(-100%);
+    }
 }
 
 @-webkit-keyframes scroll-left {
-    0%   { -webkit-transform: translateX(100%); }
-    100% { -webkit-transform: translateX(-100%); }
-   }
-   @keyframes scroll-left {
-    0%   { 
-    -moz-transform: translateX(100%); /* Browser bug fix */
-    -webkit-transform: translateX(100%); /* Browser bug fix */
-    transform: translateX(100%); 		
+    0% {
+        -webkit-transform: translateX(100%);
     }
-    100% { 
-    -moz-transform: translateX(-100%); /* Browser bug fix */
-    -webkit-transform: translateX(-100%); /* Browser bug fix */
-    transform: translateX(-100%); 
+    100% {
+        -webkit-transform: translateX(-100%);
     }
-   }
+}
 
-   
-   
+@keyframes scroll-left {
+    0% {
+        -moz-transform: translateX(100%);
+        /* Browser bug fix */
+        -webkit-transform: translateX(100%);
+        /* Browser bug fix */
+        transform: translateX(100%);
+    }
+    100% {
+        -moz-transform: translateX(-100%);
+        /* Browser bug fix */
+        -webkit-transform: translateX(-100%);
+        /* Browser bug fix */
+        transform: translateX(-100%);
+    }
+}
+
+@keyframes slide-linha-1 {
+    0% {   margin-left: 100%;}
+    
+    100% { 
+        margin-left: var(--tamanhoElementoLinha1,0) ;
+    }
+} 
+
+@keyframes slide-linha-2 {
+    0% {   margin-left: 100%;}
+    
+    100% { 
+        margin-left: var(--tamanhoElementoLinha2,0) ;
+    }
+} 

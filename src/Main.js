@@ -35,9 +35,10 @@ class Main extends Component {
 
   render() {
     const {mapaExpandido} = this.state;
-    const controleRemotoSocket = io.connect("http://www.bjlima.com.br:8001", {
-      transports: ['websocket']
-    });
+    const controleRemotoSocket = null;
+    // const controleRemotoSocket = io.connect("http://www.bjlima.com.br:8001", {
+    //   transports: ['websocket']
+    // });
     
     return (
       <div className="h-100">

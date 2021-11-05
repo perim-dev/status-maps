@@ -1,7 +1,7 @@
 .heatmap-button {
     position: absolute;
     left: 10px;
-    top: 275px; 
+    top: calc(var(--menu-topo) + 240px); 
     z-index: 10000;
     float: left;
     width: 34px;

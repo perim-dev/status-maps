@@ -2,7 +2,7 @@
 .avisos-menu-button {
     position: absolute;
     left: 24px;
-    top: 393px;
+    top: calc(var(--menu-topo) + 360px);
     z-index: 10000;
     float: left;
     width: 34px;
