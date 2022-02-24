@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: status-map
+  namespace: dev
+  labels:
+    app: status-map
+  annotations:
+    cloud.google.com/backend-config: '{"ports": {"8080":"status-backendconfig"}}'
+    cloud.google.com/load-balancer-type: "Internal"
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 8080
+    name: http
+    targetPort: 8080
+  selector:
+    app: status-map
