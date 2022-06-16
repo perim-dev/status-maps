@@ -1,9 +1,7 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Marker, Popup } from 'react-leaflet';
 
 import {Col, Row} from 'react-bootstrap';
-
-import {LatLng} from 'leaflet';
 
 import Iframe from 'react-iframe';
 
@@ -11,7 +9,7 @@ import '../../css/leaflet.css';
 import '../../css/leaflet-popup.css';
 import '../../css/leaflet-icon.css';
 
-export default class Marcador extends Component {
+export default class Marcador extends React.PureComponent {
 
   constructor(props) {
     super(props);
@@ -28,18 +26,22 @@ export default class Marcador extends Component {
 
   validateMarkers = (p) =>{
     
-    const {map} = this.props;
+//    const {map} = this.props;
     if( p.geometry.type !=='Point'){
       return false;
     }
+    return true;
+    /*
     let latLngFilter = new LatLng(p.geometry.coordinates[1],p.geometry.coordinates[0]);
     
-    return map.getBounds().contains(latLngFilter);
+    return map.getBounds().contains(latLngFilter);*/
   }
   
   render() {
 
     const {ponto, icone, centralizar} = this.props;
+
+    console.log("renderizando pontos");
 
     return this.validateMarkers(ponto) && (
       <Marker onclick={(e) => centralizar(ponto, true)}

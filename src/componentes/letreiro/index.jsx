@@ -3,8 +3,6 @@ import React, { Component } from 'react';
 import '../../css/letreiro.css';
 
 import { buscarDadosEstagioOperacional } from './actions';
-import Reveal from 'react-reveal/Reveal';
-import { relativeTimeThreshold } from 'moment';
 
 const intervaloDeAtualização = 3 * 60000; // 3 minutos
 export default class Letreiro extends Component {
