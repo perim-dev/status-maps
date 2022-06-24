@@ -20,9 +20,6 @@ import '../../css/letreiro-botao-menu.css';
 import '../../../node_modules/leaflet-draw/dist/leaflet.draw.css';
 import '../../css/marker-cluster-group.css';
 
-/* Marcador */
-import Marcador from './marcador';
-
 /* BuscaGeo */
 import BuscaGeo from '../buscageo';
 import Listagem from '../buscageo/listagem';
@@ -53,6 +50,7 @@ import AvisoComando from '../avisoComando';
 
 import QRCode from 'qrcode';
 import DialogFlow from '../dialogFlow';
+import GroupLayer from './group-layer';
 
 class Mapa extends Component {
 
@@ -86,6 +84,7 @@ class Mapa extends Component {
       qrcode: null,
       exibirDialogFlow: false,
       rastreio: [],
+      mapMoving: false
     };
     this.props.buscarAlarmesDisparados();
     this.mapRef = null;
@@ -97,9 +96,9 @@ class Mapa extends Component {
 
   componentDidMount() {
 
-    if(this.controleRemotoSocket ){
+    if (this.controleRemotoSocket) {
 
-    
+
       this.controleRemotoSocket.emit('who', "eita");
 
       this.controleRemotoSocket.on('mapa-controle', controle => {
@@ -301,6 +300,37 @@ class Mapa extends Component {
 
   }
 
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const _filter = (gl => gl.pontos.length > 0);
+
+    let oldState = { ...this.state };
+    let newState = { ...nextState };
+
+    delete oldState.lat;
+    delete oldState.lng;
+    delete oldState.zoom;
+
+    delete newState.lat;
+    delete newState.lng;
+    delete newState.zoom;
+    /*
+        if (JSON.stringify(oldState) != JSON.stringify(newState)) {
+          console.log(JSON.stringify(oldState) == JSON.stringify(newState));
+        }
+        console.log('Skip update - shouldComponentUpdate lifecycle', oldState, newState);
+        console.log('Skip update - shouldComponentUpdate lifecycle', this.props.mapa.groupLayers.filter(_filter), nextProps.mapa.groupLayers.filter(_filter));
+        //let dataVerify = JSON.stringify(this.props.mapa.groupLayers) != JSON.stringify(nextProps.mapa.groupLayers);
+        let dataVerify = false
+        console.log(dataVerify)
+        //    return JSON.stringify(oldState) != JSON.stringify(newState) || dataVerify;
+        */
+    return true;
+  }
+
+
+
+
   render() {
 
     const position = [this.state.lat, this.state.lng];
@@ -360,13 +390,15 @@ class Mapa extends Component {
             />
 
             <Map ref={(mapRef) => this.mapRef = mapRef}
-              preferCanvas={false}
+              preferCanvas={true}
               center={position}
               zoom={this.state.zoom}
+              maxBounds={L.latLngBounds(L.latLng(-22.779416753056946, -43.768280005721955), L.latLng(-23.067453817196093, -42.95432660852574))}
               onViewportChanged={(viewport) => this.atualizarPosicao(viewport)}
               onzoomstart={(e) => this.setState({ avisoComando: { show: false } })}
               onmovestart={(e) => this.setState({ avisoComando: { show: false } })}
               onresize={(e) => this.setState({ avisoComando: { show: false } })}
+
               oncontextmenu={(e) => {
                 this.setState({ avisoComando: { show: false } });
                 this.setState({ avisoComando: { show: true, left: e.originalEvent.clientX, top: e.originalEvent.clientY, latlng: e.latlng } })
@@ -381,48 +413,55 @@ class Mapa extends Component {
                   return <Alarme key={`alarme-${f.properties.id}`} feature={f} />
                 })}
 
+              {
+                false && this.props.mapa.groupLayers.map((groupLayer) =>
+                  <GroupLayer
+                    groupLayer={groupLayer}
+                    mapRef={this.mapRef}
+                    iconeCategoria={this.iconeCategoria}
+                    centralizar={this.centralizar}
+                    carregarCamerasProximas={this.props.carregarCamerasProximas}
+                    carregarAreaDeAtuacao={this.props.carregarAreaDeAtuacao}
+                    carregarPontosRelacionados={this.props.carregarPontosRelacionados}
+                  />
+                )
+              }
+
               {!this.state.exibirHeatmap && this.props.mapa.groupLayers.map((groupLayer) =>
                 // exibir os pontos
-                groupLayer.pontos.length > 1 &&
-                (<MarkerClusterGroup removeOutsideVisibleBounds={true}
+                groupLayer.pontos.length > 0 &&
+                (<MarkerClusterGroup removeOutsideVisibleBounds={true} chunkedLoading
+                  singleMarkerMode={true}
                   key={`markerClusterkey-${groupLayer.id}`}
                   iconCreateFunction={
                     function (cluster) {
                       var markers = cluster.getAllChildMarkers();
-                      var html = '<div class="agrupamento"><div class="imagem" style=\'background-image: url("' + groupLayer.icone + '")\'></div><div class="texto">' + markers.length + '</div></div>';
+                      let html = '<div class="agrupamento"><div class="imagem" style=\'background-image: url("' + groupLayer.icone + '")\'></div>'
+                      if (markers.length > 1) {
+                        html += '<div class="texto">' + markers.length + '</div></div>';
+                      } else {
+                        html += '</div>';
+                      }
                       return L.divIcon({ html: html, className: 'mycluster', iconSize: L.point(32, 32) });
                     }
                   }
                 >
-                  {groupLayer.pontos.map((ponto, idx) => ponto.geometry.type === 'Point' &&
-                    <Marcador icone={this.iconeCategoria(groupLayer.icone, 'ativo')}
-                      carregarAreaDeAtuacao={this.props.carregarAreaDeAtuacao}
-                      carregarPontosRelacionados={this.props.carregarPontosRelacionados}
-                      carregarCamerasProximas={this.props.carregarCamerasProximas}
-                      ponto={ponto}
-                      key={`marcador-key-${ponto.id}`}
-                      centralizar={this.centralizar}
-                      map={this.mapRef.leafletElement} />
-                  )}
-                </MarkerClusterGroup>))}
-
-              {!this.state.exibirHeatmap && this.props.mapa.groupLayers.map((groupLayer) =>
-                // exibir os pontos
-                groupLayer.pontos.length === 1 &&
-                groupLayer.pontos.map((ponto, idx) => ponto.geometry.type === 'Point' &&
-                  <Marcador icone={this.iconeCategoria(groupLayer.icone, 'ativo')}
+                  <GroupLayer
+                    groupLayer={groupLayer}
+                    mapRef={this.mapRef}
+                    iconeCategoria={this.iconeCategoria}
+                    centralizar={this.centralizar}
+                    carregarCamerasProximas={this.props.carregarCamerasProximas}
                     carregarAreaDeAtuacao={this.props.carregarAreaDeAtuacao}
                     carregarPontosRelacionados={this.props.carregarPontosRelacionados}
-                    carregarCamerasProximas={this.props.carregarCamerasProximas}
-                    ponto={ponto}
-                    key={`marcador-key-${ponto.id}`}
-                    centralizar={this.centralizar}
-                    map={this.mapRef.leafletElement} />
-                ))}
+                  />
+                </MarkerClusterGroup>))
+              }
 
-              {this.props.mapa.groupLayers.map((groupLayer) =>
+
+              {this.props.mapa.groupLayers.map((groupLayer) => {
                 // Exibir polígonos
-                groupLayer.pontos.map((ponto, idx) =>
+                return groupLayer.pontos.map((ponto, idx) =>
                 ((ponto.geometry && ponto.geometry.type !== 'Point') &&
                   <GeoJSON data={ponto.geometry} style={ponto.style} key={`poligono-key-${ponto.id || idx}`}>
                     <Popup className="status-popup" autoPan={false}>
@@ -436,7 +475,8 @@ class Mapa extends Component {
                       </div>
                     </Popup>
                   </GeoJSON>)
-                ))}
+                )
+              })}
 
               { /* Marcadores da buscaGeo */
                 this.props.buscaGeo.acervos.map((acervo, idAcervo) =>
