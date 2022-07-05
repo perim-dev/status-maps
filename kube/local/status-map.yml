@@ -20,7 +20,7 @@ spec:
       restartPolicy: Always
       containers:
         - name: status-map
-          image: status-map:1.20
+          image: status-map:1.21
           volumeMounts:
           - name: config-volume
             mountPath: /etc/nginx/conf.d
