@@ -25,7 +25,7 @@ export default (state = INITIAL_STATE, action) => {
                 ponto.pontosRelacionados = [];
                 ponto.geometry = JSON.parse(ponto.geometry)
 
-                if(ponto.categoriaId === 55){
+                if(ponto.categoriaId * 1 === 55){
                     ajusteCamera(ponto);
                 }
 

@@ -22,7 +22,7 @@ const config = {
     websockets:{
         atualizacaoPontosPorCategoria: WSS_BASE
     },
-    URL_CAMERA_CET: `$protocol://`+URL_BASE+'/camera/?cam=9',
+    URL_CAMERA_CET: `${protocol}://`+URL_BASE+'/camera/?cam=9',
     CHAVE_AVISO: '@STATUS-CAHVE-AVISO',
     TEMPO_AVISO_MINUTOS: 60,
     URL_COMANDO: `${protocol}://${URL_BASE}-comando/api/v2`
