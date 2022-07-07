@@ -1,4 +1,4 @@
-
+import config from '../../config'
 const INITIAL_STATE = {lat:-22.9335,lng:-43.3206,zoom:11,
                         groupLayers:[]
                       };
@@ -6,7 +6,7 @@ const INITIAL_STATE = {lat:-22.9335,lng:-43.3206,zoom:11,
 export default (state = INITIAL_STATE, action) => {
     
     const ajusteCamera = (ponto) => {
-        ponto.atributos.html = `<html><body><img onerror="this.src='${require('../../img/camera-not-found.png')}';this.style.width='80%'" style="width:100%" src="http://10.50.3.180:9${ponto.chaveExterna}/video-1"/></body></html>`;
+        ponto.atributos.html = `<html><body><img onerror="this.src='${require('../../img/camera-not-found.png')}';this.style.width='80%'" style="width:100%" src="${config.URL_CAMERA_CET}${ponto.chaveExterna}"/></body></html>`;
         ponto.atributos.url = null;
     }
 
