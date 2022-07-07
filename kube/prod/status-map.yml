@@ -5,7 +5,7 @@ metadata:
   namespace: default
   labels:
     app: status-map
-    version: v1.20
+    version: v1.21
   annotations:
     kubernetes.io/change-cause: "v1.20"
 spec:
@@ -21,12 +21,12 @@ spec:
     metadata:
       labels:
         app: status-map
-        version: v1.16
+        version: v1.21
     spec:
       restartPolicy: Always
       containers:
         - name: status-map
-          image: gcr.io/iplanrio-status/status-map:1.20
+          image: gcr.io/iplanrio-status/status-map:1.21
           volumeMounts:
           - name: config-volume
             mountPath: /etc/nginx/conf.d
