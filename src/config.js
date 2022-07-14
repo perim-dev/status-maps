@@ -24,6 +24,8 @@ const config = {
     },
     URL_CAMERA_CET: `${protocol}://`+URL_BASE+'/camera/?cam=9',
     CHAVE_AVISO: '@STATUS-CAHVE-AVISO',
+    USER_KEY_TOKEN: '_status_user_token',
+    USER_KEY_LOGIN: '_status_user_login',
     TEMPO_AVISO_MINUTOS: 60,
     URL_COMANDO: `${protocol}://${URL_BASE}-comando/api/v2`
 }

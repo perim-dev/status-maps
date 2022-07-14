@@ -41,7 +41,7 @@ export default class Marcador extends React.PureComponent {
 
     const {ponto, icone, centralizar} = this.props;
 
-    console.log("renderizando pontos");
+//    console.log("renderizando pontos");
 
     return this.validateMarkers(ponto) && (
       <Marker onclick={(e) => centralizar(ponto, true)}

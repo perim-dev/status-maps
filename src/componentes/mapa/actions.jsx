@@ -2,6 +2,7 @@ import axios from 'axios';
 import config from '../../config';
 
 export const carregarPontosDaCategoria = async (categoria) => {
+    
     var resource = config.url + config.resources.categoria +'/'+ categoria.id + "/pontosDeInteresse";
     const request = await axios.get(`${resource}`);
  
@@ -42,6 +43,15 @@ export const carregarCamerasProximas = async (ponto) => {
         type: 'CARREGAR_CAMERAS_PROXIMAS',
         payload: request,
         ponto: ponto
+    };
+}
+
+export const agruparDesagruparCategoria = async (categoria) => {
+
+    return {
+        type: 'AGRUPAR_DESAGRUPAR_CATEGORIA',
+        payload: null,
+        categoria: categoria
     };
 }
 

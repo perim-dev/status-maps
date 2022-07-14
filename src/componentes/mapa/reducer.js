@@ -19,8 +19,8 @@ export default (state = INITIAL_STATE, action) => {
             novoEstado = {...state};
             let pontos = action.payload.data.slice();
             let icone = action.categoria.icone?'data:image;base64, '+ action.categoria.icone.replace('data:image;base64, ',''):'https://icons.iconarchive.com/icons/icons-land/vista-map-markers/32/Map-Marker-Marker-Outside-Azure-icon.png';
-            novoEstado.groupLayers[action.categoria.id] = {id:action.categoria.id, icone:icone,pontos:[]};
-
+            novoEstado.groupLayers[action.categoria.id] = {id:action.categoria.id, icone:icone,pontos:[], agrupado: action.categoria.agrupado};
+            console.log(action);
             pontos.map((ponto) => {
                 ponto.pontosRelacionados = [];
                 ponto.geometry = JSON.parse(ponto.geometry)
@@ -103,6 +103,15 @@ export default (state = INITIAL_STATE, action) => {
             delete novoEstado.groupLayers[action.idCategoria];
             return {...state,mapa:novoEstado};
         }
+        
+        case 'AGRUPAR_DESAGRUPAR_CATEGORIA':{
+            console.log('desagrupar')
+            novoEstado = {...state};
+            novoEstado.groupLayers[action.categoria.id].agrupado = action.categoria.agrupado;
+
+            return {...state,mapa:novoEstado};
+        }
+
         default:
             return state
     }

@@ -19,6 +19,7 @@ export const login = async (credenciais) => {
         return {
             type: 'AUTH_LOGIN',
             token: auth.Authorization,
+            username: credenciais.username,
             payload: request,
         };
 

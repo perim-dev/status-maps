@@ -429,7 +429,7 @@ class Mapa extends Component {
 
               {!this.state.exibirHeatmap && this.props.mapa.groupLayers.map((groupLayer) =>
                 // exibir os pontos
-                groupLayer.pontos.length > 0 &&
+                groupLayer.pontos.length > 0 && groupLayer.agrupado ?
                 (<MarkerClusterGroup removeOutsideVisibleBounds={true} chunkedLoading
                   singleMarkerMode={true}
                   key={`markerClusterkey-${groupLayer.id}`}
@@ -455,7 +455,19 @@ class Mapa extends Component {
                     carregarAreaDeAtuacao={this.props.carregarAreaDeAtuacao}
                     carregarPontosRelacionados={this.props.carregarPontosRelacionados}
                   />
-                </MarkerClusterGroup>))
+                </MarkerClusterGroup>) : 
+                (
+                  <GroupLayer
+                    groupLayer={groupLayer}
+                    mapRef={this.mapRef}
+                    iconeCategoria={this.iconeCategoria}
+                    centralizar={this.centralizar}
+                    carregarCamerasProximas={this.props.carregarCamerasProximas}
+                    carregarAreaDeAtuacao={this.props.carregarAreaDeAtuacao}
+                    carregarPontosRelacionados={this.props.carregarPontosRelacionados}
+                  />
+                )
+                )
               }
 
 

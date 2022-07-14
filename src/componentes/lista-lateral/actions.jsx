@@ -28,3 +28,8 @@ export const expandirComprimirCategorias = (acervo) => ({
     type: 'EXPANDIR_COMPRIMIR_CATEGORIAS',
     acervo_id: acervo.id,
 })
+
+export const agruparDesagruparAcervo = (acervo) => ({
+    type: 'AGRUPAR_DESAGRUPAR_ACERVO',
+    acervo_id: acervo.id,
+})

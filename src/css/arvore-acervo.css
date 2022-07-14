@@ -33,3 +33,14 @@
   display: inline;
   margin-right: 10px;
 }
+
+.agrupar-desagrupar {
+  color: #454545;
+  font-size: 12px;
+  padding-left: 3px;
+}
+
+.agrupar-desagrupar:hover {
+  color: rgba(255,255,255,0.8);
+  cursor: pointer;
+}
