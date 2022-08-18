@@ -5,13 +5,12 @@ class UserLocalData {
   
   constructor() {
     const localData = LocalData.ler();
-    this.acervos = localData.acervos;
+    this.acervos = localData.acervos || [];
   }
 
   getAcervoLocalDataById (acervoId) {
-    
-    let acervosLocalData = this.acervos.filter(a => a.id === acervoId);
 
+    let acervosLocalData = this.acervos.filter(a => a.id === acervoId);
     return acervosLocalData.length > 0 ? acervosLocalData[0]:null;
 
   }
