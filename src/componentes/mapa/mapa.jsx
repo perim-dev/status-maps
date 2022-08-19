@@ -52,6 +52,9 @@ import QRCode from 'qrcode';
 import DialogFlow from '../dialogFlow';
 import GroupLayer from './group-layer';
 
+/* Mosaico de câmeras - painel*/
+import PainelMosaico from '../mosaico';
+
 class Mapa extends Component {
 
   constructor(props) {
@@ -76,6 +79,7 @@ class Mapa extends Component {
       exibirLetreiro: true,
       exibirAvisos: false,
       exibirBuscaGeo: true,
+      exibirMosaicos: false,
       novoAviso: false,
       data: [],
       letreiroInfo: {},
@@ -290,6 +294,10 @@ class Mapa extends Component {
     this.setState({ novoAviso: false, exibirAvisos: !this.state.exibirAvisos });
   }
 
+  exibirMosaicos = () => {
+    this.setState({ exibirMosaicos: !this.state.exibirMosaicos });
+  }
+
   exibirDialogFlow = () => {
     this.setState({ exibirDialogFlow: !this.state.exibirDialogFlow });
   }
@@ -362,7 +370,9 @@ class Mapa extends Component {
 
             {this.state.exibirAvisos && (<Avisos ref={(avisosRef) => this.avisosRef = avisosRef} onRemove={() => this.setState({ novoAviso: false })} />)}
 
-
+            <div className="mosaicos-button">
+              <div className={`mosaicos-button-conteudo ${this.state.exibirMosaicos ? 'ativo' : ''} `} onClick={() => this.exibirMosaicos()} title="Mosaicos"><i className="fa fa-video-camera"></i></div>
+            </div>
 
             <div className="alertas-button">
               <div className={`alertas-button-conteudo ` + (this.state.exibirAlertas ? 'ativo' : '')} onClick={(e) => this.alternarAlertas()} title="Alarmes"><i className="fa fa-bullhorn"></i></div>
@@ -371,6 +381,8 @@ class Mapa extends Component {
             <div className="avisos-menu-button">
               <div className={`avisos-menu-button-conteudo ` + (this.state.novoAviso ? 'ativo' : '')} onClick={(e) => this.exibirAvisos()} title="Avisos"><i className="fa fa-bell"></i></div>
             </div>
+
+            { this.state.exibirMosaicos && <PainelMosaico fechar={this.exibirMosaicos} /> }
 
             {this.state.avisoComando.show &&
               <AvisoComando fechar={(e) => this.setState({ avisoComando: { show: false } })}

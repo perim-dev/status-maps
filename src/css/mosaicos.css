@@ -1,0 +1,152 @@
+.mosaicos-button {
+    position: absolute;
+    left: 24px;
+    top: calc(var(--menu-topo) + 429px);
+    z-index: 10000;
+    float: left;
+    width: 34px;
+    height: 34px;
+    border: solid 2px rgba(120, 120, 120, 0.5);
+    border-radius: 5px;
+}
+
+.mosaicos-button-conteudo {
+    color: rgba(0, 0, 0, 0.7);
+    ;
+    background-color: #fff;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 30px;
+    cursor: pointer;
+    height: 100%;
+    border-radius: 3px;
+}
+
+.mosaicos-button-conteudo:hover {
+    background-color: #07e25b;
+}
+
+.mosaicos-button-conteudo.ativo {
+    background-color: #07e25b;
+}
+
+.mosaicos-button-conteudo.ativo:hover {
+    background-color: #07e25b;
+}
+
+.mosaicos {
+    background-color: white;
+    border: 5px solid black;
+}
+
+.input-text-mosaicos {
+    width: 350px;
+    height: 35px;
+    color: #000;
+    position: relative;
+    opacity: 0.5;
+    border: solid 1px #ccc;
+    border-radius: 5px;
+}
+
+.button-novo-mosaicos:hover {
+    height: 36px;
+    border-radius: 0px 5px 5px 0px;
+    border: left 1px;
+    position: relative;
+    color: #fff;
+}
+
+.button-salvar-mosaicos:hover {
+    height: 35px;
+    border-radius: 0px 5px 5px 0px;
+    border-left: 1px;
+    position: relative;
+    color: #fff;
+}
+
+.dropdown-escolha-mosaicos:hover {
+    width: 250px;
+    height: 36px;
+    border-radius: 0px 0px 0px 0px;
+    color: #fff;
+}
+
+.dropdown-menuitem-escolha-mosaicos {
+    width: 350px;
+    background-color: #fff !important;
+}
+
+.button-cancelar-mosaicos:hover {
+    height: 35px;
+    border-radius: 2px 0px 0px 2px;
+    color: #fff;
+}
+
+.div-container-menuitem {
+    height: 35px;
+    border-radius: 2px 0px 0px 2px;
+}
+
+.div-container-img-html {
+    margin-right: 0px;
+    padding: 0px 0px 0px 0px;
+    z-index: 10000;
+}
+
+.div-container-img-fechar {
+    text-align: right;
+}
+
+.span-img-label {
+    color: red;
+    font-family: arial;
+    font-size: 12px;
+    top: 20px;
+    position: relative;
+    padding-right: 5px;
+    cursor: pointer;
+}
+
+.div-titulo-painel-mosaicos {
+    text-align: center;
+    font-family: Arial;
+    font-weight: 100;
+    color: white;
+    font-size: 12px;
+    padding: 2px 0px 15px 0px;
+    border-bottom: 0.0px solid grey;
+}
+
+.avisos-botao-expandir-mosaicos {
+    cursor: pointer;
+    position: absolute;
+    margin-left: 96%;
+    float: left;
+    top: 10px;
+    font-size: 1.0em;
+    padding: 0px 10px;
+}
+
+.grid-layout-container-5 {
+    /* display:grid;
+    grid-template-columns: repeat(5,330px); */
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+}
+
+.div-container-camera-body {
+    margin: 5px;
+}
+
+.div-body-mosaico {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    overflow-y: auto;
+}

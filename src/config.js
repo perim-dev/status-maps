@@ -16,7 +16,8 @@ const config = {
         alarme:'/alarmes',
         credenciais: '/credenciais',
         graficoTransito: '/graficos/transito',
-        graficoEngarrafamento: '/transito/engarrafamento'
+        graficoEngarrafamento: '/transito/engarrafamento',
+        mosaico:'/mosaicos'
     },
     apiEstagioAtencao:`${protocol}://aplicativo.cocr.com.br/estagio_api`,
     websockets:{
