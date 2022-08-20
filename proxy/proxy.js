@@ -9,12 +9,14 @@ const port = 5001;
 const bodyParser = require('body-parser');
 var MjpegProxy = require('mjpeg-proxy').MjpegProxy;
 
+const URL_BASE = "http://192.168.165.110:8080"; //https://dev.status.rio
+
 app.use(bodyParser.json())
 
 app.use((req, res, next) => {
-	//Qual site tem permissão de realizar a conexão, no exemplo abaixo está o "*" indicando que qualquer site pode fazer a conexão
+    //Qual site tem permissão de realizar a conexão, no exemplo abaixo está o "*" indicando que qualquer site pode fazer a conexão
     res.header("Access-Control-Allow-Origin", "*");
-	//Quais são os métodos que a conexão pode realizar na API
+    //Quais são os métodos que a conexão pode realizar na API
     res.header("Access-Control-Allow-Methods", 'GET,PUT,POST,DELETE,OPTIONS');
     app.use(cors());
     next();
@@ -24,7 +26,7 @@ app.use((req, res, next) => {
 
 
 var config = {
-  headers: {'Authorization': 'Basic MjYyMjYyNTU6MTIzNDU='}
+    headers: { 'Authorization': 'Basic MjYyMjYyNTU6MTIzNDU=' }
 };
 
 // app.get('/camera', (req, res, next) => { 
@@ -33,96 +35,96 @@ var config = {
 // }, new MjpegProxy('http://10.50.3.180:9150/video-1').proxyRequest);
 
 app.get('/*', (req, res) => {
-  console.log(req.path,req.method, req.url);
+    console.log(req.path, req.method, req.url);
 
-  if(req.path === '/status/atualizacaoDePontos' ) {
-    console.log('drop');
-    return res.send({});
-  }
-
-  if(req.url.includes('/camera/?cam=') ) {
-    const param = req.url.replace('/camera/?cam=','')
-    console.log('cameras', param);
-    const urlCamera = `http://10.50.3.180:${param}/video-1`;
-    
-    try {
-
-      return new MjpegProxy(urlCamera).proxyRequest(req,res);
-    } catch (err) {
-      return res.status(404).send('');
+    if (req.path === '/status/atualizacaoDePontos') {
+        console.log('drop');
+        return res.send({});
     }
-    
-    
-    // axios.get(urlCamera)
-    // .then(function(response){
-    //   console.log(response.status); // ex.: 200
-    //   console.log('data',response.data)
-    //   res.send(response.data);
-    // }).catch(e => {
-    //   console.log("deu ruim", e)
-    //   res.send({});
-    // });  
-  } else {
 
-    
-    // Requisições do tipo GET
-    //const query = 
-    // const queryreq.query[0]);
-    const url = `https://dev.status.rio${req.url}`
-    
-    axios.get(url,config)
-    .then(function(response){
-      //console.log(response.data); // ex.: { user: 'Your User'}
-      console.log(response.status); // ex.: 200
-      res.send(response.data);
-    }).catch(e => {
-      console.log("deu ruim", e)
-      res.send({});
-    });  
-  }
+    if (req.url.includes('/camera/?cam=')) {
+        const param = req.url.replace('/camera/?cam=', '')
+        console.log('cameras', param);
+        const urlCamera = `http://10.50.3.180:${param}/video-1`;
 
-  
+        try {
+
+            return new MjpegProxy(urlCamera).proxyRequest(req, res);
+        } catch (err) {
+            return res.status(404).send('');
+        }
+
+
+        // axios.get(urlCamera)
+        // .then(function(response){
+        //   console.log(response.status); // ex.: 200
+        //   console.log('data',response.data)
+        //   res.send(response.data);
+        // }).catch(e => {
+        //   console.log("deu ruim", e)
+        //   res.send({});
+        // });  
+    } else {
+
+
+        // Requisições do tipo GET
+        //const query = 
+        // const queryreq.query[0]);
+        const url = `${URL_BASE}${req.url}`
+
+        axios.get(url, config)
+            .then(function(response) {
+                //console.log(response.data); // ex.: { user: 'Your User'}
+                console.log(response.status); // ex.: 200
+                res.send(response.data);
+            }).catch(e => {
+                console.log("deu ruim", e)
+                res.send({});
+            });
+    }
+
+
 })
 
 app.put('/*', (req, res) => {
-  console.log(req.path,req.method, req.url);
+    console.log(req.path, req.method, req.url);
 
-  // Requisições do tipo GET
-  //const query = 
-  // const queryreq.query[0]);
-  const url = `https://dev.status.rio${req.url}`
-  axios.put(url,req.body,config)
-  .then(function(response){
-    //console.log(response.data); // ex.: { user: 'Your User'}
-    console.log(response.status); // ex.: 200
-    res.send(response.data);
-  }).catch( err => {
-    console.error(err);
-  });  
+    // Requisições do tipo GET
+    //const query = 
+    // const queryreq.query[0]);
+    const url = `${URL_BASE}${req.url}`
+    axios.put(url, req.body, config)
+        .then(function(response) {
+            //console.log(response.data); // ex.: { user: 'Your User'}
+            console.log(response.status); // ex.: 200
+            res.send(response.data);
+        }).catch(err => {
+            console.error(err);
+        });
 
-  
+
 })
 
 app.post('/*', (req, res) => {
-  console.log(req.path,req.method, req.url);
+    console.log(req.path, req.method, req.url);
 
-  // Requisições POST, note há um parâmetro extra indicando os parâmetros da requisição
-  // axios.post('/save', { firstName: 'Marlon', lastName: 'Bernardes' })
-  const url = `https://dev.status.rio${req.url}`
-  axios.post(url,req.body,config)
-  .then(function(response){
-    //console.log(response.data); // ex.: { user: 'Your User'}
-    console.log('SUCESSO',response.status); // ex.: 200
-    res.status(response.status).send(response.data);
-  }).catch( err => {
-    
-    console.error(err.response);
-    res.status(err.response.status).send(err.response.data);
-  });  
+    // Requisições POST, note há um parâmetro extra indicando os parâmetros da requisição
+    // axios.post('/save', { firstName: 'Marlon', lastName: 'Bernardes' })
+    const url = `${URL_BASE}${req.url}`
+    axios.post(url, req.body, config)
+        .then(function(response) {
+            //console.log(response.data); // ex.: { user: 'Your User'}
+            console.log('SUCESSO', response.status); // ex.: 200
+            res.status(response.status).send(response.data);
+        }).catch(err => {
+
+            console.error(err.response);
+            res.status(err.response.status).send(err.response.data);
+        });
 })
 
 app.listen(port, () => {
-   console.log(`Example app listening at http://localhost:${port}`)
+    console.log(`Example app listening at http://localhost:${port}`)
 });
 
 

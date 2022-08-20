@@ -2,6 +2,7 @@
     --tamanhoElementoLinha1: -200px;
     --tamanhoElementoLinha2: -200px;
 }
+
 .letreiro {
     position: absolute;
     left: 13px;
@@ -12,8 +13,6 @@
     border: solid 2px rgba(120, 120, 120, 0.5);
     margin-top: 9px;
     background-color: rgba(0, 0, 0, 0.8);
-    
-    
 }
 
 .letreiro .texto {
@@ -27,25 +26,24 @@
     overflow: hidden;
     display: inline-block;
     flex-direction: column;
-    
 }
+
+
 /* animation: slide 15s linear infinite; */
 
 .scroll-left #linha1 {
     position: relative;
-    white-space: nowrap; 
+    white-space: nowrap;
     text-overflow: clip;
     vertical-align: middle;
     margin: 0;
     line-height: normal;
     /* height: 50px; */
     max-height: 55px;
-    animation: slide-linha-1 15s linear infinite; 
+    animation: slide-linha-1 60s linear infinite;
     width: min-content;
     padding-top: 10px;
     /* animation: scroll-left 30s linear infinite; */
-    
-    
     /* Starting position
     -moz-transform:translateX(100%);
     -webkit-transform:translateX(100%);	
@@ -57,20 +55,18 @@
 
 .scroll-left #linha2 {
     position: relative;
-    white-space: nowrap; 
+    white-space: nowrap;
     text-overflow: clip;
     vertical-align: middle;
     margin: 0;
     line-height: normal;
     /*height: 50px; */
     max-height: 55px;
-    animation: slide-linha-2 20s linear infinite; 
+    animation: slide-linha-2 50s linear infinite;
     width: min-content;
     padding-top: 5px;
     color: yellow;
     /* animation: scroll-left 30s linear infinite; */
-    
-    
     /* Starting position
     -moz-transform:translateX(100%);
     -webkit-transform:translateX(100%);	
@@ -91,6 +87,7 @@
         width: 150%;
     }
 }
+
 
 /* Move it (define the animation) */
 
@@ -130,17 +127,19 @@
 }
 
 @keyframes slide-linha-1 {
-    0% {   margin-left: 100%;}
-    
-    100% { 
-        margin-left: var(--tamanhoElementoLinha1,0) ;
+    0% {
+        margin-left: 100%;
     }
-} 
+    100% {
+        margin-left: var(--tamanhoElementoLinha1, 0);
+    }
+}
 
 @keyframes slide-linha-2 {
-    0% {   margin-left: 100%;}
-    
-    100% { 
-        margin-left: var(--tamanhoElementoLinha2,0) ;
+    0% {
+        margin-left: 100%;
     }
-} 
+    100% {
+        margin-left: var(--tamanhoElementoLinha2, 0);
+    }
+}

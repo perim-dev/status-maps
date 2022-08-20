@@ -1,29 +1,30 @@
-const protocol = window.location.protocol.replace(':','');
-const wssProtocol = protocol ==='https'?'wss':'ws';
+const protocol = window.location.protocol.replace(':', '');
+const wssProtocol = protocol === 'https' ? 'wss' : 'ws';
 
-const WSS_HOM = 'ws://34.117.174.108/status-websocket/atualizacaoDePontos';
-const URL_BASE = process.env.REACT_APP_API_URL|| process.env.NODE_ENV === "development" ? '192.168.75.183:5001':window.location.href.split('/')[2];
-const WSS_BASE = process.env.NODE_ENV === "development" ? WSS_HOM :`${wssProtocol}://`+URL_BASE+'/status-websocket/atualizacaoDePontos';
+// const WSS_HOM = 'ws://34.117.174.108/status-websocket/atualizacaoDePontos';
+const WSS_HOM = 'ws://192.168.165.110:9000/status-websocket/atualizacaoDePontos';
+const URL_BASE = process.env.REACT_APP_API_URL || process.env.NODE_ENV === "development" ? '192.168.165.110:5001' : window.location.href.split('/')[2];
+const WSS_BASE = process.env.NODE_ENV === "development" ? WSS_HOM : `${wssProtocol}://` + URL_BASE + '/status-websocket/atualizacaoDePontos';
 
 
 
 const config = {
-    url:`${protocol}://`+URL_BASE+'/status/api/v1',
-    resources:{
-        acervo:'/acervos',
-        categoria:'/categorias',
-        pontoDeInteresse:'/pontosDeInteresse',
-        alarme:'/alarmes',
+    url: `${protocol}://` + URL_BASE + '/status/api/v1',
+    resources: {
+        acervo: '/acervos',
+        categoria: '/categorias',
+        pontoDeInteresse: '/pontosDeInteresse',
+        alarme: '/alarmes',
         credenciais: '/credenciais',
         graficoTransito: '/graficos/transito',
         graficoEngarrafamento: '/transito/engarrafamento',
-        mosaico:'/mosaicos'
+        mosaico: '/mosaicos'
     },
-    apiEstagioAtencao:`${protocol}://aplicativo.cocr.com.br/estagio_api`,
-    websockets:{
+    apiEstagioAtencao: `${protocol}://aplicativo.cocr.com.br/estagio_api`,
+    websockets: {
         atualizacaoPontosPorCategoria: WSS_BASE
     },
-    URL_CAMERA_CET: `${protocol}://`+URL_BASE+'/camera/?cam=9',
+    URL_CAMERA_CET: `${protocol}://` + URL_BASE + '/camera/?cam=9',
     CHAVE_AVISO: '@STATUS-CAHVE-AVISO',
     USER_KEY_TOKEN: '_status_user_token',
     USER_KEY_LOGIN: '_status_user_login',
