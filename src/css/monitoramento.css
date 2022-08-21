@@ -1,0 +1,17 @@
+/* Botão do menu lateral*/
+
+.monitorar-menu-button {
+    top: calc(var(--menu-topo) + 220px);
+}
+
+.monitorar-menu-button-conteudo:hover {
+    background-color: #f6ff50;
+}
+
+.monitorar-menu-button-conteudo.ativo:hover {
+    background-color: #f6ff50;
+}
+
+.monitorar-menu-button-conteudo.ativo {
+    background-color: #f6ff50;
+}

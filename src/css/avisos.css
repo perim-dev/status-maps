@@ -1,41 +1,23 @@
 /* Botão do menu lateral*/
-.avisos-menu-button {
-    position: absolute;
-    left: 24px;
-    top: calc(var(--menu-topo) + 360px);
-    z-index: 10000;
-    float: left;
-    width: 34px;
-    height: 34px;
-    border: solid 2px rgba(120,120,120,0.5);
-    border-radius: 5px;
-    background-color: #fff;
-}
 
-.avisos-menu-button-conteudo {
-    color: rgba(0,0,0,0.7);;
-    background-color: #fff; 
-    text-align: center;
-    vertical-align: middle;
-    line-height: 30px;
-    cursor: pointer;
-    height: 100%;
-    border-radius: 3px;
+.avisos-menu-button {
+    top: calc(var(--menu-topo) + 360px);
 }
 
 .avisos-menu-button-conteudo:hover {
     background-color: #eee;
 }
 
-.avisos-menu-button-conteudo.ativo:hover{
+.avisos-menu-button-conteudo.ativo:hover {
     color: #f07d66;
 }
 
-.avisos-menu-button-conteudo.ativo{
+.avisos-menu-button-conteudo.ativo {
     color: #ff5533;
     animation: blink-animation 2s steps(5, start) infinite;
     -webkit-animation: blink-animation 2s steps(5, start) infinite;
 }
+
 @keyframes blink-animation {
     to {
         visibility: hidden;
@@ -47,6 +29,7 @@
         visibility: hidden;
     }
 }
+
 
 /* fim de estilos do botão menu lateral*/
 
@@ -60,62 +43,59 @@
 .alarme.motivo {
     white-space: pre-line;
 } */
-@media (max-height: 600px) { 
+
+@media (max-height: 600px) {
     .avisos {
-      display: none;
+        display: none;
     }
-  }
-  
+}
 
 .avisos {
     bottom: 15px;
     position: absolute;
     z-index: 100000;
-    background-color: rgba(0,0,0,0.8);
-    right:3px;
+    background-color: rgba(0, 0, 0, 0.8);
+    right: 3px;
     min-height: 150px;
     min-width: 250px;
-  }
-  
+}
+
 .normal {
     margin-right: 11px;
     border: solid 1px #999;
     border-radius: 5px;
     width: 30%;
     height: 30%;
-    background-color: rgba(0,0,0,0.8);
-    right:2px;
+    background-color: rgba(0, 0, 0, 0.8);
+    right: 2px;
     max-width: 350px;
 }
 
 .expandido {
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.9);
-    right:0;
-    left:0;
+    background-color: rgba(0, 0, 0, 0.9);
+    right: 0;
+    left: 0;
     bottom: 0;
-    top:0;
-    padding-top:35px;
+    top: 0;
+    padding-top: 35px;
     padding-left: 15px;
     padding-right: 15px;
     padding-bottom: 15px;
 }
 
-@media (max-width: 768px) { 
-    .transito{
+@media (max-width: 768px) {
+    .transito {
         top: 70px;
     }
-
-    .expandido{
+    .expandido {
         top: 0;
         background-color: black;
     }
-
     .normal {
         width: 35%;
     }
-
     .normal .botoes .somente-expandido {
         display: none;
     }
@@ -132,17 +112,17 @@
 }
 
 .expandido .botoes button {
-font-size: 1.1em;
-padding: 5px 12px;
-margin-top: 5px;
-}
-
-@media (max-width: 768px) { 
-.expandido .botoes button {
-    font-size: 1.0em;
-    padding: 5px 5px;
+    font-size: 1.1em;
+    padding: 5px 12px;
     margin-top: 5px;
 }
+
+@media (max-width: 768px) {
+    .expandido .botoes button {
+        font-size: 1.0em;
+        padding: 5px 5px;
+        margin-top: 5px;
+    }
 }
 
 .avisos-botao-expandir {
@@ -155,7 +135,7 @@ margin-top: 5px;
 }
 
 .expandido .avisos-botao-expandir {
-    margin-bottom:15px; 
+    margin-bottom: 15px;
     margin-left: 15px;
     font-size: 1.0em;
     padding: 0px 0px;
@@ -165,7 +145,6 @@ margin-top: 5px;
     width: 100%;
     height: 100%;
     padding: 5px 5px 20px 5px;
-    
 }
 
 .avisos-mensagens-body {
@@ -206,6 +185,7 @@ margin-top: 5px;
     text-align: right;
     padding-right: 5px;
 }
+
 .avisos-mensagem-fechar {
     width: 5%;
     height: 100%;
@@ -215,20 +195,20 @@ margin-top: 5px;
     padding-right: 5px;
 }
 
-.avisos-mensagem-fechar i{
+.avisos-mensagem-fechar i {
     cursor: pointer;
 }
 
 .avisos-mensagem-texto {
-   padding-left: 7px;
-   background-color: #333;
-   font-size: 0.8em;
-   white-space: pre-line;
+    padding-left: 7px;
+    background-color: #333;
+    font-size: 0.8em;
+    white-space: pre-line;
 }
 
 .expandido .avisos-mensagem-texto {
-   padding-left: 7px;
-   background-color: #333;
-   font-size: 1em;
-   white-space: pre-line;
+    padding-left: 7px;
+    background-color: #333;
+    font-size: 1em;
+    white-space: pre-line;
 }

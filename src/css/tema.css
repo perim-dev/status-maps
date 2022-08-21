@@ -1,62 +1,66 @@
 :root {
-  --menu-topo: 65px;
+    --menu-topo: 65px;
 }
-html, body, .container-fluid{
-   height:100%;
+
+html,
+body,
+.container-fluid {
+    height: 100%;
 }
 
 body {
-  background-color:  rgba(17, 17, 17, 0.94);
-  color: rgba(255,255,255,0.8);
-  margin:0px 15px;
-  padding: 0px;
+    background-color: rgba(17, 17, 17, 0.94);
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0px 15px;
+    padding: 0px;
 }
 
-.root{
-  min-height: 100%;
-  height: 100%;
+.root {
+    min-height: 100%;
+    height: 100%;
 }
 
-.content-fluid{
-  padding: 5px;
+.content-fluid {
+    padding: 5px;
 }
 
 .modulo {
-  padding: 5px;
-  margin: 0px;
-  height: 100%;
+    padding: 5px;
+    margin: 0px;
+    height: 100%;
 }
 
-@media (max-width:767px){
-  #layout-corpo {
-    height: 95%;
-  }
+@media (max-width:767px) {
+    #layout-corpo {
+        height: 95%;
+    }
 }
 
-@media(min-width:992px),(min-width:768px),(min-width:1200px){
-  #layout-corpo {
-    height: 95%;
-  }
-
+@media(min-width:992px),
+(min-width:768px),
+(min-width:1200px) {
+    #layout-corpo {
+        height: 95%;
+    }
 }
 
 .lista-lateral {
-  height: 85%;
+    height: 85%;
 }
 
-.lista-lateral .panel-body{
-  overflow: auto;
-  height: -moz-calc(100% - (20px + 30px));
-  height: -webkit-calc(100% - (20px + 30px));
-  height: calc(100% - (20px + 30px));
+.lista-lateral .panel-body {
+    overflow: auto;
+    height: -moz-calc(100% - (20px + 30px));
+    height: -webkit-calc(100% - (20px + 30px));
+    height: calc(100% - (20px + 30px));
 }
 
 .mapa-lateral {
-  border: solid 0px yellow;
-  height: 100%;
-  padding: 5px;
-  margin: 0 !important;
-  /* width: 200px !important; */
+    border: solid 0px yellow;
+    height: 100%;
+    padding: 5px;
+    margin: 0 !important;
+    /* width: 200px !important; */
 }
 
 .mapa-lateral .altura {
@@ -65,155 +69,196 @@ body {
 }
 
 .nopadding {
-   padding: 0 !important;
-   margin: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
 }
 
 .bg-grafite {
-  background-color: rgba(51,51,51,0.8) ;
-  border-color: #404040;
+    background-color: rgba(51, 51, 51, 0.8);
+    border-color: #404040;
 }
 
 .bg-grafite .panel-heading {
-  color: #fff;
-  background-color: #404040;
-  border-color: #404040;
-  background-image: none;
+    color: #fff;
+    background-color: #404040;
+    border-color: #404040;
+    background-image: none;
 }
 
 .rodape {
-  position: relative;
-  width: 100%;
-  float: right;
-  height: 25px;
+    position: relative;
+    width: 100%;
+    float: right;
+    height: 25px;
 }
 
-.rodape .panel, .rodape .panel-body{
-  height: 25px;
-  padding-top: 0;
-  padding-bottom: 0;
-  margin: 0;
+.rodape .panel,
+.rodape .panel-body {
+    height: 25px;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin: 0;
 }
 
 .area-titulo {
-  height: 15%;
-  border-radius: 5px;
-  padding-bottom: 10px;
+    height: 15%;
+    border-radius: 5px;
+    padding-bottom: 10px;
 }
 
 .area-titulo .box {
-  border: solid 1px #444;
-  height: 100%;
-  padding: 5% ;
-  background-color:#404040;
-  vertical-align: middle;  
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    border: solid 1px #444;
+    height: 100%;
+    padding: 5%;
+    background-color: #404040;
+    vertical-align: middle;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.area-titulo img{
-  width: 100%;
-  max-width: 300px;
-  border-radius: 5px;
-  float:left; 
-  
+.area-titulo img {
+    width: 100%;
+    max-width: 300px;
+    border-radius: 5px;
+    float: left;
 }
-.area-titulo-logo{
-  text-align: center;
-  padding: 10%;
+
+.area-titulo-logo {
+    text-align: center;
+    padding: 10%;
 }
 
 .area-titulo .texto {
-  margin-left:10px;
-  float:left;
-  font-size: 2.8em;
-  text-shadow: #555 1px 2px ;
-  width:60%;
-  height: 100%;
-  line-height: 100%;
-  color:rgba(0, 0, 0,0.7);
+    margin-left: 10px;
+    float: left;
+    font-size: 2.8em;
+    text-shadow: #555 1px 2px;
+    width: 60%;
+    height: 100%;
+    line-height: 100%;
+    color: rgba(0, 0, 0, 0.7);
 }
 
 .area-titulo .logout {
-  cursor: pointer;
-  font-size: 1.5em;
-  margin-top: -30px;
-  margin-right: 15px;
-  float: right;
-  color: #fff;
+    cursor: pointer;
+    font-size: 1.5em;
+    margin-top: -30px;
+    margin-right: 15px;
+    float: right;
+    color: #fff;
 }
+
+
 /* login*/
 
 .login {
-  margin-top: 10%;
-  text-align: center;
-  width: 100%;
+    margin-top: 10%;
+    text-align: center;
+    width: 100%;
 }
 
 .login .form-group {
-  margin-left: 30px ;
-  margin-right: 30px;
+    margin-left: 30px;
+    margin-right: 30px;
 }
 
 .login .logo {
-  border-radius: 0px;
-  margin-bottom: 20px;
-  width:120px;
+    border-radius: 0px;
+    margin-bottom: 20px;
+    width: 120px;
 }
 
 .login .error {
-  color: #e92a2a;
-  padding-bottom: 15px;
-  font-weight: bolder;
+    color: #e92a2a;
+    padding-bottom: 15px;
+    font-weight: bolder;
 }
 
 .bg-grafite {
-	background-color: rgba(51, 51, 51, 0.8);
-	border-color: #404040;
+    background-color: rgba(51, 51, 51, 0.8);
+    border-color: #404040;
 }
 
 .bg-grafite .panel-heading {
-	color: #fff;
-	background-color: #404040;
-	border-color: #404040;
-	background-image: none;
+    color: #fff;
+    background-color: #404040;
+    border-color: #404040;
+    background-image: none;
 }
 
 .bg-grafite .panel-footer {
-	color: #fff;
-	background-color: #404040;
-	border-color: #404040;
-	background-image: none;
+    color: #fff;
+    background-color: #404040;
+    border-color: #404040;
+    background-image: none;
 }
 
 .utilitario-rodape-mapa {
-  position: absolute;
-  bottom: 0;
-  z-index: 1000;
-  margin-bottom: 15px;
-  margin-left: 10px;
+    position: absolute;
+    bottom: 0;
+    z-index: 1000;
+    margin-bottom: 15px;
+    margin-left: 10px;
 }
 
 .botao-expandir-mapa {
-  padding: 5px 10px;
-  border: solid 1px rgba(170, 170, 170, 0.94);  
-  border-radius: 5px;
-  background-color: rgba(200, 200, 200,0.9);
-  color: rgba(50, 50, 50, 0.94);
+    padding: 5px 10px;
+    border: solid 1px rgba(170, 170, 170, 0.94);
+    border-radius: 5px;
+    background-color: rgba(200, 200, 200, 0.9);
+    color: rgba(50, 50, 50, 0.94);
 }
 
-@media (max-width: 768px) { 
-  .botao-expandir-mapa {
-    display: none;
-  }
+@media (max-width: 768px) {
+    .botao-expandir-mapa {
+        display: none;
+    }
 }
 
 .borda-interativa-mapa {
-  border: solid 3px gray;
-  padding: 0px;
-  height: 100%;
-  width: 100%;
-  display: block;
-  border-radius: 3px;
+    border: solid 3px gray;
+    padding: 0px;
+    height: 100%;
+    width: 100%;
+    display: block;
+    border-radius: 3px;
+}
+
+
+/* btn tools menu*/
+
+.button-tools-menu {
+    position: absolute;
+    left: 24px;
+    z-index: 10000;
+    float: left;
+    width: 34px;
+    height: 34px;
+    border: solid 2px rgba(120, 120, 120, 0.5);
+    border-radius: 5px;
+}
+
+.button-tools-menu-conteudo {
+    color: rgba(0, 0, 0, 0.7);
+    ;
+    background-color: #fff;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 30px;
+    cursor: pointer;
+    height: 100%;
+    border-radius: 3px;
+}
+
+.button-tools-menu-conteudo:hover {
+    background-color: #07e25b;
+}
+
+.button-tools-menu-conteudo.ativo {
+    background-color: #07e25b;
+}
+
+.button-tools-menu-conteudo.ativo:hover {
+    background-color: #07e25b;
 }

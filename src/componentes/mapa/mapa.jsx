@@ -55,31 +55,41 @@ import GroupLayer from './group-layer';
 /* Mosaico de câmeras - painel*/
 import PainelMosaico from '../mosaico';
 
+import SCREEN_OPTIONS from './options-constants';
+import UserLocalData from '../../utils/UserLocalData.class';
+
+// monitoramento
+import '../../css/monitoramento.css'
+
 class Mapa extends Component {
 
   constructor(props) {
     super(props);
-    this.iconPerson = new L.Icon({
-      iconUrl: 'https://leafletjs.com/examples/custom-icons/leaf-orange.png',
-      iconAnchor: null,
-      popupAnchor: null,
-      shadowUrl: null,
-      shadowSize: null,
-      shadowAnchor: null,
-      iconSize: new L.Point(60, 75),
-      className: 'leaflet-div-icon'
-    });
+    // this.iconPerson = new L.Icon({
+    //   iconUrl: 'https://leafletjs.com/examples/custom-icons/leaf-orange.png',
+    //   iconAnchor: null,
+    //   popupAnchor: null,
+    //   shadowUrl: null,
+    //   shadowSize: null,
+    //   shadowAnchor: null,
+    //   iconSize: new L.Point(60, 75),
+    //   className: 'leaflet-div-icon'
+    // });
+
+    this.userLocalData = new UserLocalData()
+
     this.state = {
       lat: this.props.mapa.lat,
       lng: this.props.mapa.lng,
       zoom: this.props.mapa.zoom,
-      exibirHeatmap: false,
-      exibirAlertas: true,
-      exibirGraficoTransito: true,
-      exibirLetreiro: true,
-      exibirAvisos: false,
+      exibirHeatmap: this.userLocalData.getOption(SCREEN_OPTIONS.HEATMAP),
+      exibirAlertas: this.userLocalData.getOption(SCREEN_OPTIONS.ALARMES) || true,
+      exibirGraficoTransito: this.userLocalData.getOption(SCREEN_OPTIONS.TRANSITO),
+      exibirLetreiro: this.userLocalData.getOption(SCREEN_OPTIONS.LETREIRO) !== null ? this.userLocalData.getOption(SCREEN_OPTIONS.LETREIRO) : true,
+      exibirAvisos: this.userLocalData.getOption(SCREEN_OPTIONS.AVISOS),
       exibirBuscaGeo: true,
       exibirMosaicos: false,
+      monitorar: this.userLocalData.getOption(SCREEN_OPTIONS.MONITORAR),
       novoAviso: false,
       data: [],
       letreiroInfo: {},
@@ -170,8 +180,12 @@ class Mapa extends Component {
     }
   }
 
+
+
   handleData(data) {
     let retorno = JSON.parse(data);
+
+    console.log(retorno);
 
     if (retorno.atualizarAlarmes) {
       this.props.limparAlarmes();
@@ -213,6 +227,32 @@ class Mapa extends Component {
       if (this.state.exibirAvisos) {
         this.avisosRef.atualizaDados();
       }
+
+    }
+
+    if (this.state.monitorar && retorno.flyto) {
+      
+      if (retorno.latitude && retorno.longitude) {
+        
+        const zoom = retorno.zoom || this.state.zoom;
+
+        this.mapRef.leafletElement.setView(new L.LatLng(retorno.latitude, retorno.longitude), this.state.zoom, {
+          animate: true,
+          duration: 3
+        })
+
+        if(retorno.zoom) {
+          setTimeout(() => {
+
+            this.setState({zoom: retorno.zoom})  
+          },2000)
+        }
+
+
+
+      }
+      // this.setState({ zoom: this.state.zoom - 1 })
+
 
     }
 
@@ -272,6 +312,7 @@ class Mapa extends Component {
   }
 
   alternarHeatmapPontos() {
+    this.userLocalData.setOption(SCREEN_OPTIONS.HEATMAP, !this.state.exibirHeatmap)
     this.setState({ ...this.state, exibirHeatmap: !this.state.exibirHeatmap });
   }
 
@@ -283,15 +324,23 @@ class Mapa extends Component {
   }
 
   alternarGraficoTransito = () => {
+    this.userLocalData.setOption(SCREEN_OPTIONS.TRANSITO, !this.state.exibirGraficoTransito)
     this.setState({ exibirGraficoTransito: !this.state.exibirGraficoTransito });
   }
 
   alternarLetreiro = () => {
+    this.userLocalData.setOption(SCREEN_OPTIONS.LETREIRO, !this.state.exibirLetreiro)
     this.setState({ exibirLetreiro: !this.state.exibirLetreiro });
   }
 
   exibirAvisos = () => {
+    this.userLocalData.setOption(SCREEN_OPTIONS.AVISOS, !this.state.exibirAvisos)
     this.setState({ novoAviso: false, exibirAvisos: !this.state.exibirAvisos });
+  }
+
+  ativarDesativarMonitoramento = () => {
+    this.userLocalData.setOption(SCREEN_OPTIONS.MONITORAR, !this.state.monitorar)
+    this.setState({ monitorar: !this.state.monitorar });
   }
 
   exibirMosaicos = () => {
@@ -307,7 +356,6 @@ class Mapa extends Component {
     this.setState({ exibirBuscaGeo: false }, () => this.setState({ exibirBuscaGeo: true }));
 
   }
-
 
   shouldComponentUpdate(nextProps, nextState) {
     const _filter = (gl => gl.pontos.length > 0);
@@ -370,19 +418,23 @@ class Mapa extends Component {
 
             {this.state.exibirAvisos && (<Avisos ref={(avisosRef) => this.avisosRef = avisosRef} onRemove={() => this.setState({ novoAviso: false })} />)}
 
-            <div className="mosaicos-button">
-              <div className={`mosaicos-button-conteudo ${this.state.exibirMosaicos ? 'ativo' : ''} `} onClick={() => this.exibirMosaicos()} title="Mosaicos"><i className="fa fa-video-camera"></i></div>
+            <div className="button-tools-menu monitorar-menu-button">
+              <div className={`button-tools-menu-conteudo monitorar-menu-button-conteudo ${this.state.monitorar ? 'ativo' : ''} `} onClick={this.ativarDesativarMonitoramento} title="Monitorar"><i className="fa fa-exclamation-triangle"></i></div>
             </div>
 
-            <div className="alertas-button">
-              <div className={`alertas-button-conteudo ` + (this.state.exibirAlertas ? 'ativo' : '')} onClick={(e) => this.alternarAlertas()} title="Alarmes"><i className="fa fa-bullhorn"></i></div>
+            <div className="button-tools-menu mosaicos-button">
+              <div className={`button-tools-menu-conteudo ${this.state.exibirMosaicos ? 'ativo' : ''} `} onClick={() => this.exibirMosaicos()} title="Mosaicos"><i className="fa fa-video-camera"></i></div>
             </div>
 
-            <div className="avisos-menu-button">
-              <div className={`avisos-menu-button-conteudo ` + (this.state.novoAviso ? 'ativo' : '')} onClick={(e) => this.exibirAvisos()} title="Avisos"><i className="fa fa-bell"></i></div>
+            <div className="button-tools-menu alertas-button">
+              <div className={`button-tools-menu-conteudo alertas-button-conteudo ` + (this.state.exibirAlertas ? 'ativo' : '')} onClick={(e) => this.alternarAlertas()} title="Alarmes"><i className="fa fa-bullhorn"></i></div>
             </div>
 
-            { this.state.exibirMosaicos && <PainelMosaico fechar={this.exibirMosaicos} /> }
+            <div className="button-tools-menu avisos-menu-button">
+              <div className={`button-tools-menu-conteudo avisos-menu-button-conteudo ` + (this.state.novoAviso ? 'ativo' : '')} onClick={(e) => this.exibirAvisos()} title="Avisos"><i className="fa fa-bell"></i></div>
+            </div>
+
+            {this.state.exibirMosaicos && <PainelMosaico fechar={this.exibirMosaicos} />}
 
             {this.state.avisoComando.show &&
               <AvisoComando fechar={(e) => this.setState({ avisoComando: { show: false } })}
@@ -405,6 +457,11 @@ class Mapa extends Component {
               preferCanvas={true}
               center={position}
               zoom={this.state.zoom}
+              animate={true}
+              duration={100000}
+              fadeAnimation={true}
+              zoomAnimation={true}
+
               maxBounds={L.latLngBounds(L.latLng(-22.779416753056946, -43.768280005721955), L.latLng(-23.067453817196093, -42.95432660852574))}
               onViewportChanged={(viewport) => this.atualizarPosicao(viewport)}
               onzoomstart={(e) => this.setState({ avisoComando: { show: false } })}
@@ -442,44 +499,44 @@ class Mapa extends Component {
               {!this.state.exibirHeatmap && this.props.mapa.groupLayers.map((groupLayer) =>
                 // exibir os pontos
                 groupLayer.pontos.length > 0 && groupLayer.agrupado ?
-                (<MarkerClusterGroup removeOutsideVisibleBounds={true} chunkedLoading
-                  singleMarkerMode={true}
-                  key={`markerClusterkey-${groupLayer.id}`}
-                  iconCreateFunction={
-                    function (cluster) {
-                      var markers = cluster.getAllChildMarkers();
-                      let html = '<div class="agrupamento"><div class="imagem" style=\'background-image: url("' + groupLayer.icone + '")\'></div>'
-                      if (markers.length > 1) {
-                        html += '<div class="texto">' + markers.length + '</div></div>';
-                      } else {
-                        html += '</div>';
+                  (<MarkerClusterGroup removeOutsideVisibleBounds={true} chunkedLoading
+                    singleMarkerMode={true}
+                    key={`markerClusterkey-${groupLayer.id}`}
+                    iconCreateFunction={
+                      function (cluster) {
+                        var markers = cluster.getAllChildMarkers();
+                        let html = '<div class="agrupamento"><div class="imagem" style=\'background-image: url("' + groupLayer.icone + '")\'></div>'
+                        if (markers.length > 1) {
+                          html += '<div class="texto">' + markers.length + '</div></div>';
+                        } else {
+                          html += '</div>';
+                        }
+                        return L.divIcon({ html: html, className: 'mycluster', iconSize: L.point(32, 32) });
                       }
-                      return L.divIcon({ html: html, className: 'mycluster', iconSize: L.point(32, 32) });
                     }
-                  }
-                >
-                  <GroupLayer
-                    groupLayer={groupLayer}
-                    mapRef={this.mapRef}
-                    iconeCategoria={this.iconeCategoria}
-                    centralizar={this.centralizar}
-                    carregarCamerasProximas={this.props.carregarCamerasProximas}
-                    carregarAreaDeAtuacao={this.props.carregarAreaDeAtuacao}
-                    carregarPontosRelacionados={this.props.carregarPontosRelacionados}
-                  />
-                </MarkerClusterGroup>) : 
-                (
-                  <GroupLayer
-                    groupLayer={groupLayer}
-                    mapRef={this.mapRef}
-                    iconeCategoria={this.iconeCategoria}
-                    centralizar={this.centralizar}
-                    carregarCamerasProximas={this.props.carregarCamerasProximas}
-                    carregarAreaDeAtuacao={this.props.carregarAreaDeAtuacao}
-                    carregarPontosRelacionados={this.props.carregarPontosRelacionados}
-                  />
-                )
-                )
+                  >
+                    <GroupLayer
+                      groupLayer={groupLayer}
+                      mapRef={this.mapRef}
+                      iconeCategoria={this.iconeCategoria}
+                      centralizar={this.centralizar}
+                      carregarCamerasProximas={this.props.carregarCamerasProximas}
+                      carregarAreaDeAtuacao={this.props.carregarAreaDeAtuacao}
+                      carregarPontosRelacionados={this.props.carregarPontosRelacionados}
+                    />
+                  </MarkerClusterGroup>) :
+                  (
+                    <GroupLayer
+                      groupLayer={groupLayer}
+                      mapRef={this.mapRef}
+                      iconeCategoria={this.iconeCategoria}
+                      centralizar={this.centralizar}
+                      carregarCamerasProximas={this.props.carregarCamerasProximas}
+                      carregarAreaDeAtuacao={this.props.carregarAreaDeAtuacao}
+                      carregarPontosRelacionados={this.props.carregarPontosRelacionados}
+                    />
+                  )
+              )
               }
 
 

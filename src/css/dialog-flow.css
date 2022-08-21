@@ -1,242 +1,227 @@
 .dialog-flow {
-  position: absolute;
-  z-index: 100000;
-  background-color: rgba(0,0,0,0.8);
-  min-height: 300px;
-  min-width: 300px;
-  bottom:13px;
-  right:15px;
+    position: absolute;
+    z-index: 100000;
+    background-color: rgba(0, 0, 0, 0.8);
+    min-height: 300px;
+    min-width: 300px;
+    bottom: 13px;
+    right: 15px;
 }
 
 .grafico {
-  height: 40%;
+    height: 40%;
 }
 
 .normal {
-  margin-right: 11px;
-  border: solid 1px #999;
-  border-radius: 5px;
-  width: 30%;
-  height: 40%;
-  background-color: rgba(0,0,0,0.8);
-  right:2px;
-  max-width: 350px;
+    margin-right: 11px;
+    border: solid 1px #999;
+    border-radius: 5px;
+    width: 30%;
+    height: 40%;
+    background-color: rgba(0, 0, 0, 0.8);
+    right: 2px;
+    max-width: 350px;
 }
 
 .expandido {
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.8);
-  right:0;
-  left:0;
-  bottom: 0;
-  top:0;
-  padding-top:35px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    right: 0;
+    left: 0;
+    bottom: 0;
+    top: 0;
+    padding-top: 35px;
 }
 
 .expandido .grafico {
-  height: 50%;
+    height: 50%;
 }
 
 .dialog-flow-botoes {
-  padding: 5px;
-  text-align: center;
-  z-index: 100000;
-  position: absolute;
-  top: 15px;
-  right: 20px;
+    padding: 5px;
+    text-align: center;
+    z-index: 100000;
+    position: absolute;
+    top: 15px;
+    right: 20px;
 }
 
-@media (max-width: 768px) { 
-  .dialog-flow{
-    top: 70px;
-  }
-
-  .expandido{
-    top: 0;
-    background-color: black;
-  }
-
-  .normal {
-    width: 35%;
-  }
-
-  .normal .botoes .somente-expandido {
-    display: none;
-  }
+@media (max-width: 768px) {
+    .dialog-flow {
+        top: 70px;
+    }
+    .expandido {
+        top: 0;
+        background-color: black;
+    }
+    .normal {
+        width: 35%;
+    }
+    .normal .botoes .somente-expandido {
+        display: none;
+    }
 }
 
 .botoes button {
-  border: solid 1px #ccc;
-  background-color: #ddd;
-  color: #333;
-  border-radius: 5px;
-  margin-left: 3px;
-  margin-right: 3px;
-  font-size: 0.8em;
+    border: solid 1px #ccc;
+    background-color: #ddd;
+    color: #333;
+    border-radius: 5px;
+    margin-left: 3px;
+    margin-right: 3px;
+    font-size: 0.8em;
 }
 
 .expandido .botoes button {
-  font-size: 1.1em;
-  padding: 5px 12px;
-  margin-top: 5px;
+    font-size: 1.1em;
+    padding: 5px 12px;
+    margin-top: 5px;
 }
 
-@media (max-width: 768px) { 
-  .expandido .botoes button {
-    font-size: 1.0em;
-    padding: 5px 5px;
-    margin-top: 5px;
-  }
+@media (max-width: 768px) {
+    .expandido .botoes button {
+        font-size: 1.0em;
+        padding: 5px 5px;
+        margin-top: 5px;
+    }
 }
 
 .dialog-flow-botao-expandir {
-  cursor: pointer;
-  position: absolute;
-  float: left;
-  bottom: 0;
-  font-size: 1.0em;
-  padding: 0px 3px ;
+    cursor: pointer;
+    position: absolute;
+    float: left;
+    bottom: 0;
+    font-size: 1.0em;
+    padding: 0px 3px;
 }
 
 .expandido .dialog-flow-botao-expandir {
-  margin-bottom:15px; 
-  margin-left: 15px;
-  font-size: 1.0em;
-  top: 30px;
-  z-index: 10000;
-  right: 5px;
+    margin-bottom: 15px;
+    margin-left: 15px;
+    font-size: 1.0em;
+    top: 30px;
+    z-index: 10000;
+    right: 5px;
 }
 
 .dialog-flow-menu-button {
-  position: absolute;
-  left: 24px;
-  top: calc(var(--menu-topo) + 395px);
-  z-index: 10000;
-  float: left;
-  width: 34px;
-  height: 34px;
-  border: solid 2px rgba(120,120,120,0.5);
-  border-radius: 5px;
+    top: calc(var(--menu-topo) + 395px);
 }
 
-.dialog-flow-menu-button-conteudo {
-  color: rgba(0,0,0,0.7);;
-  background-color: #fff; 
-  text-align: center;
-  vertical-align: middle;
-  line-height: 30px;
-  cursor: pointer;
-  height: 100%;
-  border-radius: 3px;
-}
-
-.dialog-flow-menu-button-conteudo img{
-  width: 90%;
+.dialog-flow-menu-button-conteudo img {
+    width: 90%;
 }
 
 .dialog-flow-menu-button-conteudo:hover {
-  background-color: #eee;
+    background-color: #eee;
 }
 
-.dialog-flow-menu-button-conteudo.ativo{
-  background-color:  #00da53;
+.dialog-flow-menu-button-conteudo.ativo {
+    background-color: #00da53;
 }
 
-.dialog-flow-menu-button-conteudo.ativo:hover{
-  background-color: #07e25b;
+.dialog-flow-menu-button-conteudo.ativo:hover {
+    background-color: #07e25b;
 }
 
 .transito-legendas {
-  /* colors: ['#00FFFF', '#DDD', '#ff0000'],  */
-  width: 100%;
-  text-align: center;
-  font-size: 0.8em;
+    /* colors: ['#00FFFF', '#DDD', '#ff0000'],  */
+    width: 100%;
+    text-align: center;
+    font-size: 0.8em;
 }
 
 .expandido .transito-legendas {
-  /* colors: ['#00FFFF', '#DDD', '#ff0000'],  */
-  font-size: 1.1em;
-}
-
-@media (max-width: 768px) { 
-  .expandido .transito-legendas {
     /* colors: ['#00FFFF', '#DDD', '#ff0000'],  */
-    font-size: 0.9em;
-  }
+    font-size: 1.1em;
 }
 
-.expandido .transito-legendas span{
-  margin-left: 15px;
-  margin-right: 15px;
+@media (max-width: 768px) {
+    .expandido .transito-legendas {
+        /* colors: ['#00FFFF', '#DDD', '#ff0000'],  */
+        font-size: 0.9em;
+    }
 }
 
-.transito-legendas span{
-  margin-left: 5px;
-  margin-right: 5px;
-  font-weight: bold;
+.expandido .transito-legendas span {
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+.transito-legendas span {
+    margin-left: 5px;
+    margin-right: 5px;
+    font-weight: bold;
 }
 
 .transito-legendas .azul {
-  color: #00FFFF;
+    color: #00FFFF;
 }
+
+
 /*
 .expandido .transito-legendas .azul {
   position: absolute;
   left: 75px;
 }
 */
+
 .transito-legendas .vermelho {
-  color: #FF0000;
+    color: #FF0000;
 }
+
+
 /*
 .expandido .transito-legendas .vermelho {
   position: absolute;
   right: 75px;
 }
 */
+
 .single-page {
-  width: 100%;
+    width: 100%;
 }
 
 .titulo-data-filtro {
-  width: 100%;
-  text-align: center;
-  font-size: 0.9em; 
+    width: 100%;
+    text-align: center;
+    font-size: 0.9em;
 }
 
-.titulo-data-filtro span{
-  font-weight: bold;
-  color: #fff;
+.titulo-data-filtro span {
+    font-weight: bold;
+    color: #fff;
 }
 
 .expandido .titulo-data-filtro {
-  /* colors: ['#00FFFF', '#DDD', '#ff0000'],  */
-  font-size: 1.2em;
-  margin-top: 20px;
+    /* colors: ['#00FFFF', '#DDD', '#ff0000'],  */
+    font-size: 1.2em;
+    margin-top: 20px;
 }
 
-@media (max-height: 540px) { 
-  .via-engarrafada-modulo {
-    font-size: 0.7em;
-  }
+@media (max-height: 540px) {
+    .via-engarrafada-modulo {
+        font-size: 0.7em;
+    }
 }
 
-@media (max-height: 400px) { 
-  .via-engarrafada-modulo {
-    display: none;
-  }
+@media (max-height: 400px) {
+    .via-engarrafada-modulo {
+        display: none;
+    }
 }
 
 .via-engarrafada-modulo {
-  margin-top: 5px;  padding: 5px 15px;
-  background-color: rgba(0,0,0,0.1);
-  border-top: solid 2px rgba(150,150,150,0.4);
-  border-bottom: solid 2px rgba(150,150,150,0.4);
-  border-radius: 3px;
+    margin-top: 5px;
+    padding: 5px 15px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-top: solid 2px rgba(150, 150, 150, 0.4);
+    border-bottom: solid 2px rgba(150, 150, 150, 0.4);
+    border-radius: 3px;
 }
 
 .expandido .via-engarrafada-modulo {
-  margin-left:12px;
-  margin-right:12px;
+    margin-left: 12px;
+    margin-right: 12px;
 }

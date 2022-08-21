@@ -10,3 +10,7 @@
 .leaflet-top {
     top: var(--menu-topo);
 }
+
+.leaflet-draw-section {
+    margin-top: -10px;
+}

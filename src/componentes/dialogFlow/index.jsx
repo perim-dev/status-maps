@@ -23,8 +23,8 @@ export default class DialogFlow extends Component {
     const { exibir, onClick } = this.props;
     return (
       <span>
-        <div className="dialog-flow-menu-button">
-          <div className={`dialog-flow-menu-button-conteudo `+ (exibir?'ativo':'')} onClick={(e)=>onClick()} title="DialogFlow"><img alt="Dialog Flow" src={require('../../img/flow.png')}/></div>
+        <div className="button-tools-menu dialog-flow-menu-button">
+          <div className={`button-tools-menu-conteudo dialog-flow-menu-button-conteudo `+ (exibir?'ativo':'')} onClick={(e)=>onClick()} title="DialogFlow"><img alt="Dialog Flow" src={require('../../img/flow.png')}/></div>
         </div>
         {exibir &&
           <div className={`dialog-flow ${expandido?'expandido':'normal'}`}>
