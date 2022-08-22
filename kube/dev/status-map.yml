@@ -5,7 +5,7 @@ metadata:
   namespace: dev
   labels:
     app: status-map
-    version: v1.21
+    version: v1.25
 spec:
   selector:
     matchLabels: 
@@ -15,12 +15,12 @@ spec:
     metadata:
       labels:
         app: status-map
-        version: v1.21
+        version: v1.25
     spec:
       restartPolicy: Always
       containers:
         - name: status-map
-          image: gcr.io/pivotal-mile-258015/status-map:1.21
+          image: gcr.io/pivotal-mile-258015/status-map:1.25
           volumeMounts:
           - name: config-volume
             mountPath: /etc/nginx/conf.d
@@ -42,4 +42,3 @@ spec:
         - name: config-volume
           configMap:
             name: status-map
-

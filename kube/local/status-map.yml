@@ -5,7 +5,7 @@ metadata:
   namespace: default
   labels:
     app: status-map
-    version: v1.20
+    version: v1.25
 spec:
   selector:
     matchLabels: 
@@ -15,12 +15,12 @@ spec:
     metadata:
       labels:
         app: status-map
-        version: v1.20
+        version: v1.25
     spec:
       restartPolicy: Always
       containers:
         - name: status-map
-          image: status-map:1.21
+          image: status-map:1.25
           volumeMounts:
           - name: config-volume
             mountPath: /etc/nginx/conf.d
