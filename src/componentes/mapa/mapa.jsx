@@ -317,10 +317,10 @@ class Mapa extends Component {
   }
 
   alternarAlertas() {
-    this.setState({ ...this.state, exibirAlertas: !this.state.exibirAlertas });
-    if (this.state.exibirAlertas) {
+    if (!this.state.exibirAlertas) {
       this.props.buscarAlarmesDisparados();
     }
+    this.setState({ ...this.state, exibirAlertas: !this.state.exibirAlertas });
   }
 
   alternarGraficoTransito = () => {
