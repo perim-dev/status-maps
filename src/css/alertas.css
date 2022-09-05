@@ -1,35 +1,12 @@
 .alertas-button {
-    position: absolute;
-    left: 24px;
     top: calc(var(--menu-topo) + 290px);
-    z-index: 10000;
-    float: left;
-    width: 34px;
-    height: 34px;
-    border: solid 2px rgba(120,120,120,0.5);
-    border-radius: 5px;
 }
 
-.alertas-button-conteudo {
-    color: rgba(0,0,0,0.7);;
-    background-color: #fff; 
-    text-align: center;
-    vertical-align: middle;
-    line-height: 30px;
-    cursor: pointer;
-    height: 100%;
-    border-radius: 3px;
-}
-
-.alertas-button-conteudo:hover {
-    background-color: #eee;
-}
-
-.alertas-button-conteudo.ativo{
+.alertas-button-conteudo.ativo {
     background-color: #ff5533;
 }
 
-.alertas-button-conteudo.ativo:hover{
+.alertas-button-conteudo.ativo:hover {
     background-color: #f07d66;
 }
 

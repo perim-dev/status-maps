@@ -3,7 +3,7 @@ const wssProtocol = protocol === 'https' ? 'wss' : 'ws';
 
 // const WSS_HOM = 'ws://34.117.174.108/status-websocket/atualizacaoDePontos';
 const WSS_HOM = 'ws://192.168.197.110:9000/status-websocket/atualizacaoDePontos';
-const URL_BASE = process.env.REACT_APP_API_URL || process.env.NODE_ENV === "development" ? '192.168.197.110:5001' : window.location.href.split('/')[2];
+const URL_BASE = process.env.REACT_APP_API_URL || process.env.NODE_ENV === "development" ? '127.0.0.1:5001' : window.location.href.split('/')[2];
 const WSS_BASE = process.env.NODE_ENV === "development" ? WSS_HOM : `${wssProtocol}://` + URL_BASE + '/status-websocket/atualizacaoDePontos';
 
 
@@ -25,7 +25,8 @@ const config = {
         atualizacaoPontosPorCategoria: WSS_BASE
     },
 
-    URL_CAMERA_CET: `${protocol}://aplicativo.cocr.com.br/camera/`,
+    URL_CAMERA_CET_old: `${protocol}://aplicativo.cocr.com.br/camera/`,
+    URL_CAMERA_CET: `${protocol}://` + URL_BASE + '/camera/?cam=9',
     CHAVE_AVISO: '@STATUS-CAHVE-AVISO',
     USER_KEY_TOKEN: '_status_user_token',
     USER_KEY_LOGIN: '_status_user_login',

@@ -9,7 +9,8 @@ const port = 5001;
 const bodyParser = require('body-parser');
 var MjpegProxy = require('mjpeg-proxy').MjpegProxy;
 
-const URL_BASE = "http://192.168.165.110:8080"; //https://dev.status.rio
+// const URL_BASE = "http://192.168.165.110:8080";
+const URL_BASE = "https://dev.status.rio";
 
 app.use(bodyParser.json())
 
