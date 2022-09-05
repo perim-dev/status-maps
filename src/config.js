@@ -26,7 +26,7 @@ const config = {
     },
 
     URL_CAMERA_CET_old: `${protocol}://aplicativo.cocr.com.br/camera/`,
-    URL_CAMERA_CET: `${protocol}://` + URL_BASE + '/camera/?cam=9',
+    URL_CAMERA_CET: `${protocol}://` + URL_BASE + '/camera/?cam=',
     CHAVE_AVISO: '@STATUS-CAHVE-AVISO',
     USER_KEY_TOKEN: '_status_user_token',
     USER_KEY_LOGIN: '_status_user_login',
@@ -36,4 +36,4 @@ const config = {
 
 export default config;
 
-// URL_CAMERA_CET: `${protocol}://` + URL_BASE + '/camera/?cam=9',
+// URL_CAMERA_CET: `${protocol}://` + URL_BASE + '/camera/?cam=',
