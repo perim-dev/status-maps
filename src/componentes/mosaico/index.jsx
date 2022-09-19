@@ -1,48 +1,58 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { adicionarMosaico, carregarMosaicos, excluirCameraDoMosaico } from './action';
-import { DropdownButton, MenuItem, Button, Row, Col } from 'react-bootstrap';
-
-import config from "../../config";
+import { adicionarMosaico, carregarMosaicos, excluirCameraDoMosaico, adicionarCameraAoMosaico } from './action';
 
 import '../../css/avisos.css';
 import '../../css/leaflet-popup.css';
 import '../../css/mosaicos.css'
-
-
-const enums = { escolhaUmMosaico: 'Escolha um mosaico' }
+import CameraView from './CameraView';
+import SelectMosaico from './SelectMosaico';
 
 class PainelMosaico extends Component {
 
   constructor(props) {
     super(props);
     this.hideButtons = false;
+    // TODO verificar state expandido
     this.state = {
-      expandido: true,
       mosaicos: [],
       show: false,
       mosaicoInputText: '',
-      mosaicoSelecionado: { id: 0, descricao: enums.escolhaUmMosaico }
-
-
+      mosaicoSelecionado: {},
+      novoMosaico: { cameras: [] },
+      fromBuscaGeo: false,
     }
+    this.camerasRef = []
   }
-
 
   async componentDidMount() {
+    console.log("componentDidMount")
     const data = await this.props.carregarMosaicos();
-    console.log(data)
     this.setState(prevState => ({ ...prevState, mosaicos: data.payload.data }))
+    if (this.props.fromBuscaGeo) {
+      console.log(this.props.fromBuscaGeo)
+      this.setState({ fromBuscaGeo: true, show: true })
+      this.handleTeste()
+      setTimeout(() => this.handleScroll(), 1000)
+    }
+
+    this.interval = setInterval(() => this.handleScroll(), 30000)
   }
 
-  alternarTamanhos = () => {
-    this.setState({ expandido: !this.state.expandido })
+  componentWillUnmount() {
+    clearInterval(this.interval)
   }
 
 
   handleShow = () => {
     this.setState(prevState => ({ ...prevState, show: !prevState.show }));
+  }
+
+  handleCancelar = async () => {
+    await this.limpar();
+
+    this.setState({ show: false })
   }
 
   onNovoMosaicoClick = (e) => {
@@ -51,135 +61,121 @@ class PainelMosaico extends Component {
   }
 
   handleExcluirCameraDoMosaico = async (camera) => {
-    const { id } = this.state.mosaicoSelecionado;
-    await this.props.excluirCameraDoMosaico({ id, camera });
-    const mosaicosData = await this.props.carregarMosaicos();
-    this.setState(prevState => ({ ...prevState, mosaicos: mosaicosData.payload.data }))
+
+    if (this.state.fromBuscaGeo) {
+
+      const id = this.state.novoMosaico.cameras.indexOf(camera)
+
+      if (id >= 0) {
+
+        const camRef = this.camerasRef.filter(c => c && c.id === camera);
+
+        if (camRef.length > 0) {
+          console.log(camRef)
+          camRef.map(c => c.inactivate());
+        }
+        setTimeout(() => {
+
+          const nm = { ...this.state.novoMosaico };
+          nm.cameras = this.state.novoMosaico.cameras.filter(c => c !== camera)
+          this.setState({ novoMosaico: nm })
+        }, 200)
+      }
+
+    } else {
+
+      const { id } = this.state.mosaicoSelecionado;
+      await this.props.excluirCameraDoMosaico({ id, camera });
+      const mosaicosData = await this.props.carregarMosaicos();
+      this.setState(prevState => ({ ...prevState, mosaicos: mosaicosData.payload.data }))
+    }
   }
 
-  onSalvarMosaicoClick = async (e) => {
+  onSalvarMosaicoClick = async (descricao) => {
     this.handleShow();
-    await this.props.adicionarMosaico({ descricao: this.state.mosaicoInputText })
+    const result = await this.props.adicionarMosaico({ descricao })
+
+    if (this.state.fromBuscaGeo) {
+      console.log(result.payload, result.payload.data)
+      const mosaico = { ...result.payload.data }
+      console.log("mosaico", mosaico)
+      mosaico.cameras = this.state.novoMosaico.cameras;
+      this.props.adicionarCameraAoMosaico(mosaico)
+      this.limpar();
+      this.setState({ mosaicoSelecionado: mosaico, fromBuscaGeo: false });
+      this.handleScroll();
+    }
+
     const mosaicosData = await this.props.carregarMosaicos();
     this.setState(prevState => ({ ...prevState, mosaicos: mosaicosData.payload.data }))
   }
 
   onMosaicoSelecionadoClick = (m) => {
     this.setState(prevState => ({
-      ...prevState, mosaicoSelecionado: { id: m.id, descricao: m.descricao }
+      ...prevState, mosaicoSelecionado: m
     }))
+    setTimeout(() => {
+
+      this.handleScroll()
+    }, 500);
+
   }
 
-  onInputChange = (e) => {
-    this.setState(prevState => ({
-      ...prevState, [e.name]: e.value
-    }));
+  handleTeste = (e) => {
+
+    const cameras = this.props.buscaGeo.acervos.map(acervo => acervo.pontos.filter(ponto => ponto.camera === true)).reduce((a, b) => a.concat(b)).map(p => p.chaveExterna)
+
+    this.setState({ novoMosaico: { cameras } })
   }
 
+  limpar = (e) => {
+    console.log(this.camerasRef)
+    this.camerasRef.filter(c => c != null).map(c => c.inactivate())
+
+    if (this.state.fromBuscaGeo && this.props.buscaGeo && this.props.buscaGeo.acervos.length > 0) {
+      setTimeout(() => this.setState({ novoMosaico: { cameras: [] } }), 200)
+    }
+
+  }
+
+  handleFecharModal = () => {
+    this.limpar();
+    setTimeout(() => this.props.fechar(), 500)
+  }
+
+  handleScroll = () => {
+    console.log("handle scroll")
+    this.camerasRef.filter(c => c != null).map(c => c.checkToShow())
+  }
 
   render() {
-    const { expandido, mosaicos } = this.state
+    const { mosaicos, novoMosaico, fromBuscaGeo, mosaicoSelecionado } = this.state
     return (
 
-      <div className={`avisos ${expandido ? ' expandido' : ' normal'}`}>
-        <div className='div-body-mosaico'>
-          <div className="div-titulo-painel-mosaicos">
-            Mosaicos
-          </div>
-          <div style={{ textAlign: 'center', boxSizing:"border-box" }}>
-            <Row className="justify-content-md-center" style={{ marginLeft:0, marginRight:0 }}>
-              <Col>
-                {
-                  this.state.show && (<Button
-                    bsStyle="link"
-                    className="button-cancelar-mosaicos"
-                    onClick={this.handleShow}
-                  >
-                    Cancelar
-                  </Button>)
-                }
-              </Col>
-              <Col>
-                {
-                  !this.state.show && (<DropdownButton
-                    title={this.state.mosaicoSelecionado.descricao}
-                    bsStyle='link'
-                    key='meu-menu-button'
-                    noCaret
-                    id="itemSelecionado"
-                    name='mosaicoSelecionado'
-                    className="dropdown-escolha-mosaicos"
-                  >
-                    <div className="div-container-menuitem" >
-                      {console.log("mosaicos", mosaicos)}
-                      {
-                        mosaicos ? mosaicos.map((mosaico, idx) => {
-                          return <MenuItem className="dropdown-menuitem-escolha-mosaicos" onSelect={(e) => this.onMosaicoSelecionadoClick(mosaico)} eventKey={`${mosaico.id}`} key={`${idx}`}>{`${mosaico.descricao}`}</MenuItem>
-                        }) : ''
-                      }
-                    </div>
-                  </DropdownButton>
-                  )
-                }
-              </Col>
-              <Col>
-                {
+      <div className="div-mosaicos-content">
+        <div className='div-body-mosaico' onScroll={this.handleScroll}>
+          <SelectMosaico
+            handleCancelar={this.handleCancelar}
+            show={this.state.show}
+            mosaicos={mosaicos}
+            onMosaicoSelecionadoClick={this.onMosaicoSelecionadoClick}
+            onNovoMosaicoClick={this.onNovoMosaicoClick}
+            mosaicoSelecionado={mosaicoSelecionado}
+            onSalvarMosaicoClick={this.onSalvarMosaicoClick}
+          />
 
-                  this.state.show && (
-                    <input type="text"
-                      value={this.state.mosaicoInputText}
-                      name="mosaicoInputText"
-                      maxLength="30"
-                      className="input-text-mosaicos"
-                      onChange={(e) => this.onInputChange(e.target)}
-
-                    />)
-
-                }
-
-                {
-                  !this.state.show && (<Button
-                    name="novo"
-                    bsStyle='link'
-                    className="button-novo-mosaicos"
-                    onClick={this.onNovoMosaicoClick}
-                  >
-                    Novo
-                  </Button>)
-
-                }
-              </Col>
-              <Col>
-                {
-
-                  this.state.show && (<Button
-                    name="salvar"
-                    bsStyle='link'
-                    className="button-salvar-mosaicos"
-                    onClick={this.onSalvarMosaicoClick}
-                  >
-                    Salvar
-                  </Button>)
-                }
-              </Col>
-            </Row>
-          </div>
           <div className='grid-layout-container-5'>
-            {
-              mosaicos && this.state.mosaicoSelecionado.descricao !== enums.escolhaUmMosaico && (
-                mosaicos.find(mosaico => {
-                  return mosaico.descricao === this.state.mosaicoSelecionado.descricao;
-                }).cameras.map((camera, i) =>
-                  <div key={i} className="div-container-camera-body" >
-                    <div className="div-container-img-fechar">
-                      <span className="span-img-label" title="Excluir" onClick={(e) => this.handleExcluirCameraDoMosaico(camera)}>x</span>
-                      <div
-                        className="div-container-img-html "
-                        dangerouslySetInnerHTML={{ __html: `<img src='${config.URL_CAMERA_CET}${camera}' width='320' height='250'/>` }}
-                      />
-                    </div>
-                  </div>
+            { // Câmeras do mosaico selecionado
+              mosaicoSelecionado.id && (
+                mosaicoSelecionado.cameras.map((camera, i) =>
+                  <CameraView ref={ref => this.camerasRef.push(ref)} lazy={true} camera={camera} key={`${camera}-${i}`} excluirCameraDoMosaico={this.handleExcluirCameraDoMosaico} />
                 )
+              )
+            }
+
+            { // Câmeras da buscaGeo
+              fromBuscaGeo && novoMosaico.cameras.length > 0 && novoMosaico.cameras.map((camera, i) =>
+                <CameraView ref={ref => this.camerasRef.push(ref)} lazy={true} camera={camera} key={camera} excluirCameraDoMosaico={this.handleExcluirCameraDoMosaico} />
               )
             }
           </div>
@@ -187,7 +183,7 @@ class PainelMosaico extends Component {
           {
             !this.hideButtons && (
               <div >
-                <div title="fechar" className='avisos-botao-expandir-mosaicos' onClick={(e) => this.props.fechar()}>
+                <div title="fechar" className='mosaico-fechar' onClick={this.handleFecharModal}>
                   <i className="fa fa-close" style={{ color: '#f33939' }}></i>
                 </div>
               </div>
@@ -199,6 +195,6 @@ class PainelMosaico extends Component {
     );
   }
 }
-const mapStateToProps = state => ({ mosaicos: state.mosaicos });
-const mapDispatchToProps = dispatch => bindActionCreators({ adicionarMosaico, carregarMosaicos, excluirCameraDoMosaico }, dispatch);
+const mapStateToProps = state => ({ mosaicos: state.mosaicos, buscaGeo: state.buscaGeo });
+const mapDispatchToProps = dispatch => bindActionCreators({ adicionarMosaico, carregarMosaicos, excluirCameraDoMosaico, adicionarCameraAoMosaico }, dispatch);
 export default connect(mapStateToProps, mapDispatchToProps)(PainelMosaico);

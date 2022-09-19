@@ -46,7 +46,8 @@ app.get('/*', (req, res) => {
     if (req.url.includes('/camera/?cam=')) {
         const param = req.url.replace('/camera/?cam=', '')
         console.log('cameras', param);
-        const urlCamera = `http://10.50.3.180:${param}/video-1`;
+        // const urlCamera = `http://10.50.3.180:${param}/video-1`;
+        const urlCamera = `http://187.111.99.18:9004/?CODE=${param}`;
 
         try {
 
@@ -113,6 +114,24 @@ app.post('/*', (req, res) => {
     // axios.post('/save', { firstName: 'Marlon', lastName: 'Bernardes' })
     const url = `${URL_BASE}${req.url}`
     axios.post(url, req.body, config)
+        .then(function(response) {
+            //console.log(response.data); // ex.: { user: 'Your User'}
+            console.log('SUCESSO', response.status); // ex.: 200
+            res.status(response.status).send(response.data);
+        }).catch(err => {
+
+            console.error(err.response);
+            res.status(err.response.status).send(err.response.data);
+        });
+})
+
+app.delete('/*', (req, res) => {
+    console.log(req.path, req.method, req.url);
+
+    // Requisições POST, note há um parâmetro extra indicando os parâmetros da requisição
+    // axios.post('/save', { firstName: 'Marlon', lastName: 'Bernardes' })
+    const url = `${URL_BASE}${req.url}`
+    axios.delete(url, req.body, config)
         .then(function(response) {
             //console.log(response.data); // ex.: { user: 'Your User'}
             console.log('SUCESSO', response.status); // ex.: 200

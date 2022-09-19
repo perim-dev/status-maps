@@ -1,0 +1,106 @@
+:root {
+    --altura-menu-mosaico: 36px;
+    --background-menu-mosaico: rgba(90, 90, 90, 0.7);
+}
+
+.select-mosaico-body {
+    text-align: center;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.input-mosaico {
+    background-color: rgba(90, 90, 90, 0.2);
+    margin-left: 8px;
+    margin-right: 8px;
+    border-radius: 3px;
+    height: var(--altura-menu-mosaico);
+    position: relative;
+}
+
+.input-mosaico:hover {
+    text-decoration: none;
+}
+
+.input-mosaico:hover {
+    background-color: rgba(50, 50, 50, 0.5);
+}
+
+.dropdown-escolha-mosaicos {
+    width: 250px;
+    border-radius: 3px;
+    text-decoration: none;
+}
+
+.dropdown-escolha-mosaicos:hover {
+    width: 250px;
+    font-weight: bolder;
+    text-decoration: none;
+    /* background-color: #5a5a5a99; */
+}
+
+.div-container-menuitem {
+    /* height: 35px; */
+    /* border-radius: 2px 0px 0px 2px; */
+}
+
+.input-text-mosaicos {
+    width: 350px;
+    height: var(--altura-menu-mosaico);
+    color: #000;
+    position: relative;
+    opacity: 0.5;
+    border: solid 1px #ccc;
+    border-radius: 5px;
+    padding-left: 8PX;
+}
+
+.input-text-mosaicos:focus {
+    border-color: unset;
+}
+
+.dropdown-menu {
+    background-color: rgba(90, 90, 90, 0.7) !important;
+}
+
+.dropdown-menuitem-escolha-mosaicos {
+    color: #fff;
+    width: 250px;
+    padding-left: 10px;
+}
+
+.dropdown-menuitem-escolha-mosaicos a {
+    color: #fff;
+    text-decoration: none;
+    width: 100%;
+    display: block;
+}
+
+.dropdown-menuitem-escolha-mosaicos:hover {
+    font-weight: bold;
+    padding-left: 10px;
+    background-color: rgba(99, 99, 99, 0.6) !important;
+}
+
+.dropdown-menuitem-escolha-mosaicos:last-child {
+    /* border-radius: 0px 0px 5px 5px; */
+    padding-bottom: 3px;
+}
+
+
+/* # hack */
+
+.btn-link:active,
+.btn-link:focus,
+.btn-link:focus a {
+    background-color: rgba(90, 90, 90, 0.2) !important;
+    box-shadow: none !important;
+    text-decoration: none;
+}
+
+.dropdown-menu {
+    overflow-y: scroll;
+    overflow-x: none;
+    height: 260px;
+}

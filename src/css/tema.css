@@ -262,3 +262,32 @@ body {
 .button-tools-menu-conteudo.ativo:hover {
     background-color: #07e25b;
 }
+
+::-webkit-scrollbar {
+    width: 7px;
+}
+
+
+/* Track */
+
+ ::-webkit-scrollbar-track {
+    background: rgba(241, 241, 241, 0.01);
+}
+
+::-webkit-scrollbar-track:hover {
+    background: rgba(241, 241, 241, 0.2);
+}
+
+
+/* Handle */
+
+ ::-webkit-scrollbar-thumb {
+    background: rgba(136, 136, 136, 0.7);
+}
+
+
+/* Handle on hover */
+
+ ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

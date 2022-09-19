@@ -1,3 +1,13 @@
+.div-mosaicos-content {
+    position: absolute;
+    z-index: 100000;
+    background-color: rgba(0, 0, 0, 0.9);
+    right: 0;
+    left: 0;
+    bottom: 0px;
+    top: 0;
+}
+
 .mosaicos-button {
     top: calc(var(--menu-topo) + 429px);
 }
@@ -7,83 +17,22 @@
     border: 5px solid black;
 }
 
-.input-text-mosaicos {
-    width: 350px;
-    height: 35px;
-    color: #000;
-    position: relative;
-    opacity: 0.5;
-    border: solid 1px #ccc;
-    border-radius: 5px;
-}
-
-.button-novo-mosaicos:hover {
-    height: 36px;
-    border-radius: 0px 5px 5px 0px;
-    border: left 1px;
-    position: relative;
-    color: #fff;
-}
-
-.button-salvar-mosaicos:hover {
-    height: 35px;
-    border-radius: 0px 5px 5px 0px;
-    border-left: 1px;
-    position: relative;
-    color: #fff;
-}
-
-.dropdown-escolha-mosaicos:hover {
-    width: 250px;
-    height: 36px;
-    border-radius: 0px 0px 0px 0px;
-    color: #fff;
-}
-
-.dropdown-menuitem-escolha-mosaicos {
-    width: 350px;
-    background-color: #fff !important;
-}
-
-.button-cancelar-mosaicos:hover {
-    height: 35px;
-    border-radius: 2px 0px 0px 2px;
-    color: #fff;
-}
-
-.div-container-menuitem {
-    height: 35px;
-    border-radius: 2px 0px 0px 2px;
-}
-
-.div-container-img-html {
-    margin-right: 0px;
-    padding: 0px 0px 0px 0px;
-    z-index: 10000;
-}
-
-.div-container-img-fechar {
-    text-align: right;
-}
-
-.span-img-label {
-    color: red;
-    font-family: arial;
-    font-size: 12px;
-    top: 20px;
-    position: relative;
-    padding-right: 5px;
-    cursor: pointer;
-}
-
 .div-titulo-painel-mosaicos {
     text-align: center;
     font-family: Arial;
-    font-weight: 100;
+    font-weight: bold;
     color: white;
-    font-size: 12px;
+    font-size: 1.1em;
     padding: 2px 0px 15px 0px;
     border-bottom: 0.0px solid grey;
+    display: flex;
+    justify-content: center;
+}
+
+.div-titulo-painel-mosaicos span {
+    background-color: rgba(66, 66, 66, 0.5);
+    border-radius: 3px;
+    padding: 5px 20%;
 }
 
 .avisos-botao-expandir-mosaicos {
@@ -106,17 +55,18 @@
     justify-content: center;
 }
 
-.div-container-camera-body {
-    margin: 5px;
-}
-
 .div-body-mosaico {
     position: absolute;
-    top: 0px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 5px;
+    margin-bottom: 5px;
     left: 0px;
     right: 0px;
     bottom: 0px;
     overflow-y: auto;
+    height: 100%;
+    width: 100%;
 }
 
 .mosaico-btn-popup {
@@ -151,4 +101,14 @@
 .mosaico-options-popup select {
     padding: 5px;
     margin: 0 5px 0 5px;
+}
+
+.mosaico-fechar {
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    font-size: 1.0em;
+    padding: 0px 10px;
+    margin-right: 10px;
+    right: 15px;
 }

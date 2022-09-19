@@ -12,20 +12,22 @@ import '../../css/leaflet-popup.css';
 import '../../css/leaflet-icon.css';
 
 import { adicionarCameraAoMosaico, limparPainel, carregarMosaicos, excluirCameraDoMosaico } from '../mosaico/action';
+import CameraView from '../mosaico/CameraView';
 
 class Marcador extends React.PureComponent {
 
   constructor(props) {
     super(props);
-
+    this.popupRef = null;
     this.state = {
       atualizandoMaisInformacoes: false,
       mosaicos: [],
       show: false,
       onIncluir: false,
       dropDownIsOpen: false,
-      mosaicoSelecionado: undefined
+      mosaicoSelecionado: undefined,
     }
+    this.cameraRef = null;
   }
 
   obterMaisInformacoesDoPonto = async (ponto) => {
@@ -68,16 +70,16 @@ class Marcador extends React.PureComponent {
     }
   }
 
-  excluirCameraDoMosaico = (e ) => {
-    const body = {id: this.state.mosaicoSelecionado.id, camera: this.props.ponto.chaveExterna}
+  excluirCameraDoMosaico = (e) => {
+    const body = { id: this.state.mosaicoSelecionado.id, camera: this.props.ponto.chaveExterna }
     try {
-      excluirCameraDoMosaico( body).then( res => {
+      excluirCameraDoMosaico(body).then(res => {
         this.carregarMosaicos()
       })
     } catch (error) {
       console.log(error);
     }
-    
+
   }
 
   handleClick = (ponto) => {
@@ -105,7 +107,7 @@ class Marcador extends React.PureComponent {
       const { data = [] } = response.payload;
 
       this.setState({ mosaicos: data });
-      if(this.state.mosaicoSelecionado){
+      if (this.state.mosaicoSelecionado) {
 
         const mosaico = data.find(m => m.id === this.state.mosaicoSelecionado.id);
         this.setState({ mosaicoSelecionado: mosaico });
@@ -125,15 +127,25 @@ class Marcador extends React.PureComponent {
         position={[ponto.geometry.coordinates[1], ponto.geometry.coordinates[0]]}
         icon={icone} >
 
-        <Popup className="status-popup" autoPan={false} >
-          <div className="status-popup-conteudo">
+        <Popup
+          className="status-popup"
+          autoPan={false}>
+
+          <div className="status-popup-conteudo" >
             <span className="descricao">{ponto.descricao} </span>
 
-            {ponto.atributos && ponto.atributos.html &&
+            {ponto.atributos && ponto.atributos.html && !ponto.atributos.isCamera &&
               <div className="status-popup-html" dangerouslySetInnerHTML={{ __html: ponto.atributos.html }} />
             }
 
-            {ponto.atributos && ponto.atributos.url &&
+            {ponto.atributos && ponto.atributos.html && ponto.atributos.isCamera &&
+              <CameraView
+                camera={ponto.chaveExterna}
+                key={`camera-popup-${ponto.chaveExterna}`}
+              />
+            }
+
+            {ponto.atributos && ponto.atributos.url && !ponto.atributos.isCamera &&
               <div>
                 <Iframe url={ponto.atributos.url}
                   width="100%"
@@ -157,7 +169,7 @@ class Marcador extends React.PureComponent {
                   {mosaicos.map((m, k) =>
 
                     <option key={`mosaico-option-id-${m.id}`} value={m.id}  >
-                      {m.descricao} {this.isCameraNoMosaico(m)?"":" (+)"}
+                      {m.descricao} {this.isCameraNoMosaico(m) ? "" : " (+)"}
                     </option>
                   )}
 

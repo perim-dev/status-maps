@@ -1,52 +1,53 @@
-.resultado-buscageo.inativo{
+.resultado-buscageo.inativo {
     display: none;
 }
 
-.resultado-buscageo.ativo{
+.resultado-buscageo.ativo {
     display: unset;
 }
 
 .resultado-buscageo {
-    
     margin-left: 14px;
     margin-right: 14px;
     margin-bottom: 14px;
     z-index: 10000;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0, 0, 0, 0.5);
     height: 150px;
-    bottom:0;
-    left:0;
-    right:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
     position: absolute;
     border-radius: 1px;
-    border-top: solid 1px #ccc; /* solid 2px #555; */
+    border-top: solid 1px #ccc;
+    /* solid 2px #555; */
     padding-left: 5px;
-    padding-top:2px;
+    padding-top: 2px;
     font-size: 0.9em;
 }
 
-.resultado-buscageo .ponto{
+.resultado-buscageo .ponto {
     padding: 5px;
 }
 
-.resultado-buscageo .ponto img{
+.resultado-buscageo .ponto img {
     height: 20px;
     cursor: pointer;
 }
 
-.resultado-buscageo .ponto .texto{
+.resultado-buscageo .ponto .texto {
     margin-left: 5px;
 }
-.resultado-buscageo .lista-pontos{
-    overflow-y: scroll;  
+
+.resultado-buscageo .lista-pontos {
+    overflow-y: scroll;
     height: 100px;
 }
 
 .buscageo-filtro {
     margin-left: -5px;
     margin-right: 0px;
-    padding-top:8px;
-    padding-bottom:5px;
+    padding-top: 8px;
+    padding-bottom: 5px;
     margin-top: -2px;
     font-weight: bolder;
     color: white;
@@ -54,28 +55,59 @@
     background-color: rgba(200, 200, 200, 0.5);
     border-bottom: 1px solid #ccc;
     max-height: 50px;
-    overflow-y: scroll;  
+    overflow-y: scroll;
 }
+
 .buscageo-filtro-texto {
     display: inline;
     padding-left: 5px;
 }
+
 .buscageo-filtro input[type=checkbox] {
     vertical-align: middle;
     position: relative;
     bottom: 1px;
 }
 
-.buscageo-limpar span{
+.buscageo-limpar span {
     cursor: pointer;
     color: #f00202;
     font-weight: bold;
     font-size: 1.1em;
-    
 }
 
 .buscageo-limpar {
     right: 18px;
     position: absolute;
+    background-color: #fff;
+    padding: 1px 5px;
+    border: solid 1px rgba(120, 120, 120, 0.5);
+    border-radius: 3px;
+}
+
+.buscageo-mosaico span {
+    cursor: pointer;
+    color: #2f873d;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.buscageo-mosaico {
+    right: 48px;
+    position: absolute;
+    background-color: #fff;
+    padding: 1px 5px;
+    border: solid 1px rgba(120, 120, 120, 0.5);
+    border-radius: 3px;
+}
+
+.buscageo-mosaico-menu-right {
+    width: 40px;
+    position: absolute;
+    right: 0;
     top: 0;
+    height: 30px;
+    display: flex;
+    align-content: center;
+    align-items: center;
 }

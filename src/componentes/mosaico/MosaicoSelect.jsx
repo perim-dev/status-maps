@@ -10,9 +10,10 @@ import  { eliminaRepeticaoDoArrayDeCameras, extraiNumeroDaCameraDoHTML, verifica
 import { ConfirmaDialog } from './ConfirmaDialog';
 
 
-
+// DEPRECATED
 class MosaicoSelect extends Component {
   constructor(props) {
+    console.log("MOSAICO SELECT")
     super(props);
     this.hideButtons = false;
     this.state = {

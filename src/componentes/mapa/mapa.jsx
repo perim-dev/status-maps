@@ -98,7 +98,8 @@ class Mapa extends Component {
       qrcode: null,
       exibirDialogFlow: false,
       rastreio: [],
-      mapMoving: false
+      mapMoving: false,
+      fromBuscaGeo: false,
     };
     this.props.buscarAlarmesDisparados();
     this.mapRef = null;
@@ -233,8 +234,6 @@ class Mapa extends Component {
     if (this.state.monitorar && retorno.flyto) {
       
       if (retorno.latitude && retorno.longitude) {
-        
-        const zoom = retorno.zoom || this.state.zoom;
 
         this.mapRef.leafletElement.setView(new L.LatLng(retorno.latitude, retorno.longitude), this.state.zoom, {
           animate: true,
@@ -343,8 +342,10 @@ class Mapa extends Component {
     this.setState({ monitorar: !this.state.monitorar });
   }
 
-  exibirMosaicos = () => {
-    this.setState({ exibirMosaicos: !this.state.exibirMosaicos });
+  exibirMosaicos = (props={}) => {
+    const {fromBuscaGeo = false} = props;
+    this.setState({ exibirMosaicos: !this.state.exibirMosaicos, fromBuscaGeo:fromBuscaGeo });
+    
   }
 
   exibirDialogFlow = () => {
@@ -434,7 +435,7 @@ class Mapa extends Component {
               <div className={`button-tools-menu-conteudo avisos-menu-button-conteudo ` + (this.state.novoAviso ? 'ativo' : '')} onClick={(e) => this.exibirAvisos()} title="Avisos"><i className="fa fa-bell"></i></div>
             </div>
 
-            {this.state.exibirMosaicos && <PainelMosaico fechar={this.exibirMosaicos} />}
+            {this.state.exibirMosaicos && <PainelMosaico fechar={this.exibirMosaicos} fromBuscaGeo={this.state.fromBuscaGeo} />}
 
             {this.state.avisoComando.show &&
               <AvisoComando fechar={(e) => this.setState({ avisoComando: { show: false } })}
@@ -518,6 +519,7 @@ class Mapa extends Component {
                     <GroupLayer
                       groupLayer={groupLayer}
                       mapRef={this.mapRef}
+                      
                       iconeCategoria={this.iconeCategoria}
                       centralizar={this.centralizar}
                       carregarCamerasProximas={this.props.carregarCamerasProximas}
@@ -529,6 +531,7 @@ class Mapa extends Component {
                     <GroupLayer
                       groupLayer={groupLayer}
                       mapRef={this.mapRef}
+                      key={`groupLayerkey-${groupLayer.id}`}
                       iconeCategoria={this.iconeCategoria}
                       centralizar={this.centralizar}
                       carregarCamerasProximas={this.props.carregarCamerasProximas}
@@ -609,7 +612,14 @@ class Mapa extends Component {
               </LayersControl>
 
             </Map>
-            <Listagem limpar={() => this.limparBuscaGeo()} centralizar={this.centralizar.bind(this)} />
+            <Listagem 
+              limpar={this.limparBuscaGeo} 
+              centralizar={this.centralizar.bind(this)} 
+              abrirMosaico={() => {
+                this.exibirMosaicos({fromBuscaGeo:true})
+               
+              }}
+            />
             <div className="utilitario-rodape-mapa">
               <div className='botao-expandir-mapa'
                 onClick={(e) => {

@@ -25,12 +25,13 @@ export default (state = INITIAL_STATE, action) => {
                 let pontos = action.payload.data.slice();
                 let icone = action.categoria.icone ? 'data:image;base64, ' + action.categoria.icone.replace('data:image;base64, ', '') : 'https://icons.iconarchive.com/icons/icons-land/vista-map-markers/32/Map-Marker-Marker-Outside-Azure-icon.png';
                 novoEstado.groupLayers[action.categoria.id] = { id: action.categoria.id, icone: icone, pontos: [], agrupado: action.categoria.agrupado };
-                console.log(action);
+
                 pontos.map((ponto) => {
                     ponto.pontosRelacionados = [];
                     ponto.geometry = JSON.parse(ponto.geometry)
 
                     if (ponto.categoriaId * 1 === 55) {
+                        ponto.atributos.isCamera = true
                         ajusteCamera(ponto);
                     }
 
