@@ -189,8 +189,10 @@ class Mapa extends Component {
     console.log(retorno);
 
     if (retorno.atualizarAlarmes) {
+      console.log("Atualizar alarmes",retorno.atualizarAlarmes);
       this.props.limparAlarmes();
       this.props.buscarAlarmesDisparados();
+
     }
     if (retorno.categorias) {
       retorno.categorias.map((id) => {
@@ -213,11 +215,13 @@ class Mapa extends Component {
         this.setState({ novoAviso: false });
       }, tempoPiscando);
 
-
+      
       retorno.aviso.map((a) => {
 
         GerenciadorDeAvisos.adicionar(a);
-
+        if(a.coordinates) {
+          this.flyTo(a.coordinates);
+        }
         setTimeout(() => {
           notify(a.titulo, a.mensagem);
         }, intervalo * 5000);
@@ -232,29 +236,29 @@ class Mapa extends Component {
     }
 
     if (this.state.monitorar && retorno.flyto) {
-      
-      if (retorno.latitude && retorno.longitude) {
+      this.flyTo(retorno);
+    }
 
-        this.mapRef.leafletElement.setView(new L.LatLng(retorno.latitude, retorno.longitude), this.state.zoom, {
-          animate: true,
-          duration: 3
-        })
+  }
 
-        if(retorno.zoom) {
-          setTimeout(() => {
+  flyTo = ({latitude, longitude, zoom}) => {
+    if (latitude && longitude) {
 
-            this.setState({zoom: retorno.zoom})  
-          },2000)
-        }
+      this.mapRef.leafletElement.setView(new L.LatLng(latitude,longitude), this.state.zoom, {
+        animate: true,
+        duration: 3
+      })
 
+      if (zoom) {
+        setTimeout(() => {
 
-
+          this.setState({ zoom: zoom })
+        }, 2000)
       }
-      // this.setState({ zoom: this.state.zoom - 1 })
+
 
 
     }
-
   }
 
   updateLetreiroInfo = (data) => {
@@ -342,10 +346,10 @@ class Mapa extends Component {
     this.setState({ monitorar: !this.state.monitorar });
   }
 
-  exibirMosaicos = (props={}) => {
-    const {fromBuscaGeo = false} = props;
-    this.setState({ exibirMosaicos: !this.state.exibirMosaicos, fromBuscaGeo:fromBuscaGeo });
-    
+  exibirMosaicos = (props = {}) => {
+    const { fromBuscaGeo = false } = props;
+    this.setState({ exibirMosaicos: !this.state.exibirMosaicos, fromBuscaGeo: fromBuscaGeo });
+
   }
 
   exibirDialogFlow = () => {
@@ -519,7 +523,7 @@ class Mapa extends Component {
                     <GroupLayer
                       groupLayer={groupLayer}
                       mapRef={this.mapRef}
-                      
+
                       iconeCategoria={this.iconeCategoria}
                       centralizar={this.centralizar}
                       carregarCamerasProximas={this.props.carregarCamerasProximas}
@@ -612,12 +616,12 @@ class Mapa extends Component {
               </LayersControl>
 
             </Map>
-            <Listagem 
-              limpar={this.limparBuscaGeo} 
-              centralizar={this.centralizar.bind(this)} 
+            <Listagem
+              limpar={this.limparBuscaGeo}
+              centralizar={this.centralizar.bind(this)}
               abrirMosaico={() => {
-                this.exibirMosaicos({fromBuscaGeo:true})
-               
+                this.exibirMosaicos({ fromBuscaGeo: true })
+
               }}
             />
             <div className="utilitario-rodape-mapa">
