@@ -181,8 +181,6 @@ class Mapa extends Component {
     }
   }
 
-
-
   handleData(data) {
     let retorno = JSON.parse(data);
 
@@ -219,7 +217,7 @@ class Mapa extends Component {
       retorno.aviso.map((a) => {
 
         GerenciadorDeAvisos.adicionar(a);
-        if(a.coordinates) {
+        if(this.state.monitorar && a.coordinates) {
           this.flyTo(a.coordinates);
         }
         setTimeout(() => {
@@ -436,7 +434,7 @@ class Mapa extends Component {
             </div>
 
             <div className="button-tools-menu avisos-menu-button">
-              <div className={`button-tools-menu-conteudo avisos-menu-button-conteudo ` + (this.state.novoAviso ? 'ativo' : '')} onClick={(e) => this.exibirAvisos()} title="Avisos"><i className="fa fa-bell"></i></div>
+              <div className={`button-tools-menu-conteudo avisos-menu-button-conteudo ` + (this.state.novoAviso ? 'alarmando' : '') + (this.state.exibirAvisos ? ' ativo' : '')} onClick={(e) => this.exibirAvisos()} title="Avisos"><i className="fa fa-bell"></i></div>
             </div>
 
             {this.state.exibirMosaicos && <PainelMosaico fechar={this.exibirMosaicos} fromBuscaGeo={this.state.fromBuscaGeo} />}
@@ -467,7 +465,7 @@ class Mapa extends Component {
               fadeAnimation={true}
               zoomAnimation={true}
 
-              maxBounds={L.latLngBounds(L.latLng(-22.779416753056946, -43.768280005721955), L.latLng(-23.067453817196093, -42.95432660852574))}
+              // maxBounds={L.latLngBounds(L.latLng(-22.779416753056946, -43.768280005721955), L.latLng(-23.067453817196093, -42.95432660852574))}
               onViewportChanged={(viewport) => this.atualizarPosicao(viewport)}
               onzoomstart={(e) => this.setState({ avisoComando: { show: false } })}
               onmovestart={(e) => this.setState({ avisoComando: { show: false } })}

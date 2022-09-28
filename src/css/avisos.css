@@ -12,7 +12,7 @@
     color: #f07d66;
 }
 
-.avisos-menu-button-conteudo.ativo {
+.avisos-menu-button-conteudo.alarmando {
     color: #ff5533;
     animation: blink-animation 2s steps(5, start) infinite;
     -webkit-animation: blink-animation 2s steps(5, start) infinite;
@@ -44,7 +44,7 @@
     white-space: pre-line;
 } */
 
-@media (max-height: 600px) {
+@media (min-height: 600px) {
     .avisos {
         display: none;
     }

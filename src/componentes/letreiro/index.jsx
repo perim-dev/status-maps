@@ -21,7 +21,7 @@ export default class Letreiro extends Component {
   componentDidMount() {
     this.atualizaDados();
     this.refresh();
-    setTimeout( () => this.animar(), 2000);
+    setTimeout(() => this.animar(), 2000);
   }
 
   componentWillUnmount() {
@@ -33,20 +33,20 @@ export default class Letreiro extends Component {
     const { status = 300 } = response.payload;
     if (status === 200) {
       const dataResponse = response.payload.data;
-      this.setState({ data: dataResponse});
+      this.setState({ data: dataResponse });
       this.props.updateLetreiroInfo(dataResponse);
-      
+
     } else {
       this.props.updateLetreiroInfo({ "cor": "rgba(255,255,255,0.2)", "estagio": "Normalidade", offline: true });
       this.setState({ data: {} });
       console.log("falha ao receber dados da API de mudança de estágio")
     }
-    
+
   }
 
   refresh = () => {
     setTimeout(() => {
-      
+
       this.atualizaDados();
       if (this.ativo) {
         this.refresh();
@@ -58,15 +58,22 @@ export default class Letreiro extends Component {
   animar = () => {
     const { data } = this.state;
     const r = document.querySelector(':root');
-    
-    r.style.setProperty('--tamanhoElementoLinha1',`-${this.linha1Ref.clientWidth}px`);
-    
-    r.style.setProperty('--tamanhoElementoLinha2',`-${this.linha2Ref.clientWidth}px`);
-    
-    if(data.mensagem2 && data.mensagem2 !== '') {
-      this.baseRef.style.height = '70px';  
-    } else {
-      this.baseRef.style.height = '45px';
+
+    if (this.linha1Ref) {
+      r.style.setProperty('--tamanhoElementoLinha1', `-${this.linha1Ref.clientWidth}px`);
+    }
+
+    if (this.linha2Ref) {
+      r.style.setProperty('--tamanhoElementoLinha2', `-${this.linha2Ref.clientWidth}px`);
+    }
+
+    if (this.baseRef) {
+
+      if (data.mensagem2 && data.mensagem2 !== '') {
+        this.baseRef.style.height = '70px';
+      } else {
+        this.baseRef.style.height = '45px';
+      }
     }
   }
 
@@ -80,8 +87,8 @@ export default class Letreiro extends Component {
         {data && data.mensagem && (
 
           <div className="letreiro scroll-left background-teste" ref={(ref) => this.baseRef = ref} onClick={() => this.animar()} >
-            <div id="linha1" ref={(ref) => this.linha1Ref = ref} className="texto" style={{ color: data.cor }}>{data.mensagem}</div> 
-              <div id="linha2" ref={(ref) => this.linha2Ref = ref} className="texto" style={{ color: data.cor2||'yellow' }}>{data.mensagem2}</div> 
+            <div id="linha1" ref={(ref) => this.linha1Ref = ref} className="texto" style={{ color: data.cor }}>{data.mensagem}</div>
+            <div id="linha2" ref={(ref) => this.linha2Ref = ref} className="texto" style={{ color: data.cor2 || 'yellow' }}>{data.mensagem2}</div>
           </div>
         )}
       </div>
