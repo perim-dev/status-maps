@@ -20,7 +20,7 @@ spec:
       restartPolicy: Always
       containers:
         - name: status-map
-          image: gcr.io/pivotal-mile-258015/status-map:1.25
+          image: gcr.io/pivotal-mile-258015/status-map:1.0.31
           volumeMounts:
           - name: config-volume
             mountPath: /etc/nginx/conf.d
